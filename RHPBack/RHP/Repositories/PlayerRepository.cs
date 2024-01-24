@@ -1,8 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RHP.Data;
-using RHP.Interfaces;
 using RHP.Models;
-using System.Linq.Expressions;
 
 namespace RHP.Repositories
 {

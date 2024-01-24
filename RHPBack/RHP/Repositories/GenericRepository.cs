@@ -58,14 +58,14 @@ namespace RHP.Repositories
             }
         }
 
-        public T GetByIdWithIncludes(int id)
+        public T[] GetByIdWithIncludes(int[] ids)
         {
-            throw new NotImplementedException();
+            return _context.Set<T>().Where(entity => ids.Contains((entity as IBase)!.Id)).ToArray();
         }
 
-        public Task<T> GetByIdWithIncludesAsync(int id)
+        public async Task<T[]> GetByIdWithIncludesAsync(int[] ids)
         {
-            throw new NotImplementedException();
+            return await _context.Set<T>().Where(entity => ids.Contains((entity as IBase)!.Id)).ToArrayAsync();
         }
 
         public bool Remove(int id)

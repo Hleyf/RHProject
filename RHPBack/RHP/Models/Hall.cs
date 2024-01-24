@@ -10,9 +10,9 @@ namespace RHP.Models
         public int HallId { get; set; }
         public required string Title { get; set; }
         public string? Description { get; set; }
-        public int GameMasterId { get; set; }
-        public required int[] PlayerIds { get; set; }
-        public int[]? RollIds { get; set; }
+        public required Player GameMaster { get; set; }
+        public required Player[] Players { get; set; }
+        public Roll[]? Rolls { get; set; }
         public override string? ToString() => Title;
         
     }
