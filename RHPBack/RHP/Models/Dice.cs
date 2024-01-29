@@ -13,7 +13,7 @@ namespace RHP.Models
         D20,
         D100
     }
-    public class Dice : IBase
+    public class Dice : IBaseEntity
     {
         public int Id => DiceId;
         [Key]

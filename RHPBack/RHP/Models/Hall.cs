@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace RHP.Models
 {
-    public class Hall : IBase
+    public class Hall : IBaseEntity
     {
         public int Id => HallId;
         [Key]

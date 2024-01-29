@@ -11,7 +11,7 @@ namespace RHP.Models
         CriticalSuccess,
         CriticalFailure
     }
-    public class Roll : IBase
+    public class Roll : IBaseEntity
     {
         public int Id => RollId;
         [Key]

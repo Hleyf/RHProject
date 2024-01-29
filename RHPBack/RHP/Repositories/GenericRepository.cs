@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 namespace RHP.Repositories
 {
 
-    public class GenericRepository<T> : IGenericRepository<T> where T : class 
+    public class GenericRepository<T> : IBaseRepository<T> where T : class 
     {
         private readonly ApplicationDbContext _context;
         public GenericRepository(ApplicationDbContext context)
@@ -60,12 +60,12 @@ namespace RHP.Repositories
 
         public T[] GetByIdWithIncludes(int[] ids)
         {
-            return _context.Set<T>().Where(entity => ids.Contains((entity as IBase)!.Id)).ToArray();
+            return _context.Set<T>().Where(entity => ids.Contains((entity as IBaseEntity)!.Id)).ToArray();
         }
 
         public async Task<T[]> GetByIdWithIncludesAsync(int[] ids)
         {
-            return await _context.Set<T>().Where(entity => ids.Contains((entity as IBase)!.Id)).ToArrayAsync();
+            return await _context.Set<T>().Where(entity => ids.Contains((entity as IBaseEntity)!.Id)).ToArrayAsync();
         }
 
         public bool Remove(int id)

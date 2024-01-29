@@ -1,6 +1,6 @@
 ﻿namespace RHP.Interfaces
 {
-    public interface IBase
+    public interface IBaseEntity
     {
         public int Id { get; }
     }

@@ -2,7 +2,7 @@
 
 namespace RHP.Interfaces
 {
-    public interface IGenericRepository<T> where T : class
+    public interface IBaseRepository<T> where T : class
     {
         IEnumerable<T> GetAll();
         Task<List<T>> GetAllAsync();
