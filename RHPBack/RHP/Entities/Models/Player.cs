@@ -12,9 +12,6 @@ namespace RHP.Entities.Models
         public required User User { get; set; }
         public Hall[]? Halls { get; set; }
 
-
         public override string? ToString() => Name;
     }
-
-
 }

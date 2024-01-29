@@ -8,9 +8,9 @@ public class PlayerProfile : Profile
         CreateMap<Player, PlayerDTO>()
             .ForMember(dest => dest.HallIds, opt => opt.MapFrom(src => src.Halls != null ? src.Halls.Select(h => h.Id).ToArray() : null));
         CreateMap<PlayerDTO, Player>();
-        CreateMap<UserCreateDTO, Player>()
+        CreateMap<UserPlayerDTO, Player>()
             .ForMember(des => des.Name, opt => opt.MapFrom(src => src.PlayerName != null ? src.PlayerName : null));
-        CreateMap<Player, UserCreateDTO>()
+        CreateMap<Player, UserPlayerDTO>()
             .ForMember(des => des.PlayerName, opt => opt.MapFrom(src => src.Name != null ? src.Name : null));
     }
 }

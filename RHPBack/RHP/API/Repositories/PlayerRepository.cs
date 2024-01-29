@@ -21,5 +21,13 @@ namespace RHP.API.Repositories
                 .FirstOrDefault(p => p.Name == name);
         }
 
+        public IEnumerable<Player> GetAllActive()
+        {
+            return _context.Player
+                .Include(p => p.Halls)
+                .Include(p => p.User)
+                .Where(p => p.User.active == true);
+        }
+
     }
 }

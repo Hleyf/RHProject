@@ -28,5 +28,4 @@ namespace RHP.Data
                 .HasForeignKey<Player>(p => p.Id);
         }
     }
-
 }

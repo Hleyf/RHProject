@@ -15,7 +15,7 @@ namespace RHP.API.Controllers
 
 
         [HttpPost]
-        public IActionResult CreatePlayerUser([FromBody] UserCreateDTO dto)
+        public IActionResult CreatePlayerUser([FromBody] UserPlayerDTO dto)
         {
             if (dto == null)
             {

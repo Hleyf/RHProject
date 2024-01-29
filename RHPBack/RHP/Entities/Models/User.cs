@@ -17,6 +17,8 @@ namespace RHP.Entities.Models
 
         public UserRole Role { get; set; } = UserRole.Player;
 
+        public bool active { get; set; } = true;
+
         public override string? ToString() => Email;
     }
 }

@@ -8,12 +8,14 @@ namespace RHP.API.Services
     {
         private readonly IMapper _mapper;
         private readonly PlayerRepository _playerRepository;
+        private readonly UserService _userService;
         private readonly HallRepository _hallRepository;
 
-        public PlayerService(IMapper mapper, PlayerRepository playerRepository, HallRepository hallRepository)
+        public PlayerService(IMapper mapper, PlayerRepository playerRepository, UserService userRepository, HallRepository hallRepository)
         {
             _mapper = mapper;
             _playerRepository = playerRepository;
+            _userService = userRepository;
             _hallRepository = hallRepository;
         }
 
@@ -24,9 +26,19 @@ namespace RHP.API.Services
             return _mapper.Map<PlayerDTO>(player);
         }
 
-        public void CreatePlayer(UserCreateDTO dto)
+        public IEnumerable<PlayerDTO> GetAllPlayers()
         {
-            Player player = _mapper.Map<Player>(dto);
+            IEnumerable<Player> players = _playerRepository.GetAll();
+
+            return _mapper.Map<IEnumerable<PlayerDTO>>(players);
+        }
+
+        public void CreatePlayer(UserPlayerDTO dto)
+        {
+
+            User savedUser = _userService.CreateUser(dto);
+
+            Player player = new Player { Name = dto.PlayerName, User = savedUser };
             player.User.Password = BCrypt.Net.BCrypt.HashPassword(dto.Password);
 
             _playerRepository.Add(player);
