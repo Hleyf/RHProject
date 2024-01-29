@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using RHP.Models;
 
 
 namespace RHP.Data
@@ -13,6 +14,13 @@ namespace RHP.Data
         public DbSet<Models.Roll> Roll { get; set; }
         public DbSet<Models.Player> Player { get; set; }
         public DbSet<Models.Hall> Hall { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Player>()
+                .HasIndex(p => p.Name)
+                .IsUnique();
+        }
     }
 
 }

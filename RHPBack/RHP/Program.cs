@@ -13,6 +13,9 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     )
 );
 
+// Add AuthenticationService to the DI container
+builder.Services.AddScoped<AuthenticationService>();
+
 //JWT Authentication
 using var hmac = new HMACSHA256();
 var key = hmac.Key;
@@ -50,7 +53,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseAuthentication(); // Add this line
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
