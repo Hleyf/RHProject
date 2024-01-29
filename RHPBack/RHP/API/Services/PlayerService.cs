@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using RHP.API.Repositories;
 using RHP.Entities.Models;
-using RHP.Entities.Models.DTOs;
-using System.Linq;
 
 namespace RHP.API.Services
 {
@@ -22,13 +20,14 @@ namespace RHP.API.Services
         public PlayerDTO GetPlayer(int id)
         {
             Player player = _playerRepository.GetById(id);
+
             return _mapper.Map<PlayerDTO>(player);
         }
 
         public void CreatePlayer(UserCreateDTO dto)
         {
             Player player = _mapper.Map<Player>(dto);
-            player.Password = BCrypt.Net.BCrypt.HashPassword(dto.Password);
+            player.User.Password = BCrypt.Net.BCrypt.HashPassword(dto.Password);
 
             _playerRepository.Add(player);
         }

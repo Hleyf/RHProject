@@ -1,6 +1,5 @@
 using Microsoft.IdentityModel.Tokens;
 using RHP.API.Repositories;
-using RHP.API.Services;
 using RHP.Entities.Models;
 using RHP.Entities.Models.DTOs;
 using System.IdentityModel.Tokens.Jwt;
@@ -12,7 +11,7 @@ public class AuthenticationService
     private readonly UserRepository _userRepository;
     private static readonly int KeySize = 32;
 
-    public AuthenticationService(PlayerService playerService, UserRepository userRepository)
+    public AuthenticationService(UserRepository userRepository)
     {
         _userRepository = userRepository;
     }

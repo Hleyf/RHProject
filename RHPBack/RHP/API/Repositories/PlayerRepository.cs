@@ -14,11 +14,11 @@ namespace RHP.API.Repositories
             _context = context;
         }
 
-        public Player? GetByUsername(string username)
+        public Player? GetByName(string name)
         {
             return _context.Player
                 .Include(p => p.Halls)
-                .FirstOrDefault(p => p.Name == username);
+                .FirstOrDefault(p => p.Name == name);
         }
 
     }

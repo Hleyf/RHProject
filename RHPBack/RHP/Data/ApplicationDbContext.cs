@@ -21,6 +21,11 @@ namespace RHP.Data
             modelBuilder.Entity<Player>()
                 .HasIndex(p => p.Name)
                 .IsUnique();
+
+            modelBuilder.Entity<Player>()
+                .HasOne(p => p.User)
+                .WithOne()
+                .HasForeignKey<Player>(p => p.Id);
         }
     }
 
