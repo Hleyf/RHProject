@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RHP.Data;
-using RHP.Models;
+using RHP.Entities.Models;
 
-namespace RHP.Repositories
+namespace RHP.API.Repositories
 {
     public class PlayerRepository : GenericRepository<Player>
     {
@@ -12,6 +12,13 @@ namespace RHP.Repositories
         public PlayerRepository(ApplicationDbContext context) : base(context)
         {
             _context = context;
+        }
+
+        public Player? GetByUsername(string username)
+        {
+            return _context.Player
+                .Include(p => p.Halls)
+                .FirstOrDefault(p => p.Name == username);
         }
 
     }

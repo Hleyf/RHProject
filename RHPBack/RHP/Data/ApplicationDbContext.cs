@@ -1,19 +1,20 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using RHP.Models;
-
+using RHP.Entities.Models;
 
 namespace RHP.Data
 {
-    public class ApplicationDbContext: DbContext
+    public class ApplicationDbContext : DbContext
     {
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-        {}
-        
+        { }
+
         //Models
-        public DbSet<Models.Dice> Users { get; set; }
-        public DbSet<Models.Roll> Roll { get; set; }
-        public DbSet<Models.Player> Player { get; set; }
-        public DbSet<Models.Hall> Hall { get; set; }
+        public DbSet<User> User { get; set; }
+        public DbSet<Player> Player { get; set; }
+        public DbSet<Hall> Hall { get; set; }
+        public DbSet<Roll> Roll { get; set; }
+        public DbSet<Dice> Dice { get; set; }
+        public DbSet<ActionLog> ActionLog { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

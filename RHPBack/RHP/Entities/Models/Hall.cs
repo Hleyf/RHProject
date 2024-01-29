@@ -1,7 +1,7 @@
-﻿using RHP.Interfaces;
+﻿using RHP.Entities.Interfaces;
 using System.ComponentModel.DataAnnotations;
 
-namespace RHP.Models
+namespace RHP.Entities.Models
 {
     public class Hall : IBaseEntity
     {
@@ -14,6 +14,6 @@ namespace RHP.Models
         public required Player[] Players { get; set; }
         public Roll[]? Rolls { get; set; }
         public override string? ToString() => Title;
-        
+
     }
 }

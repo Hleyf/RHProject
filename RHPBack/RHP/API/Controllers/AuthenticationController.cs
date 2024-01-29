@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using RHP.Models.DTOs;
+using RHP.Entities.Models.DTOs;
 
 [Route("api/[controller]")]
 [ApiController]

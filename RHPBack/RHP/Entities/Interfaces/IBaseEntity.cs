@@ -1,4 +1,4 @@
-﻿namespace RHP.Interfaces
+﻿namespace RHP.Entities.Interfaces
 {
     public interface IBaseEntity
     {

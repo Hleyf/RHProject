@@ -1,7 +1,7 @@
 ﻿using RHP.Data;
-using RHP.Models;
+using RHP.Entities.Models;
 
-namespace RHP.Repositories
+namespace RHP.API.Repositories
 {
     public class HallRepository : GenericRepository<Hall>
     {

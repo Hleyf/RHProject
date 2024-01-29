@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace RHP.Models
+namespace RHP.Entities.Models
 {
     public class Player : User
     {

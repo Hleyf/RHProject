@@ -1,6 +1,6 @@
 ﻿using System.Linq.Expressions;
 
-namespace RHP.Interfaces
+namespace RHP.Entities.Interfaces
 {
     public interface IBaseRepository<T> where T : class
     {

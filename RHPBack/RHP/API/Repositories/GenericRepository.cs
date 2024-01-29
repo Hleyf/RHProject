@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RHP.Data;
-using RHP.Interfaces;
+using RHP.Entities.Interfaces;
 using System.Linq.Expressions;
 
-namespace RHP.Repositories
+namespace RHP.API.Repositories
 {
 
-    public class GenericRepository<T> : IBaseRepository<T> where T : class 
+    public class GenericRepository<T> : IBaseRepository<T> where T : class
     {
         private readonly ApplicationDbContext _context;
         public GenericRepository(ApplicationDbContext context)
@@ -84,8 +84,8 @@ namespace RHP.Repositories
 
         public T Select(Expression<Func<T, bool>> predicate)
         {
-        var entity = _context.Set<T>().FirstOrDefault(predicate);
-        return entity == null ? throw new Exception("Entity not found") : entity;
+            var entity = _context.Set<T>().FirstOrDefault(predicate);
+            return entity == null ? throw new Exception("Entity not found") : entity;
         }
 
         public async Task<T> SelectAsync(Expression<Func<T, bool>> predicate)

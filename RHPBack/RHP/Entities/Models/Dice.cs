@@ -1,7 +1,7 @@
-﻿using RHP.Interfaces;
+﻿using RHP.Entities.Interfaces;
 using System.ComponentModel.DataAnnotations;
 
-namespace RHP.Models
+namespace RHP.Entities.Models
 {
     public enum DiceType
     {

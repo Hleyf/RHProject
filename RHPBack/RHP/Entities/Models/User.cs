@@ -1,6 +1,6 @@
-﻿using RHP.Interfaces;
+﻿using RHP.Entities.Interfaces;
 
-namespace RHP.Models
+namespace RHP.Entities.Models
 {
     public class User : IBaseEntity
     {

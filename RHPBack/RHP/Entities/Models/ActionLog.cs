@@ -1,6 +1,6 @@
-﻿using RHP.Interfaces;
+﻿using RHP.Entities.Interfaces;
 
-namespace RHP.Models.Logs
+namespace RHP.Entities.Models
 {
     public class ActionLog : IBaseEntity
     {
