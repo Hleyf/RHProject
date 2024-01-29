@@ -1,7 +1,7 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using RHP.Data;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.Security.Cryptography;
 
 var builder = WebApplication.CreateBuilder(args);
