@@ -1,18 +1,17 @@
-﻿using RHP.Interfaces;
+﻿using RHP.Entities.Interfaces;
 using System.ComponentModel.DataAnnotations;
 
-namespace RHP.Models
+namespace RHP.Entities.Models
 {
-    public class Player : IBase
+    public class Player : IBaseEntity
     {
         public int Id => PlayerId;
         [Key]
         public int PlayerId { get; set; }
         public required string Name { get; set; }
-        public bool IsGameMaster { get; set; } = false;
+        public required User User { get; set; }
+        public Hall[]? Halls { get; set; }
 
-        public Hall? Hall { get; set; }
         public override string? ToString() => Name;
-
     }
 }

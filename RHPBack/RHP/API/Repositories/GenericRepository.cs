@@ -1,12 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RHP.Data;
-using RHP.Interfaces;
+using RHP.Entities.Interfaces;
 using System.Linq.Expressions;
 
-namespace RHP.Repositories
+namespace RHP.API.Repositories
 {
 
-    public class GenericRepository<T> : IGenericRepository<T> where T : class 
+    public class GenericRepository<T> : IBaseRepository<T> where T : class
     {
         private readonly ApplicationDbContext _context;
         public GenericRepository(ApplicationDbContext context)
@@ -58,14 +58,14 @@ namespace RHP.Repositories
             }
         }
 
-        public T GetByIdWithIncludes(int id)
+        public T[] GetByIdWithIncludes(int[] ids)
         {
-            throw new NotImplementedException();
+            return _context.Set<T>().Where(entity => ids.Contains((entity as IBaseEntity)!.Id)).ToArray();
         }
 
-        public Task<T> GetByIdWithIncludesAsync(int id)
+        public async Task<T[]> GetByIdWithIncludesAsync(int[] ids)
         {
-            throw new NotImplementedException();
+            return await _context.Set<T>().Where(entity => ids.Contains((entity as IBaseEntity)!.Id)).ToArrayAsync();
         }
 
         public bool Remove(int id)
@@ -84,8 +84,8 @@ namespace RHP.Repositories
 
         public T Select(Expression<Func<T, bool>> predicate)
         {
-        var entity = _context.Set<T>().FirstOrDefault(predicate);
-        return entity == null ? throw new Exception("Entity not found") : entity;
+            var entity = _context.Set<T>().FirstOrDefault(predicate);
+            return entity == null ? throw new Exception("Entity not found") : entity;
         }
 
         public async Task<T> SelectAsync(Expression<Func<T, bool>> predicate)

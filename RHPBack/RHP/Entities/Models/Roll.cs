@@ -1,7 +1,7 @@
-﻿using RHP.Interfaces;
+﻿using RHP.Entities.Interfaces;
 using System.ComponentModel.DataAnnotations;
 
-namespace RHP.Models
+namespace RHP.Entities.Models
 {
 
     public enum RollStatus
@@ -11,7 +11,7 @@ namespace RHP.Models
         CriticalSuccess,
         CriticalFailure
     }
-    public class Roll : IBase
+    public class Roll : IBaseEntity
     {
         public int Id => RollId;
         [Key]
@@ -19,7 +19,18 @@ namespace RHP.Models
         public required HashSet<Dice> Dices { get; set; }
         public int Modifier { get; set; }
         public int Value { get; set; }
+        public required Player Player { get; set; }
+        public required Hall Hall { get; set; }
+
+        public DateTimeOffset RolledAt { get; }
 
         public RollStatus Status { get; set; }
+
+        public Roll()
+        {
+            RolledAt = DateTimeOffset.Now;
+        }
     }
+
+
 }
