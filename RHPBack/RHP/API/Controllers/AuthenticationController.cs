@@ -5,9 +5,9 @@ using RHP.Entities.Models.DTOs;
 [ApiController]
 public class AuthenticationController : ControllerBase
 {
-    private readonly AuthenticationService _authService;
+    private readonly IAuthenticationService _authService;
 
-    public AuthenticationController(AuthenticationService authService)
+    public AuthenticationController(IAuthenticationService authService)
     {
         _authService = authService;
     }
@@ -15,7 +15,7 @@ public class AuthenticationController : ControllerBase
     [HttpPost("login")]
     public IActionResult Login([FromBody] UserLoginDTO dto)
     {
-        var token = _authService.Authenticate(dto.Username, dto.Password);
+        var token = _authService.Login(dto);
 
         if (string.IsNullOrEmpty(token))
         {

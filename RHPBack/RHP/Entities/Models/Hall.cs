@@ -5,9 +5,8 @@ namespace RHP.Entities.Models
 {
     public class Hall : IBaseEntity
     {
-        public int Id => HallId;
         [Key]
-        public int HallId { get; set; }
+        public int Id { get; set; }
         public required string Title { get; set; }
         public string? Description { get; set; }
         public required Player GameMaster { get; set; }

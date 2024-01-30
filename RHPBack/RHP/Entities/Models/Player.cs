@@ -5,9 +5,8 @@ namespace RHP.Entities.Models
 {
     public class Player : IBaseEntity
     {
-        public int Id => PlayerId;
         [Key]
-        public int PlayerId { get; set; }
+        public int Id { get; set; }
         public required string Name { get; set; }
         public required User User { get; set; }
         public Hall[]? Halls { get; set; }

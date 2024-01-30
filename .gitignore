@@ -1,6 +1,7 @@
 # Ignore .NET build output directories
 bin/
 obj/
+
 RHPBack/bin/
 RHPBack/obj/
 RHPBack/.vs/
@@ -25,3 +26,4 @@ build/
 bld/
 [Bb]in/
 [Oo]bj/
+/.vs
