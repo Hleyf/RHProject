@@ -16,6 +16,8 @@ namespace RHP.Entities.Models
 
         public required string Password { get; set; }
 
+        public Player? Player { get; set; }
+
         public UserRole Role { get; set; } = UserRole.Player;
 
         public bool active { get; set; } = true;

@@ -15,14 +15,15 @@ public class AuthenticationController : ControllerBase
     [HttpPost("login")]
     public IActionResult Login([FromBody] UserLoginDTO dto)
     {
-        var token = _authService.Login(dto);
-
-        if (string.IsNullOrEmpty(token))
+        try
         {
-            return Unauthorized();
+            var token = _authService.Login(dto);
+            return Ok(token);
         }
-
-        return Ok(new { Token = token });
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
     [HttpPost("logout")]

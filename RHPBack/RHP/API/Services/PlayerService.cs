@@ -4,7 +4,16 @@ using RHP.Entities.Models;
 
 namespace RHP.API.Services
 {
-    public class PlayerService
+    public interface IPlayerService
+    {
+        void CreatePlayer(UserPlayerDTO dto);
+        PlayerDTO GetPlayer(int id);
+        IEnumerable<PlayerDTO> GetAllPlayers();
+        void UpdatePlayer(PlayerDTO playerDTO);
+        PlayerDTO GetPlayerById(int id);
+        PlayerDTO GetPlayerByName(string name);
+    }
+    public class PlayerService : IPlayerService
     {
         private readonly IMapper _mapper;
         private readonly PlayerRepository _playerRepository;
@@ -52,6 +61,25 @@ namespace RHP.API.Services
                 player.Halls = _hallRepository.GetByIdWithIncludes(playerDTO.HallIds);
             }
             _playerRepository.Update(player);
+        }
+
+        public PlayerDTO GetPlayerById(int id)
+        {
+            Player player = _playerRepository.GetById(id);
+
+            return _mapper.Map<PlayerDTO>(player);
+        }
+
+        public PlayerDTO GetPlayerByName(string name)
+        {
+            Player? player = _playerRepository.GetPlayerByName(name);
+
+            if (player == null)
+            {
+                throw new Exception("Player not found");
+            }
+
+            return _mapper.Map<PlayerDTO>(player);
         }
     }
 }

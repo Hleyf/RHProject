@@ -7,27 +7,26 @@ namespace RHP.API.Controllers
     [ApiController]
     public class PlayerController : ControllerBase
     {
-        PlayerService _playerService;
-        public PlayerController(PlayerService playerService)
+        private readonly IPlayerService _playerService;
+
+        public PlayerController(IPlayerService playerService)
         {
             _playerService = playerService;
         }
 
 
+
         [HttpPost]
         public IActionResult CreatePlayerUser([FromBody] UserPlayerDTO dto)
         {
-            if (dto == null)
-            {
-                return BadRequest();
-            }
-            else
+            try
             {
                 dto.Password = BCrypt.Net.BCrypt.HashPassword(dto.Password);
                 _playerService.CreatePlayer(dto);
                 return Ok();
-
-
+            }catch (Exception ex)
+            {
+                return BadRequest();
             }
         }
     }

@@ -1,6 +1,6 @@
 ﻿using RHP.Entities.Models;
 
-namespace RHP.API.Services
+namespace RHP.Entities.Models.DTOs
 {
     public class UserDTO
     {

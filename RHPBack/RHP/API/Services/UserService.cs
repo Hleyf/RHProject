@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using RHP.API.Repositories;
 using RHP.Entities.Models;
+using RHP.Entities.Models.DTOs;
 
 namespace RHP.API.Services
 {
@@ -25,10 +26,15 @@ namespace RHP.API.Services
 
         public User CreateUser(UserPlayerDTO dto)
         {
-            User user = _mapper.Map<User>(dto);
-            user.Password = BCrypt.Net.BCrypt.HashPassword(dto.Password);
-            _userRepository.Add(user);
-            return user;
+            try {
+                User user = _mapper.Map<User>(dto);
+                user.Password = BCrypt.Net.BCrypt.HashPassword(dto.Password);
+                _userRepository.Add(user);
+                return user;
+            } catch (Exception ex)
+            {
+                throw new Exception("Could not create user", ex);
+            }
         }
 
         public UserDTO CreateUserToDTO(UserPlayerDTO dto)
