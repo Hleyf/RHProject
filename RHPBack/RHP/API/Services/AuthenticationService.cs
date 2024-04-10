@@ -6,7 +6,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
 
-public class AuthenticationService
+public class AuthenticationService: IAuthenticationService
 {
     private readonly UserRepository _userRepository;
     private static readonly int KeySize = 32;
@@ -34,9 +34,26 @@ public class AuthenticationService
         return tokenHandler.WriteToken(token);
     }
 
-    public int CheckCredentials(UserLoginDTO dto)
+    //This MUST be removed in production
+    public string RefreshToken()
     {
-        User user = _userRepository.GetByUsername(dto.Email) ?? throw new Exception("Invalid username");
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var key = GenerateKey();
+
+        var tokenDescriptor = new SecurityTokenDescriptor
+        {
+            Subject = new ClaimsIdentity(new[] { new Claim("Test", "TestValue") }),
+            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+        };
+
+        var token = tokenHandler.CreateToken(tokenDescriptor);
+
+        return tokenHandler.WriteToken(token);
+    }
+
+    private int CheckCredentials(UserLoginDTO dto)
+    {
+        User user = _userRepository.GetUserByEmail(dto.Email) ?? throw new Exception("Invalid username");
         if (!BCrypt.Net.BCrypt.Verify(dto.Password, user.Password))
         {
             throw new Exception("Invalid password");

@@ -24,10 +24,16 @@ namespace RHP.API.Repositories
         public IEnumerable<Player> GetAllActive()
         {
             return _context.Player
-                .Include(p => p.Halls)
-                .Include(p => p.User)
-                .Where(p => p.User.active == true);
+               .Include(p => p.Halls)
+               .Include(p => p.User)
+               .Where(p => p.User.active == true);
         }
 
+        internal Player? GetPlayerByName(string name)
+        {
+            return _context.Player
+                .Include(p => p.Halls)
+                .FirstOrDefault(p => p.Name == name);
+        }
     }
 }

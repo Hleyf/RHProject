@@ -5,8 +5,12 @@ namespace RHP.Data
 {
     public class ApplicationDbContext : DbContext
     {
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         { }
+
+        public ApplicationDbContext()
+        {}
 
         //Models
         public DbSet<User> User { get; set; }
@@ -16,6 +20,7 @@ namespace RHP.Data
         public DbSet<Dice> Dice { get; set; }
         public DbSet<ActionLog> ActionLog { get; set; }
 
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Player>()
@@ -24,8 +29,15 @@ namespace RHP.Data
 
             modelBuilder.Entity<Player>()
                 .HasOne(p => p.User)
-                .WithOne()
-                .HasForeignKey<Player>(p => p.Id);
+                .WithOne(u => u.Player)
+                .HasForeignKey<Player>(p => p.UserId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Hall>()
+                .HasOne(h => h.GameMaster)
+                .WithMany(p => p.Halls)
+                .HasForeignKey(h => h.Id);
         }
     }
 }

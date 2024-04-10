@@ -12,7 +12,7 @@ namespace RHP.API.Repositories
             _context = context;
         }
 
-        public User? GetByUsername(string email)
+        public User? GetUserByEmail(string email)
         {
             return _context.User.FirstOrDefault(p => p.Email == email);
         }

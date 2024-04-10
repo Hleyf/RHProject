@@ -13,9 +13,8 @@ namespace RHP.Entities.Models
     }
     public class Roll : IBaseEntity
     {
-        public int Id => RollId;
         [Key]
-        public int RollId { get; set; }
+        public int Id { get; set; }
         public required HashSet<Dice> Dices { get; set; }
         public int Modifier { get; set; }
         public int Value { get; set; }

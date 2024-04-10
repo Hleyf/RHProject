@@ -2,7 +2,7 @@
 
 namespace RHP.Entities.Interfaces
 {
-    public interface IBaseRepository<T> where T : class
+    public interface IBaseRepository<T> where T : class, IBaseEntity
     {
         IEnumerable<T> GetAll();
         Task<List<T>> GetAllAsync();

@@ -1,4 +1,5 @@
 ﻿using RHP.Entities.Interfaces;
+using System.ComponentModel.DataAnnotations;
 
 namespace RHP.Entities.Models
 {
@@ -9,11 +10,13 @@ namespace RHP.Entities.Models
     }
     public class User : IBaseEntity
     {
-        public int Id => UserId;
-        public int UserId { get; set; }
+        [Key]
+        public int Id { get; set; }
         public required string Email { get; set; }
 
         public required string Password { get; set; }
+
+        public Player? Player { get; set; }
 
         public UserRole Role { get; set; } = UserRole.Player;
 

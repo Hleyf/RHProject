@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 namespace RHP.API.Repositories
 {
 
-    public class GenericRepository<T> : IBaseRepository<T> where T : class
+    public class GenericRepository<T> : IBaseRepository<T> where T : class, IBaseEntity
     {
         private readonly ApplicationDbContext _context;
         public GenericRepository(ApplicationDbContext context)

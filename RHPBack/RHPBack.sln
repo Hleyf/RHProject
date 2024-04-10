@@ -3,7 +3,14 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34408.163
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RHP", "RHP\RHP.csproj", "{9BAD4A24-5BAD-4FBC-95CF-04CFE24A15D9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RHP", "RHP\RHP.csproj", "{9BAD4A24-5BAD-4FBC-95CF-04CFE24A15D9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0320AE1A-9DE5-4203-BD32-A0741FE4EAA2}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RHP.Tests", "RHP.Tests\RHP.Tests.csproj", "{0026A0B8-7BA8-4C78-AA7A-AA160A6B5E86}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +22,10 @@ Global
 		{9BAD4A24-5BAD-4FBC-95CF-04CFE24A15D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9BAD4A24-5BAD-4FBC-95CF-04CFE24A15D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9BAD4A24-5BAD-4FBC-95CF-04CFE24A15D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0026A0B8-7BA8-4C78-AA7A-AA160A6B5E86}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0026A0B8-7BA8-4C78-AA7A-AA160A6B5E86}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0026A0B8-7BA8-4C78-AA7A-AA160A6B5E86}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0026A0B8-7BA8-4C78-AA7A-AA160A6B5E86}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
