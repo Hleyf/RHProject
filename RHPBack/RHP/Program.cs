@@ -1,9 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using RHP.API.Repositories;
 using RHP.Data;
-using RHP.Entities.Interfaces;
 using RHP.Entities.Models;
 using System.Data;
 using System.Reflection;
@@ -17,7 +15,6 @@ internal class Program
 
         builder.Services.AddAuthorization();
 
-
         //Database connection
         var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -28,20 +25,25 @@ internal class Program
         //Add all services to the DI container
         var assembly = Assembly.GetExecutingAssembly();
 
+
+        services.AddAutoMapper(typeof(Program).Assembly);
+        //services.AddScoped<AuthenticationService>();
         foreach (var type in assembly.GetTypes()
             .Where(t => t.Namespace == "RHP.API.Services")
             .Where(t => t.IsClass && !t.IsAbstract))
         {
-            foreach (var i in type.GetInterfaces())
-            {
-                services.AddScoped(i, type);
-            }
+            services.AddScoped(type);
         }
 
-        services.AddScoped<UserRepository>();
-        services.AddScoped(typeof(IBaseRepository<>), typeof(GenericRepository<>));
+        // Add all repositories to the DI container
+        //services.AddScoped<UserRepository>();
 
-
+        foreach (var type in assembly.GetTypes()
+                       .Where(t => t.Namespace == "RHP.API.Repositories")
+                                  .Where(t => t.IsClass && !t.IsAbstract))
+        {
+            services.AddScoped(type);
+        }
         // Add AuthenticationService to the DI container
         builder.Services.AddScoped<AuthenticationService>();
 

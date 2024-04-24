@@ -14,6 +14,11 @@ public class AuthenticationService: IAuthenticationService
     public AuthenticationService(UserRepository userRepository)
     {
         _userRepository = userRepository;
+
+        if (_userRepository == null)
+        {
+            throw new ArgumentNullException(nameof(userRepository));
+        }
     }
 
     public string Login(UserLoginDTO dto)

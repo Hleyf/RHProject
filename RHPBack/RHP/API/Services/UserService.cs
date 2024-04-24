@@ -4,8 +4,13 @@ using RHP.Entities.Models;
 using RHP.Entities.Models.DTOs;
 
 namespace RHP.API.Services
-{
-    public class UserService
+{ 
+    public interface IUserService
+    {
+        UserDTO GetUser(int id);
+        User CreateUser(UserPlayerDTO dto);
+    }
+    public class UserService: IUserService
     {
         private readonly UserRepository _userRepository;
         private readonly IMapper _mapper;
