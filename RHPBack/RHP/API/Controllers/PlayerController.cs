@@ -14,6 +14,18 @@ namespace RHP.API.Controllers
             _playerService = playerService;
         }
 
+        [HttpGet]
+        public IActionResult GetPlayers()
+        {
+            return Ok(_playerService.GetAllPlayers());
+        }
+
+        [HttpGet("{id}")]
+        public IActionResult GetPlayer(int id)
+        {
+            return Ok(_playerService.GetPlayer(id));
+        }
+
 
 
         [HttpPost]

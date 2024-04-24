@@ -32,7 +32,6 @@ public class AuthenticationController : ControllerBase
         return Ok(new { Message = "Logged out" });
     }
 
-
     [HttpGet("refresh-token")]
     public IActionResult RefreshToken()
     {

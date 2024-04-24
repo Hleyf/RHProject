@@ -13,7 +13,7 @@ namespace RHP.API.Repositories
         {
             _context = context;
         }
-
+         
         public Player? GetByName(string name)
         {
             return _context.Player

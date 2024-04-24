@@ -20,11 +20,11 @@ namespace RHP.API.Services
         private readonly UserService _userService;
         private readonly HallRepository _hallRepository;
 
-        public PlayerService(IMapper mapper, PlayerRepository playerRepository, UserService userRepository, HallRepository hallRepository)
+        public PlayerService(IMapper mapper, PlayerRepository playerRepository, UserService userService, HallRepository hallRepository)
         {
             _mapper = mapper;
             _playerRepository = playerRepository;
-            _userService = userRepository;
+            _userService = userService;
             _hallRepository = hallRepository;
         }
 
