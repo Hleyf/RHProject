@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using RHP.Entities.Models.DTOs;
 
-[Route("api/[controller]")]
+[Route("api/Auth")]
 [ApiController]
 public class AuthenticationController : ControllerBase
 {
