@@ -66,7 +66,6 @@ a + a {
 
 
 }
-
 .login {
     background-color: rgba(53, 44, 44, 0.1);
     color: #080710;
@@ -75,73 +74,3 @@ a + a {
     margin-top: 50px;
     width: 100%;
 }
-
-
-
-.social{
-    display: flex;
-    justify-content: center;
-    margin-top: 30px;
-}
-
-.btn-social {
-    width: 45%;
-    text-align: center;
-    font-weight: 700;
-    color: whitesmoke !important;
-}
-
-
-
-.go {
-    background-color: hsl(7, 71%, 55%); ;
-}
-
-.fb {
-    background-color: hsl(208, 92%, 53%);
-}
-
-.fa-google{
-    color: whitesmoke;
-}
-
-.fa-facebook{
-    color: whitesmoke;
-}
-
-.message-area{
-    position: relative;
-    margin: 20px 0;
-    min-height: 75px;
-}
-
-.message {
-    font-size: 14px;
-    font-style: italic;
-    font-weight: 200;
-    text-align: center;
-    width: 100%;
-}
-
-.footer{
-    position: absolute;
-    bottom: 10px;
-    left: -10px;
-    width: 100%;
-    text-align: right;
-    font-size: 14px;
-    cursor: pointer;
-}
-
-.footer a{
-    color: #080710;
-    font-weight: 200;
-    &:hover{
-        color: blue;
-        cursor: pointer;
-
-    }
-}
-
-
-

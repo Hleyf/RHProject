@@ -73,8 +73,21 @@ internal class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
+        //CORS Handling
+        builder.Services.AddCors(options =>
+        {
+            options.AddDefaultPolicy(
+                               builder =>
+                               {
+                                   builder.WithOrigins("http://localhost:4200")
+                                       .AllowAnyHeader()
+                                       .AllowAnyMethod();
+                               });
+        });
+
         var app = builder.Build();
 
+        
         //Database migration
         //Migrate and seed the database during startup
 
@@ -123,6 +136,9 @@ internal class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
+
+        app.UseCors();
+
 
         app.UseHttpsRedirection();
 

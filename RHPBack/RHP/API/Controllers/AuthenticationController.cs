@@ -5,9 +5,9 @@ using RHP.Entities.Models.DTOs;
 [ApiController]
 public class AuthenticationController : ControllerBase
 {
-    private readonly IAuthenticationService _authService;
+    private readonly AuthenticationService _authService;
 
-    public AuthenticationController(IAuthenticationService authService)
+    public AuthenticationController(AuthenticationService authService)
     {
         _authService = authService;
     }
