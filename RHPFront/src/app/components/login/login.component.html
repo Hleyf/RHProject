@@ -1,1 +1,34 @@
-<h1>login works!</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+        <h3>Login Here</h3>
+
+        <div class="message-area">
+            @if (errorMessage) {
+                <div class="alert alert-danger message">{{ errorMessage }}</div>
+            }
+
+        </div>
+        <label for="email">Email</label>
+        <input type="text" placeholder="Email or User Name" formControlName="email">
+
+        <label for="password">Password</label>
+        <input type="password" placeholder="Password" formControlName="password">
+        <button class="btn login" type="submit">Log In</button>
+        <div class="social">
+          <a href="#" class="btn btn-social go">Google</a>
+          <a href="#" class="btn btn-social fb">Facebook</a>
+        </div>
+        <div class="footer">
+            <a href="#">Forgot Password?</a>
+            <a routerLink="/new-user">Sign Up</a>
+        </div>
+    </form>
+</body>
+</html>
