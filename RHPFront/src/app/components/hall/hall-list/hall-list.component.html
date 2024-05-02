@@ -1,0 +1,27 @@
+<div>
+    <h1>Hall List</h1>
+    @if (entities().length > 0) {
+        <table class="table table-hover">
+            <thead>
+              <tr>
+                <th scope="col">title</th>
+                <th scope="col">description</th>
+                <th scope="col">noPlayers</th>
+              </tr>
+            </thead>
+            <tbody>
+            @for (entity of entities(); track $index) {
+                <tr (click)="openPreviewModal(entity.id)">
+                    <td>{{entity.title}}</td>
+                    <td>{{entity.description}}</td>
+                    <td>{{entity.players.length}}</td>
+                </tr>
+            }
+            </tbody>
+          </table>
+
+    }@else {
+        <div class="alert alert-warning" role="alert">
+            No data found
+        </div>}
+</div>
