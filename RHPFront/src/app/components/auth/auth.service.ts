@@ -30,13 +30,12 @@ export class AuthService {
     return this.http.post(API_URL + '/auth/login', credentials, {responseType: 'text'})
     .pipe(tap(res => {
       this.cookieService.set('token', res);
-      return 'success';
     }), catchError(err => {
         if(err.ok) {
             return throwError(() => new Error(err.error));
         }
         else {
-            return throwError(() => new Error('something went wrong'));
+          return throwError(() => new Error('Something went wrong during login'));
         }
     }));
 }
@@ -47,6 +46,6 @@ export class AuthService {
   }
   
   logout() {
-  this.cookieService.delete('token');  
+  this.cookieService.delete('token');
 }
 }

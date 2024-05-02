@@ -31,7 +31,7 @@ export class LoginComponent implements OnInit {
   onSubmit(): void {
   this.service.login(this.form.value).subscribe({
     next: (data) => {
-      if(data === "success") {
+      if(data) {
         this.router.navigate(['/home']);
       }
     },

@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using RHP.API.Services;
 using RHP.Data;
 using RHP.Entities.Models;
 using System.Data;
@@ -12,8 +13,6 @@ internal class Program
     private static async Task Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-
-        builder.Services.AddAuthorization();
 
         //Database connection
         var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -27,29 +26,52 @@ internal class Program
 
 
         services.AddAutoMapper(typeof(Program).Assembly);
-        //services.AddScoped<AuthenticationService>();
+        services.AddScoped<IAuthenticationService, AuthenticationService>();
+        services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IPlayerService, PlayerService>();
+        services.AddScoped<HallService>();
+
+        //foreach (var type in assembly.GetTypes()
+        //    .Where(t => t.Namespace == "RHP.API.Services")
+        //    .Where(t => t.IsClass))
+        //{
+        //    var interfaces = type.GetInterfaces();
+        //    if(!interfaces.Length.Equals(0))
+        //    {
+        //        foreach (var @interface in interfaces)
+        //        {
+        //            services.AddScoped(@interface, type);
+        //        }
+
+        //    }else
+        //    {
+        //        services.AddScoped(type);
+
+        //    }
+
+        //}
+
+        // Add all repositories to the DI container
+
         foreach (var type in assembly.GetTypes()
-            .Where(t => t.Namespace == "RHP.API.Services")
+            .Where(t => t.Namespace == "RHP.API.Repositories")
             .Where(t => t.IsClass && !t.IsAbstract))
         {
             services.AddScoped(type);
         }
 
-        // Add all repositories to the DI container
-        //services.AddScoped<UserRepository>();
-
         foreach (var type in assembly.GetTypes()
-                       .Where(t => t.Namespace == "RHP.API.Repositories")
-                                  .Where(t => t.IsClass && !t.IsAbstract))
+            .Where(t => t.Namespace == "RHP.Entities.Models.Mappers")
+            .Where(t => t.IsClass))
         {
-            services.AddScoped(type);
+            services.AddAutoMapper(type.Assembly);
         }
         // Add AuthenticationService to the DI container
         builder.Services.AddScoped<AuthenticationService>();
 
         //JWT Authentication
-        using var hmac = new HMACSHA256();
-        var key = hmac.Key;
+        string keyString = AuthenticationService.GenerateKey();
+        var key = Convert.FromBase64String(keyString);
 
         builder.Services.AddAuthentication(x =>
         {
@@ -68,26 +90,28 @@ internal class Program
                 ValidateAudience = false
             };
         });
+        builder.Services.AddAuthorization();
 
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+        builder.Services.AddHttpContextAccessor();
 
         //CORS Handling
         builder.Services.AddCors(options =>
         {
             options.AddDefaultPolicy(
-                               builder =>
-                               {
-                                   builder.WithOrigins("http://localhost:4200")
-                                       .AllowAnyHeader()
-                                       .AllowAnyMethod();
-                               });
+                builder =>
+                {
+                   builder.WithOrigins("http://localhost:4200")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+                });
         });
 
         var app = builder.Build();
 
-        
+
         //Database migration
         //Migrate and seed the database during startup
 
@@ -141,6 +165,8 @@ internal class Program
 
 
         app.UseHttpsRedirection();
+        app.UseStaticFiles();
+        app.UseRouting();
 
         app.UseAuthentication();
         app.UseAuthorization();

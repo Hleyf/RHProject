@@ -1,0 +1,28 @@
+<div class="navbar" [ngClass]="collapsed ? 'navbar-collapsed' : ''" >
+    <div class="logo-container">
+        <button class="logo" (click)="toggleCollapsed()"></button>
+        @if (collapsed) {
+            <div class="logo-text">{{title}}</div>
+            <a class=" btn-close" (click)="closeNavbar()">
+                <i class="fal fa-times close-icon"></i>
+            </a>    
+        }
+    </div>
+    <ul class="navbar-nav">
+    @for (data of navData; track $index) {
+        <li class="navbar-nav-item">
+            <a class="navbar-link" 
+            [routerLink]="[data.routeLink]"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{exact: true}"
+            >
+                <fa-icon class="navbar-nav-icon" [icon]="data.icon"></fa-icon>
+                @if (collapsed) {
+                    <span class="navbar-link-text">{{data.label}}</span>
+                }
+            </a>
+        </li>
+
+    }
+    </ul>
+</div>

@@ -5,9 +5,9 @@ using RHP.Entities.Models.DTOs;
 [ApiController]
 public class AuthenticationController : ControllerBase
 {
-    private readonly AuthenticationService _authService;
+    private readonly IAuthenticationService _authService;
 
-    public AuthenticationController(AuthenticationService authService)
+    public AuthenticationController(IAuthenticationService authService)
     {
         _authService = authService;
     }
@@ -32,11 +32,11 @@ public class AuthenticationController : ControllerBase
         return Ok(new { Message = "Logged out" });
     }
 
-    [HttpGet("refresh-token")]
-    public IActionResult RefreshToken()
-    {
-        var newToken = _authService.RefreshToken();
+    //[HttpGet("refresh-token")]
+    //public IActionResult RefreshToken()
+    //{
+    //    var newToken = _authService.RefreshToken();
 
-        return Ok(new { Token = newToken });
-    }
+    //    return Ok(new { Token = newToken });
+    //}
 }

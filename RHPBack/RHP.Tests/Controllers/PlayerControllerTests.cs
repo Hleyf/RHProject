@@ -32,7 +32,7 @@ namespace RHP.UnitTests
         {
             var dto = new UserPlayerDTO
             {
-                PlayerName = "Test Player",
+                Name = "Test Player",
                 Email = "testplayer@example.com",
                 Password = "TestPassword123"
             };
@@ -43,7 +43,7 @@ namespace RHP.UnitTests
                 .Callback<UserPlayerDTO>(inputDto => player = new Player
                 {
                     Id = 1,
-                    Name = inputDto.PlayerName,
+                    Name = inputDto.Name,
                     User = new User
                     {
                         Email = inputDto.Email,
@@ -65,7 +65,7 @@ namespace RHP.UnitTests
         {
             var dto = new UserPlayerDTO
             {
-                PlayerName = "Test Player",
+                Name = "Test Player",
                 Email = "testplayer@example.com",
                 Password = "TestPassword123"
             };

@@ -19,6 +19,21 @@ namespace RHP.Migrations
                 .HasAnnotation("ProductVersion", "8.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
+            modelBuilder.Entity("HallPlayer", b =>
+                {
+                    b.Property<int>("HallsId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PlayersId")
+                        .HasColumnType("int");
+
+                    b.HasKey("HallsId", "PlayersId");
+
+                    b.HasIndex("PlayersId");
+
+                    b.ToTable("HallPlayer");
+                });
+
             modelBuilder.Entity("RHP.Entities.Models.ActionLog", b =>
                 {
                     b.Property<int>("Id")
@@ -89,9 +104,6 @@ namespace RHP.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int?>("HallId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("varchar(255)");
@@ -100,8 +112,6 @@ namespace RHP.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("HallId");
 
                     b.HasIndex("Name")
                         .IsUnique();
@@ -167,6 +177,21 @@ namespace RHP.Migrations
                     b.ToTable("User");
                 });
 
+            modelBuilder.Entity("HallPlayer", b =>
+                {
+                    b.HasOne("RHP.Entities.Models.Hall", null)
+                        .WithMany()
+                        .HasForeignKey("HallsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("RHP.Entities.Models.Player", null)
+                        .WithMany()
+                        .HasForeignKey("PlayersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("RHP.Entities.Models.ActionLog", b =>
                 {
                     b.HasOne("RHP.Entities.Models.Hall", "Hall")
@@ -196,7 +221,7 @@ namespace RHP.Migrations
             modelBuilder.Entity("RHP.Entities.Models.Hall", b =>
                 {
                     b.HasOne("RHP.Entities.Models.Player", "GameMaster")
-                        .WithMany("Halls")
+                        .WithMany()
                         .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -206,10 +231,6 @@ namespace RHP.Migrations
 
             modelBuilder.Entity("RHP.Entities.Models.Player", b =>
                 {
-                    b.HasOne("RHP.Entities.Models.Hall", null)
-                        .WithMany("Players")
-                        .HasForeignKey("HallId");
-
                     b.HasOne("RHP.Entities.Models.User", "User")
                         .WithOne("Player")
                         .HasForeignKey("RHP.Entities.Models.Player", "UserId")
@@ -240,14 +261,7 @@ namespace RHP.Migrations
 
             modelBuilder.Entity("RHP.Entities.Models.Hall", b =>
                 {
-                    b.Navigation("Players");
-
                     b.Navigation("Rolls");
-                });
-
-            modelBuilder.Entity("RHP.Entities.Models.Player", b =>
-                {
-                    b.Navigation("Halls");
                 });
 
             modelBuilder.Entity("RHP.Entities.Models.Roll", b =>
