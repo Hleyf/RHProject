@@ -23,7 +23,6 @@ export class AppComponent {
   constructor(protected authService: AuthService, private router: Router) {
 
     if(this.authService.isLoggedIn()){
-      console.log('User is logged in');
       this.router.navigate(['/home']);
     }else{
       this.router.navigate(['/login']);
