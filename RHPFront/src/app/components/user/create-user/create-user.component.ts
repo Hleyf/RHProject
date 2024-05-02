@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { passwordValidator } from '../../../shared/password.validator';
+import { Router } from '@angular/router';
+import { PlayerService } from '../../../services/player.service';
+import { IPlayer } from '../../../models/player.model';
 
 @Component({
   selector: 'app-create-user',
@@ -10,7 +13,7 @@ import { passwordValidator } from '../../../shared/password.validator';
   templateUrl: './create-user.component.html',
   styleUrl: './create-user.component.css'
 })
-export class CreateUserComponent {
+export class CreateUserComponent implements OnInit {
 
   form = new FormGroup({
     name: new FormControl<string>('', [Validators.required]),
@@ -20,10 +23,34 @@ export class CreateUserComponent {
     passwordValidator
 );
 
-  constructor() {}
-
-  onSubmit(): void {
-    console.log(this.form.value);
+  constructor(private service: PlayerService, private router: Router) {}
+  ngOnInit(): void {
+    
   }
 
+  onSubmit(): void {
+    const player: IPlayer = this.validatePlayerForm();     
+
+      this.service.createUser(player).then((status) => {
+        if(status === 201) {
+          this.router.navigate(['/login']);
+        } else {
+          this.form.setErrors({
+            invalidLogin: true
+          });
+        }
+      });
+  }
+  
+
+  validatePlayerForm(): IPlayer {
+    if(this.form.valid) {
+      return {
+        name: this.form.controls.name.value!,
+        email: this.form.controls.email.value!,
+        password: this.form.controls.password.value!
+      }
+    }
+    throw new Error('Invalid form');
+  }
 }
