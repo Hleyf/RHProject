@@ -28,21 +28,25 @@ namespace RHP.API.Services
 
         public HallDTO GetHall(int id)
         {
-            //Player player = _playerService.GetPlayerByUserId(userId);
+            Player player = _authenticationService.getLoggedPlayer();
             Hall hall = _hallRepository.GetById(id);
-            _authenticationService.getLoggedPlayer();
 
-            //if(!hall.Players.Contains(player))
-            //{
-            //    throw new Exception("Player not allowed");
-            //}
+            if (!hall.Players.Contains(player))
+            {
+                return _mapper.Map<HallDTO>(hall);
 
-            return _mapper.Map<HallDTO>(hall);
+            } else
+            {
+                throw new Exception("Player not allowed");
+            }
+            
         }
 
         public IEnumerable<HallDTO> GetAllHalls()
         {
-            return  _hallRepository.GetAllDto();
+            IEnumerable<Hall> halls = _hallRepository.GetAllWithRelationships();
+            return _mapper.Map<IEnumerable<HallDTO>>(halls);
+
 
         }
 
@@ -57,5 +61,8 @@ namespace RHP.API.Services
         
             _hallRepository.Remove(id); 
         }
+
+
+
     }
 }

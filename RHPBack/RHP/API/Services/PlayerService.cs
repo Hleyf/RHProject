@@ -17,10 +17,10 @@ namespace RHP.API.Services
     {
         private readonly IMapper _mapper;
         private readonly PlayerRepository _playerRepository;
-        private readonly UserService _userService;
+        private readonly IUserService _userService;
         private readonly HallRepository _hallRepository;
 
-        public PlayerService(IMapper mapper, PlayerRepository playerRepository, UserService userService, HallRepository hallRepository)
+        public PlayerService(IMapper mapper, PlayerRepository playerRepository, IUserService userService, HallRepository hallRepository)
         {
             _mapper = mapper;
             _playerRepository = playerRepository;
@@ -82,7 +82,7 @@ namespace RHP.API.Services
             return _mapper.Map<PlayerDTO>(player);
         }
 
-        public Player GetPlayerByUserId(string userId)
+        public Player GetPlayerByUserId(int userId)
         {
             Player? player = _playerRepository.GetPlayerByUserId(userId);
             if (player == null)

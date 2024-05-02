@@ -36,11 +36,17 @@ namespace RHP.API.Repositories
                 .FirstOrDefault(p => p.Name.Equals(name));
         }
 
-        internal Player? GetPlayerByUserId(string userId)
+        internal Player GetPlayerByUserId(int userId)
         {
-            return _context.Player
+            Player? player = _context.Player
                 .Include(u => u.User)
-                .FirstOrDefault(u => u.Id.Equals(userId));
+                .FirstOrDefault(u => u.User.Id.Equals(userId));
+
+            if (player == null)
+            {
+                throw new Exception("Player not found");
+            }
+            return player;
         }
     }
 }

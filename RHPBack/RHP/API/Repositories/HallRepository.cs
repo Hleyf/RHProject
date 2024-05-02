@@ -1,4 +1,5 @@
-﻿using RHP.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using RHP.Data;
 using RHP.Entities.Models;
 using RHP.Entities.Models.DTOs;
 
@@ -14,17 +15,12 @@ namespace RHP.API.Repositories
             _context = context;
         }
 
-        public IEnumerable<HallDTO> GetAllDto()
-        {
-            return _context.Hall.Select(h => new HallDTO
-            {
-                Id = h.Id,
-                Title = h.Title,
-                Description = h.Description ?? string.Empty,
-                GameMasterId = h.GameMaster.Id,
-                NumberOfPlayers = h.Players.Count(),
-            });
 
+        public IEnumerable<Hall> GetAllWithRelationships()
+        {
+            return _context.Set<Hall>()
+                .Include(h => h.Players)
+                .ThenInclude(p => p.User);
         }
     }
 }

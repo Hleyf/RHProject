@@ -6,7 +6,7 @@
         public string Title { get; set; }
         public string Description { get; set; }
         public int GameMasterId { get; set; }
-        public int NumberOfPlayers { get; set; }
+        public IEnumerable<PlayerDTO> Players { get; set; }
 
     }
 }
