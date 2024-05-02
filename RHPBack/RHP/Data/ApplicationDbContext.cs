@@ -33,10 +33,14 @@ namespace RHP.Data
                 .HasForeignKey<Player>(p => p.UserId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
+             
+            modelBuilder.Entity<Player>()
+                .HasMany(p => p.Halls)
+                .WithMany(h => h.Players);
 
             modelBuilder.Entity<Hall>()
                 .HasOne(h => h.GameMaster)
-                .WithMany(p => p.Halls)
+                .WithMany()
                 .HasForeignKey(h => h.Id);
         }
     }

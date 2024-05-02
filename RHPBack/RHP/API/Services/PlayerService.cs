@@ -47,7 +47,7 @@ namespace RHP.API.Services
 
             User savedUser = _userService.CreateUser(dto);
 
-            Player player = new Player { Name = dto.PlayerName, User = savedUser };
+            Player player = new Player { Name = dto.Name, User = savedUser };
             player.User.Password = BCrypt.Net.BCrypt.HashPassword(dto.Password);
 
             _playerRepository.Add(player);
@@ -80,6 +80,16 @@ namespace RHP.API.Services
             }
 
             return _mapper.Map<PlayerDTO>(player);
+        }
+
+        public Player GetPlayerByUserId(string userId)
+        {
+            Player? player = _playerRepository.GetPlayerByUserId(userId);
+            if (player == null)
+            {
+                throw new Exception("Player not found");
+            }
+            return player;
         }
     }
 }

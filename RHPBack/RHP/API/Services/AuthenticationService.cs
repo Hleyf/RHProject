@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.BearerToken;
 using Microsoft.IdentityModel.Tokens;
 using RHP.API.Repositories;
 using RHP.Entities.Models;
@@ -5,13 +7,16 @@ using RHP.Entities.Models.DTOs;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
+using System.Text;
 
 public class AuthenticationService: IAuthenticationService
 {
     private readonly UserRepository _userRepository;
-    private static readonly int KeySize = 32;
+    private readonly PlayerRepository _playerRepository;
+    private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IConfiguration _config;
 
-    public AuthenticationService(UserRepository userRepository)
+    public AuthenticationService(UserRepository userRepository, IConfiguration config, IHttpContextAccessor httpContextAccessor, PlayerRepository playerRepository)
     {
         _userRepository = userRepository;
 
@@ -19,41 +24,55 @@ public class AuthenticationService: IAuthenticationService
         {
             throw new ArgumentNullException(nameof(userRepository));
         }
+
+        _playerRepository = playerRepository;
+        _config = config;
+        _httpContextAccessor = httpContextAccessor;
     }
 
     public string Login(UserLoginDTO dto)
     {
         int userId = CheckCredentials(dto);
 
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var key = GenerateKey();
+        var claims = new[]
+        {
+            new Claim(ClaimTypes.Name, userId.ToString()),
+            new Claim(ClaimTypes.Email, dto.Email)
+        };
 
+        //Generate token
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var key = Encoding.UTF8.GetBytes(_config["Jwt:Key"]);
         var tokenDescriptor = new SecurityTokenDescriptor
         {
-            Subject = new ClaimsIdentity(new[] { new Claim("Id", userId.ToString()) }),
+            Subject = new ClaimsIdentity(claims),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };
 
         var token = tokenHandler.CreateToken(tokenDescriptor);
 
         return tokenHandler.WriteToken(token);
+
     }
 
-    //This MUST be removed in production
-    public string RefreshToken()
+    public Player getLoggedPlayer()
     {
-        var tokenHandler = new JwtSecurityTokenHandler();
-        var key = GenerateKey();
+        var httpContext = _httpContextAccessor.HttpContext;
 
-        var tokenDescriptor = new SecurityTokenDescriptor
+        var claimsIdentity = httpContext.User.Identity as ClaimsIdentity;
+        if(claimsIdentity == null)
         {
-            Subject = new ClaimsIdentity(new[] { new Claim("Test", "TestValue") }),
-            SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-        };
+            throw new Exception("User not authenticated");
+        }
 
-        var token = tokenHandler.CreateToken(tokenDescriptor);
+        string userId = claimsIdentity.FindFirst(ClaimTypes.Name)?.Value;
+        if (userId == null)
+        {
+            throw new Exception("User not authenticated");
+        }
 
-        return tokenHandler.WriteToken(token);
+        return _playerRepository.GetPlayerByUserId(userId);
+
     }
 
     private int CheckCredentials(UserLoginDTO dto)
@@ -64,14 +83,6 @@ public class AuthenticationService: IAuthenticationService
             throw new Exception("Invalid password");
         }
         return user.Id;
-    }
-
-    private static byte[] GenerateKey()
-    {
-        using var randomNumberGenerator = RandomNumberGenerator.Create();
-        var randomNumber = new byte[KeySize];
-        randomNumberGenerator.GetBytes(randomNumber);
-        return randomNumber;
     }
 }
 

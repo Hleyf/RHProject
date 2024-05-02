@@ -18,7 +18,7 @@ namespace RHP.API.Repositories
         {
             return _context.Player
                 .Include(p => p.Halls)
-                .FirstOrDefault(p => p.Name == name);
+                .FirstOrDefault(p => p.Name.Equals(name));
         }
 
         public IEnumerable<Player> GetAllActive()
@@ -26,14 +26,21 @@ namespace RHP.API.Repositories
             return _context.Player
                .Include(p => p.Halls)
                .Include(p => p.User)
-               .Where(p => p.User.active == true);
+               .Where(p => p.User.active.Equals(true));
         }
 
         internal Player? GetPlayerByName(string name)
         {
             return _context.Player
                 .Include(p => p.Halls)
-                .FirstOrDefault(p => p.Name == name);
+                .FirstOrDefault(p => p.Name.Equals(name));
+        }
+
+        internal Player? GetPlayerByUserId(string userId)
+        {
+            return _context.Player
+                .Include(u => u.User)
+                .FirstOrDefault(u => u.Id.Equals(userId));
         }
     }
 }

@@ -39,8 +39,8 @@ internal class Program
         //services.AddScoped<UserRepository>();
 
         foreach (var type in assembly.GetTypes()
-                       .Where(t => t.Namespace == "RHP.API.Repositories")
-                                  .Where(t => t.IsClass && !t.IsAbstract))
+            .Where(t => t.Namespace == "RHP.API.Repositories")
+            .Where(t => t.IsClass && !t.IsAbstract))
         {
             services.AddScoped(type);
         }
@@ -72,22 +72,23 @@ internal class Program
         builder.Services.AddControllers();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+        builder.Services.AddHttpContextAccessor();
 
         //CORS Handling
         builder.Services.AddCors(options =>
         {
             options.AddDefaultPolicy(
-                               builder =>
-                               {
-                                   builder.WithOrigins("http://localhost:4200")
-                                       .AllowAnyHeader()
-                                       .AllowAnyMethod();
-                               });
+                builder =>
+                {
+                   builder.WithOrigins("http://localhost:4200")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod();
+                });
         });
 
         var app = builder.Build();
 
-        
+
         //Database migration
         //Migrate and seed the database during startup
 
