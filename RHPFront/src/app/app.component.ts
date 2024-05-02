@@ -1,11 +1,15 @@
 import { Component } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { AuthService } from './components/auth/auth.service';
+import { NavbarComponent } from './shared/components/navbar/navbar.component';
+import { INavToggle } from './models/sideNav.model';
+import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, NavbarComponent, CommonModule, HttpClientModule  ],
   providers: [
     AuthService,
   ],
@@ -13,9 +17,11 @@ import { AuthService } from './components/auth/auth.service';
   styleUrl: './app.component.css'
 })
 export class AppComponent {
+
   title = 'RHPFront';
   
-  constructor(private authService: AuthService, private router: Router) {
+  constructor(protected authService: AuthService, private router: Router) {
+
     if(this.authService.isLoggedIn()){
       console.log('User is logged in');
       this.router.navigate(['/home']);
@@ -23,4 +29,27 @@ export class AppComponent {
       this.router.navigate(['/login']);
     }
   }
+
+  screenWidth: number = 0;
+  isNavCollapsed: boolean = true;
+
+  isLooginOrUserCreate(){
+    const url = this.router.url;
+    return url === '/login' || url === '/user-create';
+  }
+
+  onToggleNav(data: INavToggle): void {
+   this.isNavCollapsed = data.collapsed;
+   this.screenWidth = data.screenWidth;
+  }
+
+  getContentClass(): string {
+  let style = '';
+  if(this.isNavCollapsed && this.screenWidth > 768){
+    style = 'content-collapsed-mobile';
+  }else if(this.isNavCollapsed && this.screenWidth <= 768){
+    style = 'content-collapsed';
+  }
+  return style;
+}
 }
