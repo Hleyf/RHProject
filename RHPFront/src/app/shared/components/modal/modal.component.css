@@ -1,7 +1,29 @@
 .modal {
-    display: none;
-  }
-  
-  .modal.show {
-    display: block;
-  }
+  display: none;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  pointer-events: none; /* Prevents interaction */
+}
+
+.modal.show {
+  display: block;
+  opacity: 1;
+  pointer-events: auto; /* Allows interaction */
+}
+
+.modal-overlay {
+  position: fixed; /* Fullscreen overlay */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+}
+
+.modal-dialog {
+  /* Center the dialog in the overlay */
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}

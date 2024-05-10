@@ -3,7 +3,7 @@ import { HallService } from '../../../services/hall.service';
 import { IHall } from '../../../models/hall.model';
 import { Router } from '@angular/router';
 import { ModalService } from '../../../services/modal.service';
-import { HallPreviewComponent } from '../modals/hall-preview/hall-preview.component';
+import { HallPreviewComponent, IHallPreview } from '../modals/hall-preview/hall-preview.component';
 
 @Component({
   selector: 'app-hall-list',
@@ -21,10 +21,11 @@ export class HallListComponent {
     private service: HallService, 
     private router: Router, 
     private modalService: ModalService,
-    private viewRef: ViewContainerRef
+    private viewContainerRef: ViewContainerRef
   )
     {
     this.service.getHalls();
+    this.modalService.setViewContainerRef(this.viewContainerRef);
     }
 
   goToHall(id: number) {
@@ -34,7 +35,16 @@ export class HallListComponent {
 
   openPreviewModal(id: number){
     const data = {id: id};
-    this.modalService.open(this.viewRef, HallPreviewComponent, data).onClose(data => {
+    this.modalService.open({
+      component:HallPreviewComponent, 
+      data: data,
+      options: {
+        width: '500px', 
+        height: '700px',
+        header: true,
+        title: 'Hall Preview'
+      }
+    }).onClose((result : IHallPreview) => {
     });
   }
    
