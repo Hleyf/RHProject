@@ -28,17 +28,9 @@ namespace RHP.API.Services
 
         public HallDTO GetHall(int id)
         {
-            Player player = _authenticationService.getLoggedPlayer();
-            Hall hall = _hallRepository.GetById(id);
+            Hall hall = _hallRepository.GetWithRelationships(id);
 
-            if (!hall.Players.Contains(player))
-            {
-                return _mapper.Map<HallDTO>(hall);
-
-            } else
-            {
-                throw new Exception("Player not allowed");
-            }
+            return _mapper.Map<HallDTO>(hall);
             
         }
 
