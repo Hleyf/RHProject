@@ -3,18 +3,20 @@ export interface IPlayer {
   id?: number;
   name: string;
   email: string;
-  password: string;
+  password?: string;
 }
 
 export class Player {
+  id?: number;
   name: string;
   email: string;
-  password: string;
+  password?: string;
  
-  constructor(user: any) {
-    this.name = user.name;
-    this.email = user.email;
-    this.password = user.password;
+  constructor(player: any) {
+    this.id = player.id;
+    this.name = player.name;
+    this.email = player.email;
+    this.password = player.password;
   }
 
 }

@@ -1,0 +1,148 @@
+.loader {
+    width: 24px;
+    height: 80px;
+    display: block;
+    top: 25%;
+    left: 50%;
+    border: 1px solid black;
+    border-radius: 0 0 50px 50px;
+    position: relative;
+    box-shadow: 0px 0px #8b68eb inset;
+    background-image: linear-gradient(#8b68eb 100px, transparent 0);
+    background-position: 0px 0px;
+    background-size: 22px 80px;
+    background-repeat: no-repeat;
+    box-sizing: border-box;
+    animation: animloader 6s linear infinite;
+  }
+  .loader::after {
+    content: '';  
+    box-sizing: border-box;
+    top: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    position: absolute;
+    border: 1px solid black;
+    border-radius: 50%;
+    width: 28px;
+    height: 6px;
+  }
+  .loader::before {
+    content: '';  
+    box-sizing: border-box;
+    left: 0;
+    bottom: -4px;
+    border-radius: 50%;
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    animation: animloader1 6s linear infinite;
+  }
+  
+  @keyframes animloader {
+    0% {
+      background-position: 0px 80px;
+    }
+    100% {
+      background-position: 0px 0px;
+    }
+  }
+  
+  @keyframes animloader1 {
+    0% {
+      box-shadow: 4px -10px rgba(255, 255, 255, 0), 6px 0px rgba(255, 255, 255, 0), 8px -15px rgba(255, 255, 255, 0), 12px 0px rgba(255, 255, 255, 0);
+    }
+    20% {
+      box-shadow: 4px -20px rgba(255, 255, 255, 0), 8px -10px rgba(255, 255, 255, 0), 10px -30px rgba(255, 255, 255, 0.5), 15px -5px rgba(255, 255, 255, 0);
+    }
+    40% {
+      box-shadow: 2px -40px rgba(255, 255, 255, 0.5), 8px -30px rgba(255, 255, 255, 0.4), 8px -60px rgba(255, 255, 255, 0.5), 12px -15px rgba(255, 255, 255, 0.5);
+    }
+    60% {
+      box-shadow: 4px -60px rgba(255, 255, 255, 0.5), 6px -50px rgba(255, 255, 255, 0.4), 10px -90px rgba(255, 255, 255, 0.5), 15px -25px rgba(255, 255, 255, 0.5);
+    }
+    80% {
+      box-shadow: 2px -80px rgba(255, 255, 255, 0.5), 4px -70px rgba(255, 255, 255, 0.4), 8px -120px rgba(255, 255, 255, 0), 12px -35px rgba(255, 255, 255, 0.5);
+    }
+    100% {
+      box-shadow: 4px -100px rgba(255, 255, 255, 0), 8px -90px rgba(255, 255, 255, 0), 10px -120px rgba(255, 255, 255, 0), 15px -45px rgba(255, 255, 255, 0);
+    }
+  }
+
+  /* Modal */
+  .view {
+    position: static;
+    width: 100%;
+    height: 100%;
+    padding: 1rem;
+
+  }
+
+  .grid-container {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 10% auto 20%;
+    gap: 1rem;
+  }
+
+  .hall-id{
+    color: #FF9670;
+    font-style: italic;
+    font-weight: 900;
+    letter-spacing: 0.3rem;
+  }
+
+  .title + h3 && .list + h3 {
+    font-weight: 700;
+  }
+
+  .description {
+    margin-bottom: 2rem;
+  }
+
+  .description p{
+    text-align: left;
+    font-weight: 300;
+  }
+
+.list h3 {
+  margin-bottom: 1rem;
+}
+.list ul {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+}
+
+  .list-content {
+    flex: 1 0 auto;
+  }
+
+  /* Just as a reference. This wil be replaced by Player's avatar*/
+  .avatar {
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    background-color: #00C2A5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    font-size: 60px;
+    font-weight: 900;
+  }
+
+
+  footer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .button {
+    width: 75%;
+  }
+
+
+
+  

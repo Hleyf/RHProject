@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { API_URL } from '../../shared/constants';
 import { Observable, catchError, tap, throwError } from 'rxjs'
 import { CookieService } from 'ngx-cookie-service';
+import { jwtDecode } from 'jwt-decode';
 
 export interface AuthResponse {
   token: string;
@@ -39,6 +40,15 @@ export class AuthService {
         }
     }));
 }
+
+  getLoggedInUser() : number {
+    const token = this.cookieService.get('token');
+    if (!token) {
+      throw new Error('No token found');
+    }
+    const decodeToken: any = jwtDecode(token); // Update the type of decodeToken to any
+    return decodeToken.unique_name;
+  }
 
   isLoggedIn() {
     const token = this.cookieService.get('token');

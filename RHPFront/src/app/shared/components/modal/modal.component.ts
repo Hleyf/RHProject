@@ -11,14 +11,14 @@ import { CommonModule } from '@angular/common';
     <div class="modal" [class.show]="show" tabindex="-1" (click)="destroy()">
       <div class="modal-overlay">
       <div class="modal-dialog" (click)="$event.stopPropagation()">          
-        <div class="modal-content" [style.width]="width" [style.height]="height">
+        <div class="modal-content" [style.width]="contentWidth" [style.height]="contentHeight">
           @if (header) {
-            <header class="modal-header">
+            <header class="modal-header" [style.height]="headerHeight">
               <h3 class="modal-title">{{title}}</h3>
               <button type="button" class="btn-close" (click)="destroy()"></button>
             </header>
           }
-            <section class="modal-body">
+            <section class="modal-body" [style.height]="bodyHeight">
               <ng-container #modalContainer></ng-container>
             </section>
           </div>
@@ -33,8 +33,12 @@ export class ModalComponent {
   @Output() onDestroy = new EventEmitter<any>();
 
   show: boolean = true;
-  width: string = 'auto';
-  height: string = 'auto';
+  contentWidth: string = 'auto';
+  contentHeight: string = 'auto';
+  headerWidth: string = 'auto';
+  headerHeight: string = 'auto';
+  bodyWidth: string = 'auto';
+  bodyHeight: string = 'auto';
   title: string = '';
   header: boolean = false;
 
@@ -71,19 +75,23 @@ export class ModalComponent {
     const { width, height, title, header } = options;
   
     if (width) {
-      this.width = width;
+      this.contentWidth = width;
     }
   
     if (height) {
-      this.height = height;
+      this.contentHeight = height;
     }
 
     if(header) {
       this.header = header;
-    }
+      this.headerHeight = '20%';
+      
       if (title) {
         this.title = title;
       }
+    }else {
+      this.bodyHeight = '100%';
+    }
   }
 }
 

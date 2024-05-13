@@ -1,6 +1,6 @@
 import { Component, Signal, ViewContainerRef, computed } from '@angular/core';
 import { HallService } from '../../../services/hall.service';
-import { IHall } from '../../../models/hall.model';
+import { Hall, IHall } from '../../../models/hall.model';
 import { Router } from '@angular/router';
 import { ModalService } from '../../../services/modal.service';
 import { HallPreviewComponent, IHallPreview } from '../modals/hall-preview/hall-preview.component';
@@ -14,8 +14,8 @@ import { HallPreviewComponent, IHallPreview } from '../modals/hall-preview/hall-
 })
 export class HallListComponent {
 
-  loading : Signal<boolean> = computed(() => {return this.service.hallsLoading()});
-  readonly entities: Signal<IHall[]> = computed(() => {return this.service.halls()});
+  loading : Signal<boolean> = computed(() => {return this.service.isHallsLoading()});
+  readonly entities: Signal<Hall[]> = computed(() => {return this.service.halls()});
 
   constructor(
     private service: HallService, 
@@ -41,8 +41,7 @@ export class HallListComponent {
       options: {
         width: '500px', 
         height: '700px',
-        header: true,
-        title: 'Hall Preview'
+        header: false
       }
     }).onClose((result : IHallPreview) => {
     });

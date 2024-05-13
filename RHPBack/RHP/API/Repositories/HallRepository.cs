@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RHP.Data;
 using RHP.Entities.Models;
-using RHP.Entities.Models.DTOs;
 
 namespace RHP.API.Repositories
 {
@@ -21,6 +20,21 @@ namespace RHP.API.Repositories
             return _context.Set<Hall>()
                 .Include(h => h.Players)
                 .ThenInclude(p => p.User);
+        }
+
+        public Hall GetWithRelationships(int id)
+        {
+            var hall = _context.Set<Hall>()
+                .Include(h => h.Players)
+                .ThenInclude(p => p.User)
+                .FirstOrDefault(h => h.Id == id);
+
+            if (hall == null)
+            {
+                throw new Exception($"No Hall found with ID {id}");
+            }
+
+            return hall;
         }
     }
 }

@@ -1,1 +1,33 @@
-<p>hall-preview works!</p>
+@if(isLoading){
+    <span class="loader"></span>
+}
+@else {
+    <div class="view grid-container">
+        <header>
+            <h2 class="hall-id">#{{hall()?.id}}</h2>
+        </header>
+        <main>
+            <section class="title">
+                <h3>{{hall()?.title}}</h3>
+            </section>
+            <section class="description">
+                <p>{{hall()?.description}}</p>
+            </section>
+            <section class="list">
+                <h3>Players</h3>
+                <ul>
+                    @for(player of hall()!.players; track $index){
+                        <li class="list-content"><div class="avatar" title="{{player.name}}">{{player.name.charAt(0)}}</div></li>
+                    }
+                </ul>
+            </section>
+        </main>
+        <footer>
+            @if (userInHall$ | async) {
+                <button class="btn btn-lg btn-primary button" (click)="joinHall()">Join Hall</button>
+            }@else {
+                <button (click)="requestJoinHall()">Request Join</button>
+            }
+        </footer>
+    </div>
+}

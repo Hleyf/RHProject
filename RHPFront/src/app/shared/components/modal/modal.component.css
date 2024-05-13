@@ -24,6 +24,15 @@
   /* Center the dialog in the overlay */
   position: absolute;
   top: 10%;
-  left: 50%;
+  left: 50%; 
   transform: translate(-50%, -50%);
+}
+
+.modal-header {
+  width: 100%;
+}
+
+.modal-body {
+  display: grid;
+  width: 100%;
 }
