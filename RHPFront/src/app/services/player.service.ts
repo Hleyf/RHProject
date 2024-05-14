@@ -1,13 +1,16 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { IPlayer } from '../models/player.model';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { API_URL } from '../shared/constants';
-import { firstValueFrom } from 'rxjs';
+import { catchError, firstValueFrom } from 'rxjs';
+import { IContact } from '../components/contacts/contact-list/contact-list.component';
 
 @Injectable({
   providedIn: 'root'
 })
 export class PlayerService {
+
+  contactList = signal<IContact[]>([]);
 
   constructor(private http: HttpClient) { }
 
@@ -55,4 +58,49 @@ export class PlayerService {
       );
   }
 
-}
+  getPlayerContacts() {
+    const request = this.http.get<IContact[]>(API_URL + '/player/contacts')
+    .pipe(catchError((error) => {
+      console.error(error);
+      return [];
+    }))
+    .subscribe((data: IContact[]) => {
+      this.contactList.set(data);
+    });
+  }
+
+  searchContacts(searchTerm: string) {
+    const request = this.http.get<IContact[]>(API_URL + '/player/contacts/search/' + searchTerm)
+    .pipe(catchError((error) => {
+      console.error(error);
+      return [];
+    }))
+    .subscribe((data: IContact[]) => {
+      this.contactList.set(data);
+    });
+  }
+
+  requestContact(id: number) {
+    const request = this.http.post(API_URL + '/player/contacts/request/' + id, {}).subscribe({
+      next: response => {
+        console.log(response);
+        return response;
+      },
+      error: err => {
+        console.error(err);
+      }
+    });
+  }
+    deleteContact(id: number) {
+      const request = this.http.delete(API_URL + '/player/contacts/' + id).subscribe({
+        next: response => {
+          console.log(response);
+          return response;
+        },
+        error: err => {
+          console.error(err);
+        }
+      });
+    }
+  }
+

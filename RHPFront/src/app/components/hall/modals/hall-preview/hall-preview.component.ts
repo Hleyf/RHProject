@@ -24,7 +24,7 @@ export interface IHallPreview {
 export class HallPreviewComponent implements OnInit{
 
   isLoading: boolean = true;
-  readonly hall : Signal<Hall | null> = computed(() => this.hallService.selectedHall());
+  readonly hall : Signal<Hall | null> = this.hallService.selectedHall;
   loggedInUserId: number ;
   userInHall$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
 
