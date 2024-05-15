@@ -27,9 +27,9 @@ namespace RHP.UnitTests
         private void SetupTestData()
         {
             _context.Player.AddRange(
-                new Player { Name = "Player1", User = new User { Email = "test1@mail.com", Password = "password", active = true } },
-                new Player { Name = "Player2", User = new User { Email = "test2@mail.com", Password = "password", active = true } },
-                new Player { Name = "Player3", User = new User { Email = "test3@mail.com", Password = "password", active = true } }
+                new Player { name = "Player1", user = new User { email = "test1@mail.com", password = "password", active = true } },
+                new Player { name = "Player2", user = new User { email = "test2@mail.com", password = "password", active = true } },
+                new Player { name = "Player3", user = new User { email = "test3@mail.com", password = "password", active = true } }
             );
             _context.SaveChanges();
         }
@@ -37,7 +37,7 @@ namespace RHP.UnitTests
         [Fact]
         public void Add_PlayerIsNotNull_AddsPlayerToContext()
         {
-            var player = new Player { Name = "Player4", User = new User { Email = "test4@mail.com", Password = "password", active = true } };
+            var player = new Player { name = "Player4", user = new User { email = "test4@mail.com", password = "password", active = true } };
 
             _playerRepo.Add(player);
             _context.SaveChanges();
@@ -59,14 +59,14 @@ namespace RHP.UnitTests
             var player = _playerRepo.GetById(1);
 
             Assert.NotNull(player);
-            Assert.Equal(1, player.Id);
+            Assert.Equal(1, player.id);
         }
 
         [Fact]
         public void Remove_ValidId_RemovesPlayer()
         {
             var player = _playerRepo.GetById(1);
-            _playerRepo.Remove(player.Id);
+            _playerRepo.Remove(player.id);
             _context.SaveChanges();
 
             Assert.DoesNotContain(player, _context.Player);
@@ -75,30 +75,30 @@ namespace RHP.UnitTests
         [Fact]
         public void Update_PlayerExists_UpdatesPlayer()
         {
-            var player = _context.Player.First(p => p.Id == 1);
-            player.Name = "Player10";
+            var player = _context.Player.First(p => p.id == 1);
+            player.name = "Player10";
             _playerRepo.Update(player);
             _context.SaveChanges();
 
-            Assert.Equal("Player10", _context.Player.First(p => p.Id == 1).Name);
+            Assert.Equal("Player10", _context.Player.First(p => p.id == 1).name);
         }
 
         [Fact]
         public void Select_ValidPredicate_ReturnsPlayer()
         {
-            var player = _playerRepo.Select(p => p.Id == 1);
+            var player = _playerRepo.Select(p => p.id == 1);
 
             Assert.NotNull(player);
-            Assert.Equal(1, player.Id);
+            Assert.Equal(1, player.id);
         }
 
         [Fact]
         public async Task SelectAsync_ValidPredicate_ReturnsPlayer()
         {
-            var player = await _playerRepo.SelectAsync(p => p.Id == 1);
+            var player = await _playerRepo.SelectAsync(p => p.id == 1);
 
             Assert.NotNull(player);
-            Assert.Equal(1, player.Id);
+            Assert.Equal(1, player.id);
         }
 
         [Fact]
@@ -123,7 +123,7 @@ namespace RHP.UnitTests
             var player = _playerRepo.GetByName("Player1");
 
             Assert.NotNull(player);
-            Assert.Equal("Player1", player.Name);
+            Assert.Equal("Player1", player.name);
         }
 
         [Fact]

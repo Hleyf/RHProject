@@ -12,15 +12,15 @@ namespace RHP.Migrations
         {
             migrationBuilder.DropForeignKey(
                 name: "FK_Player_Hall_HallId",
-                table: "Player");
+                table: "player");
 
             migrationBuilder.DropIndex(
                 name: "IX_Player_HallId",
-                table: "Player");
+                table: "player");
 
             migrationBuilder.DropColumn(
                 name: "HallId",
-                table: "Player");
+                table: "player");
 
             migrationBuilder.CreateTable(
                 name: "HallPlayer",
@@ -35,14 +35,14 @@ namespace RHP.Migrations
                     table.ForeignKey(
                         name: "FK_HallPlayer_Hall_HallsId",
                         column: x => x.HallsId,
-                        principalTable: "Hall",
-                        principalColumn: "Id",
+                        principalTable: "hall",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_HallPlayer_Player_PlayersId",
                         column: x => x.PlayersId,
-                        principalTable: "Player",
-                        principalColumn: "Id",
+                        principalTable: "player",
+                        principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
@@ -61,21 +61,21 @@ namespace RHP.Migrations
 
             migrationBuilder.AddColumn<int>(
                 name: "HallId",
-                table: "Player",
+                table: "player",
                 type: "int",
                 nullable: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Player_HallId",
-                table: "Player",
+                table: "player",
                 column: "HallId");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Player_Hall_HallId",
-                table: "Player",
+                table: "player",
                 column: "HallId",
-                principalTable: "Hall",
-                principalColumn: "Id");
+                principalTable: "hall",
+                principalColumn: "id");
         }
     }
 }

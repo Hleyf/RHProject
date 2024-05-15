@@ -6,15 +6,15 @@ namespace RHP.Entities.Models
     public class ActionLog : IBaseEntity
     {
         [Key]
-        public int Id { get; set; }
-        public required Player Player { get; set; }
-        public required Hall Hall { get; set; }
-        public required string Action { get; set; }
-        public DateTimeOffset CreatedAt { get; }
+        public int id { get; set; }
+        public required Player player { get; set; }
+        public required Hall hall { get; set; }
+        public required string action { get; set; }
+        public DateTimeOffset createdAt { get; }
 
         public ActionLog()
         {
-            CreatedAt = DateTimeOffset.Now;
+            createdAt = DateTimeOffset.Now;
         }
     }
 }

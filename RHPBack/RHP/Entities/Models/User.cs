@@ -11,17 +11,19 @@ namespace RHP.Entities.Models
     public class User : IBaseEntity
     {
         [Key]
-        public int Id { get; set; }
-        public required string Email { get; set; }
+        public int id { get; set; }
+        public required string email { get; set; }
 
-        public required string Password { get; set; }
+        public required string password { get; set; }
 
-        public Player? Player { get; set; }
+        public Player? player { get; set; }
 
-        public UserRole Role { get; set; } = UserRole.Player;
+        public UserRole role { get; set; } = UserRole.Player;
 
-        public bool active { get; set; } = true;
+        public List<User> contacts { get; set; } = []; 
 
-        public override string? ToString() => Email;
+        public bool active { get; set; } = true; //TODO: Must be set false once email autentication is implemented
+
+        public override string? ToString() => email;
     }
 }

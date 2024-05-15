@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RHP.API.Services;
-using RHP.Entities.Models;
 using RHP.Entities.Models.DTOs;
-using System.Security.Claims;
 
 namespace RHP.API.Controllers
 {
@@ -11,12 +9,10 @@ namespace RHP.API.Controllers
     public class HallController : ControllerBase
     {
         private readonly HallService _hallService;
-        private readonly AuthenticationService _authenticationService;
 
-        public HallController(HallService hallService, AuthenticationService authenticationService )
+        public HallController(HallService hallService )
         {
             _hallService = hallService;
-            _authenticationService = authenticationService;
         }
 
         [HttpGet]

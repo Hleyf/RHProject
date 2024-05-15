@@ -1,27 +1,42 @@
-using Xunit;
-using Moq;
 using RHP.API.Controllers;
-using RHP.API.Services;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
+using RHP.Tests.Setup;
+using Microsoft.Extensions.DependencyInjection;
 using RHP.Entities.Models;
 
 namespace RHP.UnitTests
 {
-    public class PlayerControllerTests
+    public class PlayerControllerTests : IClassFixture<TestSetup>
     {
-        private readonly Mock<IPlayerService> _mockPlayerService;
         private readonly PlayerController _controller;
+        private readonly Data.ApplicationDbContext _context;
 
-        public PlayerControllerTests()
+        public PlayerControllerTests(TestSetup setup)
         {
-            _mockPlayerService = new Mock<IPlayerService>();
-            _controller = new PlayerController(_mockPlayerService.Object);
+            _controller = setup.ServiceProvider.GetRequiredService<PlayerController>();
+            _context = setup.ServiceProvider.GetRequiredService<Data.ApplicationDbContext>();
+        }
+
+        private void AddTestPlayerToDatabase()
+        {
+            var passwordHash = BCrypt.Net.BCrypt.HashPassword("password");
+            User user = new User
+            {
+                email = "test@email.com",
+                password = passwordHash
+            };
+            _context.Player.Add(new Player
+            {
+                name = "Test player",
+                user = user
+            });
         }
 
         [Fact]
         public void CreatePlayerUser_ReturnsBadRequest_WhenDtoIsNull()
         {
+            AddTestPlayerToDatabase();
+
             var result = _controller.CreatePlayerUser(null);
 
             Assert.IsType<BadRequestResult>(result);
@@ -32,24 +47,10 @@ namespace RHP.UnitTests
         {
             var dto = new UserPlayerDTO
             {
-                Name = "Test Player",
-                Email = "testplayer@example.com",
-                Password = "TestPassword123"
+                name = "Test player",
+                email = "testplayer@example.com",
+                password = "TestPassword123"
             };
-
-            Player player = null;
-
-            _mockPlayerService.Setup(service => service.CreatePlayer(dto))
-                .Callback<UserPlayerDTO>(inputDto => player = new Player
-                {
-                    Id = 1,
-                    Name = inputDto.Name,
-                    User = new User
-                    {
-                        Email = inputDto.Email,
-                        Password = inputDto.Password
-                    }
-                });
 
             var result = _controller.CreatePlayerUser(dto);
 
@@ -65,13 +66,10 @@ namespace RHP.UnitTests
         {
             var dto = new UserPlayerDTO
             {
-                Name = "Test Player",
-                Email = "testplayer@example.com",
-                Password = "TestPassword123"
+                name = "",
+                email = "",
+                password = ""
             };
-
-            _mockPlayerService.Setup(service => service.CreatePlayer(dto))
-                .Throws(new InvalidOperationException("Test exception"));
 
             var result = _controller.CreatePlayerUser(dto);
 

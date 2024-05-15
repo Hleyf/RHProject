@@ -1,8 +1,8 @@
 public class PlayerDTO
 {
-    public int Id { get; set; }
-    public int UserId { get; set; }
-    public required string Name { get; set; }
-    public int[]? HallIds { get; set; }
-    public required string Email { get; set; }
+    public int id { get; set; }
+    public int userId { get; set; }
+    public required string name { get; set; }
+    public int[]? hallIds { get; set; }
+    public required string email { get; set; }
 }

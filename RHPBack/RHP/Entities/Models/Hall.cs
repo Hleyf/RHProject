@@ -6,19 +6,19 @@ namespace RHP.Entities.Models
     public class Hall : IBaseEntity
     {
         [Key]
-        public int Id { get; set; }
-        public required string Title { get; set; }
-        public string? Description { get; set; }
-        public required Player GameMaster { get; set; }
-        public ICollection<Player> Players { get; set; }
-        public ICollection<Roll> Rolls { get; set; }
+        public int id { get; set; }
+        public required string title { get; set; }
+        public string? description { get; set; }
+        public required Player gameMaster { get; set; }
+        public ICollection<Player> players { get; set; }
+        public List<Roll> rolls { get; set; }
 
         public Hall()
         {
-            Players = new List<Player>();
-            Rolls = new List<Roll>();
+            players = [];
+            rolls = new List<Roll>();
         }
 
-        public override string? ToString() => Title;
+        public override string? ToString() => title;
     }
 }

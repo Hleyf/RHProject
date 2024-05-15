@@ -1,26 +1,17 @@
 ﻿using AutoMapper;
 using RHP.API.Repositories;
 using RHP.Entities.Models;
-
+using RHP.Entities.Models.DTOs;
 namespace RHP.API.Services
 {
-    public interface IPlayerService
-    {
-        void CreatePlayer(UserPlayerDTO dto);
-        PlayerDTO GetPlayer(int id);
-        IEnumerable<PlayerDTO> GetAllPlayers();
-        void UpdatePlayer(PlayerDTO playerDTO);
-        PlayerDTO GetPlayerById(int id);
-        PlayerDTO GetPlayerByName(string name);
-    }
-    public class PlayerService : IPlayerService
+    public class PlayerService
     {
         private readonly IMapper _mapper;
         private readonly PlayerRepository _playerRepository;
-        private readonly IUserService _userService;
+        private readonly UserService _userService;
         private readonly HallRepository _hallRepository;
 
-        public PlayerService(IMapper mapper, PlayerRepository playerRepository, IUserService userService, HallRepository hallRepository)
+        public PlayerService(IMapper mapper, PlayerRepository playerRepository, UserService userService, HallRepository hallRepository)
         {
             _mapper = mapper;
             _playerRepository = playerRepository;
@@ -44,11 +35,11 @@ namespace RHP.API.Services
 
         public void CreatePlayer(UserPlayerDTO dto)
         {
+            UserLoginDTO userDTO = new UserLoginDTO { email = dto.email, password = dto.password  };
+            User savedUser = _userService.CreateUser(userDTO);
 
-            User savedUser = _userService.CreateUser(dto);
-
-            Player player = new Player { Name = dto.Name, User = savedUser };
-            player.User.Password = BCrypt.Net.BCrypt.HashPassword(dto.Password);
+            Player player = new Player { name = dto.name, user = savedUser };
+            player.user.password = BCrypt.Net.BCrypt.HashPassword(dto.password);
 
             _playerRepository.Add(player);
         }
@@ -56,9 +47,9 @@ namespace RHP.API.Services
         public void UpdatePlayer(PlayerDTO playerDTO)
         {
             Player player = _mapper.Map<Player>(playerDTO);
-            if (playerDTO.HallIds != null && playerDTO.HallIds.Any())
+            if (playerDTO.hallIds != null && playerDTO.hallIds.Any())
             {
-                player.Halls = _hallRepository.GetByIdWithIncludes(playerDTO.HallIds);
+                player.halls = _hallRepository.GetByIdWithIncludes(playerDTO.hallIds);
             }
             _playerRepository.Update(player);
         }
@@ -76,7 +67,7 @@ namespace RHP.API.Services
 
             if (player == null)
             {
-                throw new Exception("Player not found");
+                throw new Exception("player not found");
             }
 
             return _mapper.Map<PlayerDTO>(player);
@@ -87,7 +78,7 @@ namespace RHP.API.Services
             Player? player = _playerRepository.GetPlayerByUserId(userId);
             if (player == null)
             {
-                throw new Exception("Player not found");
+                throw new Exception("player not found");
             }
             return player;
         }

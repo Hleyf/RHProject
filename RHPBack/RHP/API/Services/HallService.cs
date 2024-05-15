@@ -9,14 +9,12 @@ namespace RHP.API.Services
     {
         private readonly HallRepository _hallRepository;
         private readonly IMapper _mapper;
-        private readonly AuthenticationService _authenticationService;
 
 
         public HallService(IMapper mapper, HallRepository hallRepository, AuthenticationService authenticationService)
         {
             _hallRepository = hallRepository;
             _mapper = mapper;
-            _authenticationService = authenticationService;
         }
 
         public void CreateHall(HallDTO dto)

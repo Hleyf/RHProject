@@ -14,7 +14,7 @@ namespace RHP.API.Repositories
 
         public User? GetUserByEmail(string email)
         {
-            return _context.User.FirstOrDefault(p => p.Email == email);
+            return _context.User.FirstOrDefault(p => p.email == email);
         }
     }
 }

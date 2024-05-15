@@ -7,9 +7,9 @@ namespace RHP.API.Controllers
     [ApiController]
     public class PlayerController : ControllerBase
     {
-        private readonly IPlayerService _playerService;
+        private readonly PlayerService _playerService;
 
-        public PlayerController(IPlayerService playerService)
+        public PlayerController(PlayerService playerService)
         {
             _playerService = playerService;
         }
@@ -31,9 +31,14 @@ namespace RHP.API.Controllers
         [HttpPost]
         public IActionResult CreatePlayerUser([FromBody] UserPlayerDTO dto)
         {
+            if (string.IsNullOrEmpty(dto.name) || string.IsNullOrEmpty(dto.email) || string.IsNullOrEmpty(dto.password))
+            {
+                return BadRequest();
+            }
+
             try
             {
-                dto.Password = BCrypt.Net.BCrypt.HashPassword(dto.Password);
+                
                 _playerService.CreatePlayer(dto);
                 return Ok();
             }catch (Exception ex)

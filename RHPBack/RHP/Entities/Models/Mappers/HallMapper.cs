@@ -9,11 +9,11 @@ namespace RHP.Entities.Models.Mappers
         public HallMapper()
         {
             CreateMap<Hall, HallDTO>()
-                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
-                .ForMember(dest => dest.Title, opt => opt.MapFrom(src => src.Title))
-                .ForMember(dest => dest.Description, opt => opt.MapFrom(src => src.Description))
-                .ForMember(dest => dest.GameMasterId, opt => opt.MapFrom(src => src.GameMaster.Id))
-                .ForMember(dest => dest.Players, opt => opt.MapFrom(src => src.Players));
+                .ForMember(dest => dest.id, opt => opt.MapFrom(src => src.id))
+                .ForMember(dest => dest.title, opt => opt.MapFrom(src => src.title))
+                .ForMember(dest => dest.description, opt => opt.MapFrom(src => src.description))
+                .ForMember(dest => dest.gameMasterId, opt => opt.MapFrom(src => src.gameMaster.id))
+                .ForMember(dest => dest.players, opt => opt.MapFrom(src => src.players));
         }
     }
 }

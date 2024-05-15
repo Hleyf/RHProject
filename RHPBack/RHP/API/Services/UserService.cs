@@ -2,15 +2,11 @@
 using RHP.API.Repositories;
 using RHP.Entities.Models;
 using RHP.Entities.Models.DTOs;
+using System.ComponentModel.DataAnnotations;
 
 namespace RHP.API.Services
 { 
-    public interface IUserService
-    {
-        UserDTO GetUser(int id);
-        User CreateUser(UserPlayerDTO dto);
-    }
-    public class UserService: IUserService
+    public class UserService
     {
         private readonly UserRepository _userRepository;
         private readonly IMapper _mapper;
@@ -29,11 +25,17 @@ namespace RHP.API.Services
             return _mapper.Map<UserDTO>(user);
         }
 
-        public User CreateUser(UserPlayerDTO dto)
+        public User CreateUser(UserLoginDTO dto)
         {
             try {
-                User user = _mapper.Map<User>(dto);
-                user.Password = BCrypt.Net.BCrypt.HashPassword(dto.Password);
+                User user = new User
+                    {
+                    email = dto.email,
+                    password = BCrypt.Net.BCrypt.HashPassword(dto.password),
+                    role = UserRole.Player
+
+                };
+
                 _userRepository.Add(user);
                 return user;
             } catch (Exception ex)
@@ -45,7 +47,7 @@ namespace RHP.API.Services
         public UserDTO CreateUserToDTO(UserPlayerDTO dto)
         {
             User user = _mapper.Map<User>(dto);
-            user.Password = BCrypt.Net.BCrypt.HashPassword(dto.Password);
+            user.password = BCrypt.Net.BCrypt.HashPassword(dto.password);
             _userRepository.Add(user);
             return _mapper.Map<UserDTO>(user);
         }

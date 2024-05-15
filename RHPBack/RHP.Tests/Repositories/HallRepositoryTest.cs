@@ -30,30 +30,30 @@ namespace RHP.UnitTests
         {
             return new Player[]
             {
-        new Player { Name = "Player1", User = new User { Email = "player1@mail.com", Password = "password", active = true } },
-        new Player { Name = "Player2", User = new User { Email = "player2@mail.com", Password = "password", active = true } }
+        new Player { name = "Player1", user = new User { email = "player1@mail.com", password = "password", active = true } },
+        new Player { name = "Player2", user = new User { email = "player2@mail.com", password = "password", active = true } }
             };
 
         }
 
         private Player GetGameMaster()
         {
-            return new Player { Name = "GameMaster", User = new User { Email = "gm@mail.com", Password = "password", active = true } };
+            return new Player { name = "gameMaster", user = new User { email = "gm@mail.com", password = "password", active = true } };
         }
 
         private void SetupTestData()
         {
             var halls = new List<Hall>
         {
-            new Hall { Title = "Hall1", GameMaster = GetGameMaster(), Players = GetPlayers() },
-            new Hall { Title = "Hall2", GameMaster = GetGameMaster(), Players = GetPlayers() },
-            new Hall { Title = "Hall3", GameMaster = GetGameMaster(), Players = GetPlayers() }
+            new Hall { title = "Hall1", gameMaster = GetGameMaster(), players = GetPlayers() },
+            new Hall { title = "Hall2", gameMaster = GetGameMaster(), players = GetPlayers() },
+            new Hall { title = "Hall3", gameMaster = GetGameMaster(), players = GetPlayers() }
         };
             _context.Hall.AddRange(halls);
             _context.SaveChanges();
 
-            FirstHallId = halls[0].Id;
-            SecondHallId = halls[1].Id;
+            FirstHallId = halls[0].id;
+            SecondHallId = halls[1].id;
 
         }
 
@@ -61,7 +61,7 @@ namespace RHP.UnitTests
         [Fact]
         public void Add_HallIsNotNull_AddsHallToContext()
         {
-            var hall = new Hall { Title = "Hall4", GameMaster = GetGameMaster(), Players = GetPlayers() };
+            var hall = new Hall { title = "Hall4", gameMaster = GetGameMaster(), players = GetPlayers() };
 
             _hallRepo.Add(hall);
             _context.SaveChanges();
@@ -83,14 +83,14 @@ namespace RHP.UnitTests
             var hall = _hallRepo.GetById(FirstHallId);
 
             Assert.NotNull(hall);
-            Assert.Equal(FirstHallId, hall.Id);
+            Assert.Equal(FirstHallId, hall.id);
         }
 
         [Fact]
         public void Remove_ValidId_RemovesHall()
         {
             var hall = _hallRepo.GetById(FirstHallId);
-            _hallRepo.Remove(hall.Id);
+            _hallRepo.Remove(hall.id);
             _context.SaveChanges();
 
             Assert.DoesNotContain(hall, _context.Hall);
@@ -99,30 +99,30 @@ namespace RHP.UnitTests
         [Fact]
         public void Update_HallExists_UpdatesHall()
         {
-            var hall = _context.Hall.First(h => h.Id == FirstHallId);
-            hall.Title = "Hall10";
+            var hall = _context.Hall.First(h => h.id == FirstHallId);
+            hall.title = "Hall10";
             _hallRepo.Update(hall);
             _context.SaveChanges();
 
-            Assert.Equal("Hall10", _context.Hall.First(h => h.Id == FirstHallId).Title);
+            Assert.Equal("Hall10", _context.Hall.First(h => h.id == FirstHallId).title);
         }
 
         [Fact]
         public void Select_ValidPredicate_ReturnsHall()
         {
-            var hall = _hallRepo.Select(h => h.Id == FirstHallId);
+            var hall = _hallRepo.Select(h => h.id == FirstHallId);
 
             Assert.NotNull(hall);
-            Assert.Equal(FirstHallId, hall.Id);
+            Assert.Equal(FirstHallId, hall.id);
         }
 
         [Fact]
         public async Task SelectAsync_ValidPredicate_ReturnsHall()
         {
-            var hall = await _hallRepo.SelectAsync(h => h.Id == FirstHallId);
+            var hall = await _hallRepo.SelectAsync(h => h.id == FirstHallId);
 
             Assert.NotNull(hall);
-            Assert.Equal(FirstHallId, hall.Id);
+            Assert.Equal(FirstHallId, hall.id);
         }
 
         [Fact]

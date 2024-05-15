@@ -1,14 +1,12 @@
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.Extensions.Configuration;
 using RHP.API.Repositories;
 using RHP.Entities.Models;
 using RHP.Entities.Models.DTOs;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Security.Cryptography;
-using System.Runtime.InteropServices;
 
-public class AuthenticationService: IAuthenticationService
+public class AuthenticationService
 {
     private readonly UserRepository _userRepository;
     private readonly PlayerRepository _playerRepository;
@@ -35,7 +33,7 @@ public class AuthenticationService: IAuthenticationService
         var claims = new[]
         {
             new Claim(ClaimTypes.Name, userId.ToString()),
-            new Claim(ClaimTypes.Email, dto.Email)
+            new Claim(ClaimTypes.Email, dto.email)
         };
 
         var claimsIdentity = new ClaimsIdentity(claims, "Bearer");
@@ -73,20 +71,20 @@ public class AuthenticationService: IAuthenticationService
 
         }else
         {
-            throw new Exception("User not authenticated");
+            throw new Exception("user not authenticated");
         }
 
 
-        //var claimsIdentity = httpContext.User.Identity as ClaimsIdentity;
+        //var claimsIdentity = httpContext.user.Identity as ClaimsIdentity;
         //if(claimsIdentity == null)
         //{
-        //    throw new Exception("User not authenticated");
+        //    throw new Exception("user not authenticated");
         //}
 
-        //string userId = claimsIdentity.FindFirst(ClaimTypes.Name)?.Value;
+        //string userId = claimsIdentity.FindFirst(ClaimTypes.name)?.value;
         //if (userId == null)
         //{
-        //    throw new Exception("User not authenticated");
+        //    throw new Exception("user not authenticated");
         //}
 
 
@@ -94,12 +92,12 @@ public class AuthenticationService: IAuthenticationService
 
     private int CheckCredentials(UserLoginDTO dto)
     {
-        User user = _userRepository.GetUserByEmail(dto.Email) ?? throw new Exception("Invalid username");
-        if (!BCrypt.Net.BCrypt.Verify(dto.Password, user.Password))
+        User user = _userRepository.GetUserByEmail(dto.email) ?? throw new Exception("Invalid username");
+        if (!BCrypt.Net.BCrypt.Verify(dto.password, user.password))
         {
             throw new Exception("Invalid password");
         }
-        return user.Id;
+        return user.id;
     }
 
     public static string GenerateKey()

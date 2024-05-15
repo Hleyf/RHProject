@@ -14,20 +14,20 @@ namespace RHP.Entities.Models
     public class Roll : IBaseEntity
     {
         [Key]
-        public int Id { get; set; }
-        public required HashSet<Dice> Dices { get; set; }
-        public int Modifier { get; set; }
-        public int Value { get; set; }
-        public required Player Player { get; set; }
-        public required Hall Hall { get; set; }
+        public int id { get; set; }
+        public required HashSet<Dice> dices { get; set; }
+        public int modifier { get; set; }
+        public int value { get; set; }
+        public required Player player { get; set; }
+        public required Hall hall { get; set; }
 
-        public DateTimeOffset RolledAt { get; }
+        public DateTimeOffset rolledAt { get; }
 
-        public RollStatus Status { get; set; }
+        public RollStatus status { get; set; }
 
         public Roll()
         {
-            RolledAt = DateTimeOffset.Now;
+            rolledAt = DateTimeOffset.Now;
         }
     }
 

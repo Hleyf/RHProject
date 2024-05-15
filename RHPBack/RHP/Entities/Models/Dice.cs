@@ -16,8 +16,8 @@ namespace RHP.Entities.Models
     public class Dice : IBaseEntity
     {
         [Key]
-        public int Id { get; set; }
-        public DiceType Type { get; set; }
-        public int Value { get; set; }
+        public int id { get; set; }
+        public DiceType type { get; set; }
+        public int value { get; set; }
     }
 }

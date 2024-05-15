@@ -24,24 +24,24 @@ namespace RHP.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Player>()
-                .HasIndex(p => p.Name)
+                .HasIndex(p => p.name)
                 .IsUnique();
 
             modelBuilder.Entity<Player>()
-                .HasOne(p => p.User)
-                .WithOne(u => u.Player)
-                .HasForeignKey<Player>(p => p.UserId)
+                .HasOne(p => p.user)
+                .WithOne(u => u.player)
+                .HasForeignKey<Player>(p => p.userId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
              
             modelBuilder.Entity<Player>()
-                .HasMany(p => p.Halls)
-                .WithMany(h => h.Players);
+                .HasMany(p => p.halls)
+                .WithMany(h => h.players);
 
             modelBuilder.Entity<Hall>()
-                .HasOne(h => h.GameMaster)
+                .HasOne(h => h.gameMaster)
                 .WithMany()
-                .HasForeignKey(h => h.Id);
+                .HasForeignKey(h => h.id);
         }
     }
 }

@@ -30,9 +30,9 @@ namespace RHP.UnitTests
         private void SetupTestData()
         {
             _context.User.AddRange(
-                new User { Email = "test1@mail.com", Password = "password", active = true },
-                new User { Email = "test2@mail.com", Password = "password", active = true },
-                new User { Email = "test3@mail.com", Password = "password", active = true }
+                new User { email = "test1@mail.com", password = "password", active = true },
+                new User { email = "test2@mail.com", password = "password", active = true },
+                new User { email = "test3@mail.com", password = "password", active = true }
             );
             _context.SaveChanges();
         }
@@ -40,7 +40,7 @@ namespace RHP.UnitTests
         [Fact]
         public void Add_UserIsNotNull_AddsUserToContext()
         {
-            var user = new User { Email = "test4@mail.com", Password = "password", active = true };
+            var user = new User { email = "test4@mail.com", password = "password", active = true };
 
             _userRepo.Add(user);
             _context.SaveChanges();
@@ -62,14 +62,14 @@ namespace RHP.UnitTests
             var user = _userRepo.GetById(1);
 
             Assert.NotNull(user);
-            Assert.Equal(1, user.Id);
+            Assert.Equal(1, user.id);
         }
 
         [Fact]
         public void Remove_ValidId_RemovesUser()
         {
             var user = _userRepo.GetById(1);
-            _userRepo.Remove(user.Id);
+            _userRepo.Remove(user.id);
             _context.SaveChanges();
 
             Assert.DoesNotContain(user, _context.User);
@@ -78,30 +78,30 @@ namespace RHP.UnitTests
         [Fact]
         public void Update_UserExists_UpdatesUser()
         {
-            var user = _context.User.First(u => u.Id == 1);
-            user.Email = "test10@mail.com";
+            var user = _context.User.First(u => u.id == 1);
+            user.email = "test10@mail.com";
             _userRepo.Update(user);
             _context.SaveChanges();
 
-            Assert.Equal("test10@mail.com", _context.User.First(u => u.Id == 1).Email);
+            Assert.Equal("test10@mail.com", _context.User.First(u => u.id == 1).email);
         }
 
         [Fact]
         public void Select_ValidPredicate_ReturnsUser()
         {
-            var user = _userRepo.Select(u => u.Id == 1);
+            var user = _userRepo.Select(u => u.id == 1);
 
             Assert.NotNull(user);
-            Assert.Equal(1, user.Id);
+            Assert.Equal(1, user.id);
         }
 
         [Fact]
         public async Task SelectAsync_ValidPredicate_ReturnsUser()
         {
-            var user = await _userRepo.SelectAsync(u => u.Id == 1);
+            var user = await _userRepo.SelectAsync(u => u.id == 1);
 
             Assert.NotNull(user);
-            Assert.Equal(1, user.Id);
+            Assert.Equal(1, user.id);
         }
 
         [Fact]

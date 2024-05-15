@@ -2,11 +2,11 @@
 {
     public class HallDTO
     {
-        public int Id { get; set; }
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public int GameMasterId { get; set; }
-        public IEnumerable<PlayerDTO> Players { get; set; }
+        public int id { get; set; }
+        public string title { get; set; }
+        public string description { get; set; }
+        public int gameMasterId { get; set; }
+        public IEnumerable<PlayerDTO> players { get; set; }
 
     }
 }
