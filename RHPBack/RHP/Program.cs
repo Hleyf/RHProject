@@ -120,9 +120,9 @@ internal class Program
                 {
                     var adminUser = new User
                     {
-                        email = "admin@admin.com",
-                        role = UserRole.Admin,
-                        password = BCrypt.Net.BCrypt.HashPassword("admin")
+                        Email = "admin@admin.com",
+                        Role = UserRole.Admin,
+                        Password = BCrypt.Net.BCrypt.HashPassword("admin")
                     };
 
                     context.User.Add(adminUser);
@@ -130,8 +130,8 @@ internal class Program
 
                     Player adminPlayer = new Player
                     {
-                        name = "Admin",
-                        user = adminUser
+                        Name = "Admin",
+                        User = adminUser,
                     };
 
                     context.Player.Add(adminPlayer);

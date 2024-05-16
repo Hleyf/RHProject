@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Output } from '@angular/core';
 import { RouterLink, RouterModule } from '@angular/router';
 import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome'
-import { faBeer, faHome } from '@fortawesome/free-solid-svg-icons';
+import { faBeer, faHome, faUsers } from '@fortawesome/free-solid-svg-icons';
 import { INavToggle, INavData } from '../../../models/sideNav.model';
 
 
@@ -23,10 +23,11 @@ export class NavbarComponent {
   collapsed: boolean = true;
   navData:  INavData[] = [
     { routeLink: '/home', icon: faHome, label: 'Home' },
-    { routeLink: '/halls', icon: faBeer, label: 'Halls' }
+    { routeLink: '/halls', icon: faBeer, label: 'Halls' },
+    { routeLink: '/contacts', icon: faUsers, label: 'Contacts' }
     
   ];
-  readonly icons = [faHome, faBeer]
+  readonly icons = [faHome, faBeer, faUsers]
 
   constructor(private library: FaIconLibrary) {
     this.library.addIcons(...this.icons);

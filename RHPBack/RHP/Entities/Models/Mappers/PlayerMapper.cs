@@ -8,28 +8,28 @@ namespace RHP.Entities.Models.Mappers
         public PlayerMapper()
         {
             CreateMap<Player, PlayerDTO>()
-                .ForMember(dest => dest.id, opt => opt.MapFrom(src => src.id))
-                .ForMember(dest => dest.userId, opt => opt.MapFrom(src => src.user.id))
-                .ForMember(dest => dest.name, opt => opt.MapFrom(src => src.name))
-                .ForMember(dest => dest.email, opt => opt.MapFrom(src => src.user.email))
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => src.User.Id))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.User.Email))
                 .AfterMap((src, dest) =>
                 {
-                    int[] arr = src.halls.Select(h => h.id).ToArray();
-                    dest.hallIds = arr;
+                    int[] arr = src.Halls.Select(h => h.Id).ToArray();
+                    dest.HallIds = arr;
                 });
             CreateMap<PlayerDTO, Player>()
-                .ForMember(dest => dest.id, opt => opt.MapFrom(src => src.id))
-                .ForPath(dest => dest.user.id, opt => opt.MapFrom(src => src.userId))
-                .ForMember(dest => dest.name, opt => opt.MapFrom(src => src.name))
-                .ForPath(dest => dest.user.email, opt => opt.MapFrom(src => src.email));
+                .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Id))
+                .ForPath(dest => dest.User.Id, opt => opt.MapFrom(src => src.UserId))
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name))
+                .ForPath(dest => dest.User.Email, opt => opt.MapFrom(src => src.Email));
 
             CreateMap<UserPlayerDTO, Player>()
-                .ForMember(des => des.name, opt => opt.MapFrom(src => src.name != null ? src.name : null));
+                .ForMember(des => des.Name, opt => opt.MapFrom(src => src.Name != null ? src.Name : null));
 
             CreateMap<Player, UserPlayerDTO>()
-                .ForMember(des => des.name, opt => opt.MapFrom(src => src.name != null ? src.name : null))
-                .ForMember(des => des.email, opt => opt.MapFrom(src => src.user.email != null ? src.user.email : null))
-                .ForMember(des => des.password, opt => opt.Ignore());
+                .ForMember(des => des.Name, opt => opt.MapFrom(src => src.Name != null ? src.Name : null))
+                .ForMember(des => des.Email, opt => opt.MapFrom(src => src.User.Email != null ? src.User.Email : null))
+                .ForMember(des => des.Password, opt => opt.Ignore());
         }
     }
 }

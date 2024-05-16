@@ -33,7 +33,7 @@ public class AuthenticationService
         var claims = new[]
         {
             new Claim(ClaimTypes.Name, userId.ToString()),
-            new Claim(ClaimTypes.Email, dto.email)
+            new Claim(ClaimTypes.Email, dto.Email)
         };
 
         var claimsIdentity = new ClaimsIdentity(claims, "Bearer");
@@ -71,20 +71,20 @@ public class AuthenticationService
 
         }else
         {
-            throw new Exception("user not authenticated");
+            throw new Exception("User not authenticated");
         }
 
 
-        //var claimsIdentity = httpContext.user.Identity as ClaimsIdentity;
+        //var claimsIdentity = httpContext.User.Identity as ClaimsIdentity;
         //if(claimsIdentity == null)
         //{
-        //    throw new Exception("user not authenticated");
+        //    throw new Exception("User not authenticated");
         //}
 
-        //string userId = claimsIdentity.FindFirst(ClaimTypes.name)?.value;
-        //if (userId == null)
+        //string UserId = claimsIdentity.FindFirst(ClaimTypes.Name)?.Value;
+        //if (UserId == null)
         //{
-        //    throw new Exception("user not authenticated");
+        //    throw new Exception("User not authenticated");
         //}
 
 
@@ -92,12 +92,12 @@ public class AuthenticationService
 
     private int CheckCredentials(UserLoginDTO dto)
     {
-        User user = _userRepository.GetUserByEmail(dto.email) ?? throw new Exception("Invalid username");
-        if (!BCrypt.Net.BCrypt.Verify(dto.password, user.password))
+        User user = _userRepository.GetUserByEmail(dto.Email) ?? throw new Exception("Invalid username");
+        if (!BCrypt.Net.BCrypt.Verify(dto.Password, user.Password))
         {
-            throw new Exception("Invalid password");
+            throw new Exception("Invalid Password");
         }
-        return user.id;
+        return user.Id;
     }
 
     public static string GenerateKey()

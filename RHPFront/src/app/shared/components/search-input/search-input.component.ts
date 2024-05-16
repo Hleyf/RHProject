@@ -11,7 +11,9 @@ import { faClose } from '@fortawesome/free-solid-svg-icons';
   imports: [CommonModule, FormsModule,FontAwesomeModule],
   template: `
     <div>
-      <label class="search-label">{{ label }}</label>
+      @if(showLabel){
+        <label class="search-label">{{ label }}</label>
+      }
       <input
         id="search-box"
         type="text"
@@ -19,7 +21,7 @@ import { faClose } from '@fortawesome/free-solid-svg-icons';
         [(ngModel)]="searchTerm"
         (keyup.enter)="onSearch()"
       />
-      @if (searchTerm) {
+      @if (showClear) {
       <fa-icon class="clear-icon" [icon]="closeIcon" (click)="clearSearch()"></fa-icon>
       }
       <!-- <button (click)="onSearch()">Search</button>  -->
@@ -30,8 +32,10 @@ import { faClose } from '@fortawesome/free-solid-svg-icons';
 })
 export class SearchInputComponent {
   @Input() searchFn!: (searchTerm: string) => void;
-  @Input() label!: string;
-  @Input() placeholder!: string;
+  @Input() label: string = '';
+  @Input() placeholder: string = '';
+  @Input() showLabel: boolean = true
+  @Input() showClear: boolean = true
 
   searchTerm: string = '';
   closeIcon = faClose;

@@ -20,7 +20,7 @@ namespace RHP.API.Controllers
             return Ok(_playerService.GetAllPlayers());
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{Id}")]
         public IActionResult GetPlayer(int id)
         {
             return Ok(_playerService.GetPlayer(id));
@@ -31,7 +31,7 @@ namespace RHP.API.Controllers
         [HttpPost]
         public IActionResult CreatePlayerUser([FromBody] UserPlayerDTO dto)
         {
-            if (string.IsNullOrEmpty(dto.name) || string.IsNullOrEmpty(dto.email) || string.IsNullOrEmpty(dto.password))
+            if (string.IsNullOrEmpty(dto.Name) || string.IsNullOrEmpty(dto.Email) || string.IsNullOrEmpty(dto.Password))
             {
                 return BadRequest();
             }
@@ -43,7 +43,7 @@ namespace RHP.API.Controllers
                 return Ok();
             }catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex);
             }
         }
     }

@@ -21,12 +21,13 @@ namespace RHP.UnitTests
 
         private void AddTestUserToDatabase()
         {
-            // Add the user to the database
-            var passwordHash = BCrypt.Net.BCrypt.HashPassword("password");
+            // Add the User to the database
+            var passwordHash = BCrypt.Net.BCrypt.HashPassword("Password");
             _context.User.Add(new User
             {
-                email = "test@example.com",
-                password = passwordHash
+                Email = "test@example.com",
+                Password = passwordHash
+
             });
             _context.SaveChanges();
         }
@@ -38,8 +39,8 @@ namespace RHP.UnitTests
             AddTestUserToDatabase();
             var dto = new UserLoginDTO 
             {
-                email = "test@example.com",
-                password = "password"
+                Email = "test@example.com",
+                Password = "Password"
             };
 
             var result = controller.Login(dto);
@@ -56,8 +57,8 @@ namespace RHP.UnitTests
 
             var dto = new UserLoginDTO
             {
-                email = "invalid@example.com",
-                password = "password"
+                Email = "invalid@example.com",
+                Password = "Password"
             };
 
 
@@ -76,8 +77,8 @@ namespace RHP.UnitTests
 
             var dto = new UserLoginDTO
             {
-                email = "test@example.com",
-                password = "invalidPassword"
+                Email = "test@example.com",
+                Password = "invalidPassword"
             };
 
             var result = controller.Login(dto);
@@ -85,7 +86,7 @@ namespace RHP.UnitTests
             var badRequestResult = result as BadRequestObjectResult;
             Assert.NotNull(badRequestResult);
             Assert.Equal(400, badRequestResult.StatusCode);
-            Assert.Equal("Invalid password", badRequestResult.Value);
+            Assert.Equal("Invalid Password", badRequestResult.Value);
         }
     }
 }

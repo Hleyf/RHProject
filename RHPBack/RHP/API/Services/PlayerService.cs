@@ -35,11 +35,11 @@ namespace RHP.API.Services
 
         public void CreatePlayer(UserPlayerDTO dto)
         {
-            UserLoginDTO userDTO = new UserLoginDTO { email = dto.email, password = dto.password  };
+            UserLoginDTO userDTO = new UserLoginDTO { Email = dto.Email, Password = dto.Password  };
             User savedUser = _userService.CreateUser(userDTO);
 
-            Player player = new Player { name = dto.name, user = savedUser };
-            player.user.password = BCrypt.Net.BCrypt.HashPassword(dto.password);
+            Player player = new Player { Name = dto.Name, User = savedUser };
+            player.User.Password = BCrypt.Net.BCrypt.HashPassword(dto.Password);
 
             _playerRepository.Add(player);
         }
@@ -47,9 +47,9 @@ namespace RHP.API.Services
         public void UpdatePlayer(PlayerDTO playerDTO)
         {
             Player player = _mapper.Map<Player>(playerDTO);
-            if (playerDTO.hallIds != null && playerDTO.hallIds.Any())
+            if (playerDTO.HallIds != null && playerDTO.HallIds.Any())
             {
-                player.halls = _hallRepository.GetByIdWithIncludes(playerDTO.hallIds);
+                player.Halls = _hallRepository.GetByIdWithIncludes(playerDTO.HallIds);
             }
             _playerRepository.Update(player);
         }
@@ -67,7 +67,7 @@ namespace RHP.API.Services
 
             if (player == null)
             {
-                throw new Exception("player not found");
+                throw new Exception("Player not found");
             }
 
             return _mapper.Map<PlayerDTO>(player);
@@ -78,7 +78,7 @@ namespace RHP.API.Services
             Player? player = _playerRepository.GetPlayerByUserId(userId);
             if (player == null)
             {
-                throw new Exception("player not found");
+                throw new Exception("Player not found");
             }
             return player;
         }

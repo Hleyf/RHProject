@@ -23,7 +23,7 @@ export interface IHallPreview {
 })
 export class HallPreviewComponent implements OnInit{
 
-  isLoading: boolean = true;
+  isLoading = this.hallService.isHallLoading();
   readonly hall : Signal<Hall | null> = this.hallService.selectedHall;
   loggedInUserId: number ;
   userInHall$: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -35,10 +35,6 @@ export class HallPreviewComponent implements OnInit{
     private authService: AuthService,
     private playerService: PlayerService
     ) {
-      effect(() => {
-        this.isLoading = this.hallService.isHallLoading();
-      });
-
       effect(() => {
         const hall = this.hall();
         if(hall?.id) {

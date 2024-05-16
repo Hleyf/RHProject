@@ -24,11 +24,11 @@ namespace RHP.Migrations
 
             modelBuilder.Entity("RHP.Entities.Models.ActionLog", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("action")
+                    b.Property<string>("Action")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -38,7 +38,7 @@ namespace RHP.Migrations
                     b.Property<int>("PlayerId")
                         .HasColumnType("int");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.HasIndex("HallId");
 
@@ -49,94 +49,94 @@ namespace RHP.Migrations
 
             modelBuilder.Entity("RHP.Entities.Models.Dice", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     b.Property<int?>("RollId")
                         .HasColumnType("int");
 
-                    b.Property<int>("type")
+                    b.Property<int>("Type")
                         .HasColumnType("int");
 
-                    b.Property<int>("value")
+                    b.Property<int>("Value")
                         .HasColumnType("int");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.HasIndex("RollId");
 
                     b.ToTable("Dice");
                 });
 
-            modelBuilder.Entity("RHP.Entities.Models.hall", b =>
+            modelBuilder.Entity("RHP.Entities.Models.Hall", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .HasColumnType("int");
 
-                    b.Property<string>("description")
+                    b.Property<string>("Description")
                         .HasColumnType("longtext");
 
-                    b.Property<string>("title")
+                    b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
-                    b.ToTable("hall");
+                    b.ToTable("Hall");
                 });
 
-            modelBuilder.Entity("RHP.Entities.Models.player", b =>
+            modelBuilder.Entity("RHP.Entities.Models.Player", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     b.Property<int?>("HallId")
                         .HasColumnType("int");
 
-                    b.Property<string>("name")
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("varchar(255)");
 
-                    b.Property<int>("userId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.HasIndex("HallId");
 
-                    b.HasIndex("name")
+                    b.HasIndex("Name")
                         .IsUnique();
 
-                    b.HasIndex("userId")
+                    b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("player");
+                    b.ToTable("Player");
                 });
 
             modelBuilder.Entity("RHP.Entities.Models.Roll", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
                     b.Property<int>("HallId")
                         .HasColumnType("int");
 
-                    b.Property<int>("modifier")
+                    b.Property<int>("Modifier")
                         .HasColumnType("int");
 
                     b.Property<int>("PlayerId")
                         .HasColumnType("int");
 
-                    b.Property<int>("status")
+                    b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<int>("value")
+                    b.Property<int>("Value")
                         .HasColumnType("int");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.HasIndex("HallId");
 
@@ -145,122 +145,122 @@ namespace RHP.Migrations
                     b.ToTable("Roll");
                 });
 
-            modelBuilder.Entity("RHP.Entities.Models.user", b =>
+            modelBuilder.Entity("RHP.Entities.Models.User", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("email")
+                    b.Property<string>("E]Email")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<string>("password")
+                    b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<int>("role")
+                    b.Property<int>("Role")
                         .HasColumnType("int");
 
                     b.Property<bool>("active")
                         .HasColumnType("tinyint(1)");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
-                    b.ToTable("user");
+                    b.ToTable("User");
                 });
 
             modelBuilder.Entity("RHP.Entities.Models.ActionLog", b =>
                 {
-                    b.HasOne("RHP.Entities.Models.hall", "hall")
+                    b.HasOne("RHP.Entities.Models.Hall", "Hall")
                         .WithMany()
                         .HasForeignKey("HallId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("RHP.Entities.Models.player", "player")
+                    b.HasOne("RHP.Entities.Models.Player", "Player")
                         .WithMany()
                         .HasForeignKey("PlayerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("hall");
+                    b.Navigation("Hall");
 
-                    b.Navigation("player");
+                    b.Navigation("Player");
                 });
 
             modelBuilder.Entity("RHP.Entities.Models.Dice", b =>
                 {
                     b.HasOne("RHP.Entities.Models.Roll", null)
-                        .WithMany("dices")
+                        .WithMany("Dices")
                         .HasForeignKey("RollId");
                 });
 
-            modelBuilder.Entity("RHP.Entities.Models.hall", b =>
+            modelBuilder.Entity("RHP.Entities.Models.Hall", b =>
                 {
-                    b.HasOne("RHP.Entities.Models.player", "gameMaster")
-                        .WithMany("halls")
-                        .HasForeignKey("id")
+                    b.HasOne("RHP.Entities.Models.Player", "GameMaster")
+                        .WithMany("Halls")
+                        .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("gameMaster");
+                    b.Navigation("GameMaster");
                 });
 
-            modelBuilder.Entity("RHP.Entities.Models.player", b =>
+            modelBuilder.Entity("RHP.Entities.Models.Player", b =>
                 {
-                    b.HasOne("RHP.Entities.Models.hall", null)
-                        .WithMany("players")
+                    b.HasOne("RHP.Entities.Models.Hall", null)
+                        .WithMany("Players")
                         .HasForeignKey("HallId");
 
-                    b.HasOne("RHP.Entities.Models.user", "user")
-                        .WithOne("player")
-                        .HasForeignKey("RHP.Entities.Models.player", "userId")
+                    b.HasOne("RHP.Entities.Models.User", "User")
+                        .WithOne("Player")
+                        .HasForeignKey("RHP.Entities.Models.Player", "UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("user");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("RHP.Entities.Models.Roll", b =>
                 {
-                    b.HasOne("RHP.Entities.Models.hall", "hall")
-                        .WithMany("rolls")
+                    b.HasOne("RHP.Entities.Models.Hall", "Hall")
+                        .WithMany("Rolls")
                         .HasForeignKey("HallId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("RHP.Entities.Models.player", "player")
+                    b.HasOne("RHP.Entities.Models.Player", "Player")
                         .WithMany()
                         .HasForeignKey("PlayerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("hall");
+                    b.Navigation("Hall");
 
-                    b.Navigation("player");
+                    b.Navigation("Player");
                 });
 
-            modelBuilder.Entity("RHP.Entities.Models.hall", b =>
+            modelBuilder.Entity("RHP.Entities.Models.Hall", b =>
                 {
-                    b.Navigation("players");
+                    b.Navigation("Players");
 
-                    b.Navigation("rolls");
+                    b.Navigation("Rolls");
                 });
 
-            modelBuilder.Entity("RHP.Entities.Models.player", b =>
+            modelBuilder.Entity("RHP.Entities.Models.Player", b =>
                 {
-                    b.Navigation("halls");
+                    b.Navigation("Halls");
                 });
 
             modelBuilder.Entity("RHP.Entities.Models.Roll", b =>
                 {
-                    b.Navigation("dices");
+                    b.Navigation("Dices");
                 });
 
-            modelBuilder.Entity("RHP.Entities.Models.user", b =>
+            modelBuilder.Entity("RHP.Entities.Models.User", b =>
                 {
-                    b.Navigation("player");
+                    b.Navigation("Player");
                 });
 #pragma warning restore 612, 618
         }

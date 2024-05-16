@@ -22,7 +22,7 @@ namespace RHP.API.Controllers
             return Ok(halls);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{Id}")]
         public IActionResult GetHall(int id)
         {
             HallDTO hall = _hallService.GetHall(id);

@@ -19,16 +19,16 @@ namespace RHP.UnitTests
 
         private void AddTestPlayerToDatabase()
         {
-            var passwordHash = BCrypt.Net.BCrypt.HashPassword("password");
+            var passwordHash = BCrypt.Net.BCrypt.HashPassword("Password");
             User user = new User
             {
-                email = "test@email.com",
-                password = passwordHash
+                Email = "test@E]Email.com",
+                Password = passwordHash
             };
             _context.Player.Add(new Player
             {
-                name = "Test player",
-                user = user
+                Name = "Test Player",
+                User = user,
             });
         }
 
@@ -47,9 +47,9 @@ namespace RHP.UnitTests
         {
             var dto = new UserPlayerDTO
             {
-                name = "Test player",
-                email = "testplayer@example.com",
-                password = "TestPassword123"
+                Name = "Test Player",
+                Email = "testplayer@example.com",
+                Password = "TestPassword123"
             };
 
             var result = _controller.CreatePlayerUser(dto);
@@ -66,9 +66,9 @@ namespace RHP.UnitTests
         {
             var dto = new UserPlayerDTO
             {
-                name = "",
-                email = "",
-                password = ""
+                Name = "",
+                Email = "",
+                Password = ""
             };
 
             var result = _controller.CreatePlayerUser(dto);

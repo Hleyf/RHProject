@@ -60,12 +60,12 @@ namespace RHP.API.Repositories
 
         public T[] GetByIdWithIncludes(int[] ids)
         {
-            return _context.Set<T>().Where(entity => ids.Contains((entity as IBaseEntity)!.id)).ToArray();
+            return _context.Set<T>().Where(entity => ids.Contains((entity as IBaseEntity)!.Id)).ToArray();
         }
 
         public async Task<T[]> GetByIdWithIncludesAsync(int[] ids)
         {
-            return await _context.Set<T>().Where(entity => ids.Contains((entity as IBaseEntity)!.id)).ToArrayAsync();
+            return await _context.Set<T>().Where(entity => ids.Contains((entity as IBaseEntity)!.Id)).ToArrayAsync();
         }
 
         public bool Remove(int id)

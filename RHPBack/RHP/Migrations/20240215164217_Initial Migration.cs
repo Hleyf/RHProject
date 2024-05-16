@@ -15,7 +15,7 @@ namespace RHP.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "user",
+                name: "User",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -67,7 +67,7 @@ namespace RHP.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "hall",
+                name: "Hall",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false),
@@ -83,7 +83,7 @@ namespace RHP.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "player",
+                name: "Player",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -99,13 +99,13 @@ namespace RHP.Migrations
                     table.ForeignKey(
                         name: "FK_Player_Hall_HallId",
                         column: x => x.HallId,
-                        principalTable: "hall",
-                        principalColumn: "id");
+                        principalTable: "Hall",
+                        principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Player_User_UserId",
                         column: x => x.UserId,
-                        principalTable: "user",
-                        principalColumn: "id",
+                        principalTable: "User",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
@@ -128,14 +128,14 @@ namespace RHP.Migrations
                     table.ForeignKey(
                         name: "FK_Roll_Hall_HallId",
                         column: x => x.HallId,
-                        principalTable: "hall",
-                        principalColumn: "id",
+                        principalTable: "Hall",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Roll_Player_PlayerId",
                         column: x => x.PlayerId,
-                        principalTable: "player",
-                        principalColumn: "id",
+                        principalTable: "Player",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
@@ -157,19 +157,19 @@ namespace RHP.Migrations
 
             migrationBuilder.CreateIndex(
                 name: "IX_Player_HallId",
-                table: "player",
+                table: "Player",
                 column: "HallId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Player_Name",
-                table: "player",
-                column: "name",
+                table: "Player",
+                column: "Name",
                 unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Player_UserId",
-                table: "player",
-                column: "userId",
+                table: "Player",
+                column: "UserId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -186,16 +186,16 @@ namespace RHP.Migrations
                 name: "FK_ActionLog_Hall_HallId",
                 table: "ActionLog",
                 column: "HallId",
-                principalTable: "hall",
-                principalColumn: "id",
+                principalTable: "Hall",
+                principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_ActionLog_Player_PlayerId",
                 table: "ActionLog",
                 column: "PlayerId",
-                principalTable: "player",
-                principalColumn: "id",
+                principalTable: "Player",
+                principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
 
             migrationBuilder.AddForeignKey(
@@ -203,14 +203,14 @@ namespace RHP.Migrations
                 table: "Dice",
                 column: "RollId",
                 principalTable: "Roll",
-                principalColumn: "id");
+                principalColumn: "Id");
 
             migrationBuilder.AddForeignKey(
                 name: "FK_Hall_Player_Id",
-                table: "hall",
-                column: "id",
-                principalTable: "player",
-                principalColumn: "id",
+                table: "Hall",
+                column: "Id",
+                principalTable: "Player",
+                principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
         }
 
@@ -219,7 +219,7 @@ namespace RHP.Migrations
         {
             migrationBuilder.DropForeignKey(
                 name: "FK_Player_Hall_HallId",
-                table: "player");
+                table: "Player");
 
             migrationBuilder.DropTable(
                 name: "ActionLog");
@@ -231,13 +231,13 @@ namespace RHP.Migrations
                 name: "Roll");
 
             migrationBuilder.DropTable(
-                name: "hall");
+                name: "Hall");
 
             migrationBuilder.DropTable(
-                name: "player");
+                name: "Player");
 
             migrationBuilder.DropTable(
-                name: "user");
+                name: "User");
         }
     }
 }

@@ -30,9 +30,9 @@ namespace RHP.API.Services
             try {
                 User user = new User
                     {
-                    email = dto.email,
-                    password = BCrypt.Net.BCrypt.HashPassword(dto.password),
-                    role = UserRole.Player
+                    Email = dto.Email,
+                    Password = BCrypt.Net.BCrypt.HashPassword(dto.Password),
+                    Role = UserRole.Player
 
                 };
 
@@ -40,14 +40,14 @@ namespace RHP.API.Services
                 return user;
             } catch (Exception ex)
             {
-                throw new Exception("Could not create user", ex);
+                throw new Exception("Could not create User", ex);
             }
         }
 
         public UserDTO CreateUserToDTO(UserPlayerDTO dto)
         {
             User user = _mapper.Map<User>(dto);
-            user.password = BCrypt.Net.BCrypt.HashPassword(dto.password);
+            user.Password = BCrypt.Net.BCrypt.HashPassword(dto.Password);
             _userRepository.Add(user);
             return _mapper.Map<UserDTO>(user);
         }
