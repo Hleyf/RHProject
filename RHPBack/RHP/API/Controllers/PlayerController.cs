@@ -15,7 +15,7 @@ namespace RHP.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetPlayers()
+        public async Task<IActionResult> GetPlayers()
         {
             return Ok(_playerService.GetAllPlayers());
         }
@@ -29,7 +29,7 @@ namespace RHP.API.Controllers
 
 
         [HttpPost]
-        public IActionResult CreatePlayerUser([FromBody] UserPlayerDTO dto)
+        public async Task<IActionResult> CreatePlayerUser([FromBody] UserPlayerDTO dto)
         {
             if (string.IsNullOrEmpty(dto.Name) || string.IsNullOrEmpty(dto.Email) || string.IsNullOrEmpty(dto.Password))
             {
@@ -39,7 +39,7 @@ namespace RHP.API.Controllers
             try
             {
                 
-                _playerService.CreatePlayer(dto);
+                await _playerService.CreatePlayer(dto);
                 return Ok();
             }catch (Exception ex)
             {

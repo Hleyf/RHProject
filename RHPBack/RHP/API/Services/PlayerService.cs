@@ -18,16 +18,16 @@ namespace RHP.API.Services
             _hallRepository = hallRepository;
         }
 
-        public PlayerDTO GetPlayer(int id)
+        public async Task<PlayerDTO> GetPlayer(int id)
         {
-            Player player = _playerRepository.GetById(id);
+            Player player = await _playerRepository.GetByIdAsync(id);
 
             return _mapper.Map<PlayerDTO>(player);
         }
 
-        public IEnumerable<PlayerDTO> GetAllPlayers()
+        public async Task<IEnumerable<PlayerDTO>> GetAllPlayers()
         {
-            IEnumerable<Player> players = _playerRepository.GetAll();
+            IEnumerable<Player> players = await _playerRepository.GetAllAsync();
 
             return _mapper.Map<IEnumerable<PlayerDTO>>(players);
         }
@@ -52,18 +52,18 @@ namespace RHP.API.Services
             _playerRepository.Update(player);
         }
 
-        public PlayerDTO GetPlayerById(int id)
+        //public PlayerDTO GetPlayerById(int id)
+        //{
+        //    Player player = _playerRepository.GetById(id);
+
+        //    return _mapper.Map<PlayerDTO>(player);
+        //}
+
+        public async Task<PlayerDTO> GetPlayerByName(string name)
         {
-            Player player = _playerRepository.GetById(id);
+            Player? player = await _playerRepository.GetPlayerByName(name);
 
-            return _mapper.Map<PlayerDTO>(player);
-        }
-
-        public PlayerDTO GetPlayerByName(string name)
-        {
-            Player? player = _playerRepository.GetPlayerByName(name);
-
-            if (player == null)
+            if (player is null)
             {
                 throw new Exception("Player not found");
             }
@@ -71,10 +71,11 @@ namespace RHP.API.Services
             return _mapper.Map<PlayerDTO>(player);
         }
 
-        public Player GetPlayerByUserId(int userId)
+        public async Task<Player> GetPlayerByUserId(string userId)
         {
-            Player? player = _playerRepository.GetPlayerByUserId(userId);
-            if (player == null)
+            Player? player = await _playerRepository.GetPlayerByUserId(userId);
+            
+            if (player is null)
             {
                 throw new Exception("Player not found");
             }
