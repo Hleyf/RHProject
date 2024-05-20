@@ -22,8 +22,9 @@ namespace RHP.UnitTests
             var passwordHash = BCrypt.Net.BCrypt.HashPassword("Password");
             User user = new User
             {
-                Email = "test@E]Email.com",
-                Password = passwordHash
+                Email = "test@Email.com",
+                Password = passwordHash,
+                lastLogin = DateTime.Now
             };
             _context.Player.Add(new Player
             {

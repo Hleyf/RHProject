@@ -161,7 +161,7 @@ namespace RHP.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<string>("E]Email")
+                    b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("longtext");
 

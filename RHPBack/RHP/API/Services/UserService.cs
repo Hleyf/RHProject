@@ -2,7 +2,6 @@
 using RHP.API.Repositories;
 using RHP.Entities.Models;
 using RHP.Entities.Models.DTOs;
-using System.ComponentModel.DataAnnotations;
 
 namespace RHP.API.Services
 { 
@@ -25,11 +24,12 @@ namespace RHP.API.Services
             return _mapper.Map<UserDTO>(user);
         }
 
-        public User CreateUser(UserLoginDTO dto)
+        public User CreateUser(UserPlayerDTO dto)
         {
             try {
                 User user = new User
                     {
+                    Id = "#" + dto.Name.Substring(0, Math.Min(5, dto.Name.Length)) + new Random().Next(1000, 9999).ToString(),
                     Email = dto.Email,
                     Password = BCrypt.Net.BCrypt.HashPassword(dto.Password),
                     Role = UserRole.Player

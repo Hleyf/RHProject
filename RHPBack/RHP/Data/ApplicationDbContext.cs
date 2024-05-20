@@ -19,18 +19,25 @@ namespace RHP.Data
         public DbSet<Roll> Roll { get; set; }
         public DbSet<Dice> Dice { get; set; }
         public DbSet<ActionLog> ActionLog { get; set; }
+        public DbSet<ContactRequest> ContactRequest { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<User>()
+                .HasMany(u => u.Contacts)
+                .WithMany();
+
             modelBuilder.Entity<Player>()
                 .HasIndex(p => p.Name)
                 .IsUnique();
 
+            modelBuilder.Entity<Player>().Property<int>("UserId");
+
             modelBuilder.Entity<Player>()
                 .HasOne(p => p.User)
                 .WithOne(u => u.Player)
-                .HasForeignKey<Player>(p => p.UserId)
+                .HasForeignKey("UserId")
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
              
@@ -38,10 +45,34 @@ namespace RHP.Data
                 .HasMany(p => p.Halls)
                 .WithMany(h => h.Players);
 
+            modelBuilder.Entity<Hall>().Property<int>("GMId"); //Shadow property is used to store the foreign key but not exposed in the model
+
             modelBuilder.Entity<Hall>()
                 .HasOne(h => h.GameMaster)
                 .WithMany()
-                .HasForeignKey(h => h.Id);
+                .HasConstraintName("FK_GM")
+                .HasForeignKey("GMId")
+                .IsRequired();
+            
+
+            modelBuilder.Entity<ContactRequest>().Property<int>("FromId");
+            modelBuilder.Entity<ContactRequest>().Property<int>("ToId");
+
+            modelBuilder.Entity<ContactRequest>()
+                .HasOne(cr => cr.From)
+                .WithMany()
+                .HasConstraintName("FK_UserFrom")
+                .HasForeignKey("FromId")
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<ContactRequest>()
+                .HasOne(cr => cr.To)
+                .WithMany()
+                .HasConstraintName("FK_UserTo")
+                .HasForeignKey("ToId")
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

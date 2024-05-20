@@ -35,8 +35,7 @@ namespace RHP.API.Services
 
         public void CreatePlayer(UserPlayerDTO dto)
         {
-            UserLoginDTO userDTO = new UserLoginDTO { Email = dto.Email, Password = dto.Password  };
-            User savedUser = _userService.CreateUser(userDTO);
+            User savedUser = _userService.CreateUser(dto);
 
             Player player = new Player { Name = dto.Name, User = savedUser };
             player.User.Password = BCrypt.Net.BCrypt.HashPassword(dto.Password);

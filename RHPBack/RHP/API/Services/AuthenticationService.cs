@@ -28,7 +28,7 @@ public class AuthenticationService
 
     public string Login(UserLoginDTO dto)
     {
-        int userId = CheckCredentials(dto);
+        string userId = CheckCredentials(dto);
 
         var claims = new[]
         {
@@ -54,43 +54,32 @@ public class AuthenticationService
 
     }
 
-    public Player getLoggedPlayer()
-    {   
-
+    public string GetLoggedUserId()
+    {
         var httpContext = _httpContextAccessor.HttpContext;
 
-
-        //Manually parsing the JWT token while investigating the issue with the Authorization header.
+        // Manually parsing the JWT token while investigating the issue with the Authorization header.
         var handler = new JwtSecurityTokenHandler();
         var token = handler.ReadJwtToken(httpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", ""));
         var userIdClaim = token.Claims.First(claim => claim.Type == "unique_name");
 
         if (!string.IsNullOrEmpty(userIdClaim.Value))
         {
-            return _playerRepository.GetPlayerByUserId(int.Parse(userIdClaim.Value));
-
-        }else
+            return userIdClaim.Value;
+        }
+        else
         {
             throw new Exception("User not authenticated");
         }
-
-
-        //var claimsIdentity = httpContext.User.Identity as ClaimsIdentity;
-        //if(claimsIdentity == null)
-        //{
-        //    throw new Exception("User not authenticated");
-        //}
-
-        //string UserId = claimsIdentity.FindFirst(ClaimTypes.Name)?.Value;
-        //if (UserId == null)
-        //{
-        //    throw new Exception("User not authenticated");
-        //}
-
-
     }
 
-    private int CheckCredentials(UserLoginDTO dto)
+    public Player GetLoggedPlayer()
+    {
+        var userIdClaim = GetLoggedUserId();
+        return _playerRepository.GetPlayerByUserId(int.Parse(userIdClaim));
+    }
+
+    private string CheckCredentials(UserLoginDTO dto)
     {
         User user = _userRepository.GetUserByEmail(dto.Email) ?? throw new Exception("Invalid username");
         if (!BCrypt.Net.BCrypt.Verify(dto.Password, user.Password))
