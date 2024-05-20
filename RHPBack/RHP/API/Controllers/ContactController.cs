@@ -27,13 +27,14 @@ namespace RHP.API.Controllers
         public IActionResult GetContact(string id)
         {
             var contact = _contactService.GetContact(id);
-            return Ok();
+            return Ok(contact);
         }
 
         [HttpGet("/remove/{Id}")]
-        public IActionResult RemoveContact(string id)
+        public async Task<IActionResult> RemoveContact(string id)
         {
-            return Ok();
+            await _contactService.RemoveContact(id);
+            return NoContent() ;
         }
 
     }

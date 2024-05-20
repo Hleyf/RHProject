@@ -14,6 +14,18 @@ namespace RHP.API.Repositories
             _context = context;
         }
 
+        public async Task<User> GetByUserId(string userId)
+        {
+            User? user =  await _context.User.FirstOrDefaultAsync(p => p.Id == userId);
+
+            if (user is null)
+            {
+                throw new Exception("User not found");
+            }
+
+            return user;
+        }
+
         public User? GetUserByEmail(string email)
         {
             return _context.User.FirstOrDefault(p => p.Email == email);
@@ -32,12 +44,12 @@ namespace RHP.API.Repositories
                     Email = u.Email,
                     Status = u.Status,
                     loggedIn = u.loggedIn,
-                    lastLoggedIn = u.lastLogin.Value
+                    lastLoggedIn = u.lastLogin!.Value
                 })
                 .ToListAsync();
         }
 
-        internal async Task<ContactDTO?> GetContact(string id)
+        public async Task<ContactDTO?> GetContact(string id)
         {
             return await _context.User
                 .Where(u => u.Id == id)
@@ -50,6 +62,11 @@ namespace RHP.API.Repositories
                     lastLoggedIn = u.lastLogin!.Value
                 })
                 .FirstOrDefaultAsync();
+        }
+
+        internal async Task SaveChangesAsync()
+        {
+            await _context.SaveChangesAsync();
         }
     }
 }

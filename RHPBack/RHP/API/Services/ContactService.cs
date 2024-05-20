@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using RHP.API.Repositories;
+using RHP.Entities.Models;
 using RHP.Entities.Models.DTOs;
 
 namespace RHP.API.Services
@@ -32,6 +33,22 @@ namespace RHP.API.Services
             }
 
             return contact;
+
+
+        }
+
+        internal async Task RemoveContact(string id)
+        {
+            string UserId = _authenticationService.GetLoggedUserId();
+            
+            //The contact needs to be removed on both ends. 
+            User loggedUser = await _userRepository.GetByUserId(UserId);
+            User contact = await _userRepository.GetByUserId(id);
+
+            loggedUser.Contacts.Remove(contact);
+            contact.Contacts.Remove(loggedUser);
+
+            await _userRepository.SaveChangesAsync();
 
 
         }
