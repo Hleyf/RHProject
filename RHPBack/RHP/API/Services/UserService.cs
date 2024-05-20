@@ -17,26 +17,26 @@ namespace RHP.API.Services
             _mapper = mapper;
         }
 
-        public UserDTO GetUser(int id)
+        public async Task<UserDTO> GetUser(string id)
         {
-            User user = _userRepository.GetById(id);
+            User user = await _userRepository.GetByUserId(id);
 
             return _mapper.Map<UserDTO>(user);
         }
 
-        public User CreateUser(UserPlayerDTO dto)
+        public async Task<User> CreateUser(UserPlayerDTO dto)
         {
             try {
                 User user = new User
-                    {
+                {
                     Id = "#" + dto.Name.Substring(0, Math.Min(5, dto.Name.Length)) + new Random().Next(1000, 9999).ToString(),
                     Email = dto.Email,
                     Password = BCrypt.Net.BCrypt.HashPassword(dto.Password),
-                    Role = UserRole.Player
-
+                    Role = UserRole.Player,
+                    lastLogin = DateTime.Now
                 };
-
-                _userRepository.Add(user);
+                
+                await _userRepository.CreateUser(user);
                 return user;
             } catch (Exception ex)
             {
@@ -44,11 +44,11 @@ namespace RHP.API.Services
             }
         }
 
-        public UserDTO CreateUserToDTO(UserPlayerDTO dto)
+        public async Task<UserDTO> CreateUserToDTO(UserPlayerDTO dto)
         {
             User user = _mapper.Map<User>(dto);
             user.Password = BCrypt.Net.BCrypt.HashPassword(dto.Password);
-            _userRepository.Add(user);
+            await _userRepository.CreateUser(user);
             return _mapper.Map<UserDTO>(user);
         }
 

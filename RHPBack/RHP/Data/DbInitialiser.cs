@@ -13,7 +13,7 @@ namespace RHP.Data
 
             for (int i = 1; i <= 25; i++)
             {
-                users.Add(new User { Id = $"#User{i}{new Random().Next(1000, 9999)}", Email = $"User{i}@user.com", Password = "1234", active = true, Status = UserStatus.Online });
+                users.Add(new User { Id = $"#User{i}{new Random().Next(1000, 9999)}", Email = $"User{i}@user.com", Password = "1234", active = true, Status = UserStatus.Online, lastLogin = DateTime.Now });
             }
 
             foreach (var user in users)

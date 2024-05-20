@@ -63,10 +63,16 @@ namespace RHP.API.Repositories
                 })
                 .FirstOrDefaultAsync();
         }
+        internal async Task CreateUser(User user)
+        {
+            _context.User.Add(user);
+            await SaveChangesAsync();
+        }
 
         internal async Task SaveChangesAsync()
         {
             await _context.SaveChangesAsync();
         }
+
     }
 }

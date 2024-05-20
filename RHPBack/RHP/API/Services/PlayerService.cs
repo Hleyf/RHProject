@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using RHP.API.Repositories;
 using RHP.Entities.Models;
-using RHP.Entities.Models.DTOs;
 namespace RHP.API.Services
 {
     public class PlayerService
@@ -33,9 +32,9 @@ namespace RHP.API.Services
             return _mapper.Map<IEnumerable<PlayerDTO>>(players);
         }
 
-        public void CreatePlayer(UserPlayerDTO dto)
+        public async Task CreatePlayer(UserPlayerDTO dto)
         {
-            User savedUser = _userService.CreateUser(dto);
+            User savedUser = await _userService.CreateUser(dto);
 
             Player player = new Player { Name = dto.Name, User = savedUser };
             player.User.Password = BCrypt.Net.BCrypt.HashPassword(dto.Password);
