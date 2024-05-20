@@ -74,5 +74,9 @@ namespace RHP.API.Repositories
             await _context.SaveChangesAsync();
         }
 
+        internal void Update(User user)
+        {
+           _context.User.Update(user);
+        }
     }
 }

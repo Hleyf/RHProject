@@ -8,22 +8,41 @@ namespace RHP.API.Services
     public class UserService
     {
         private readonly UserRepository _userRepository;
+        private readonly AuthenticationService _authenticationService;
         private readonly IMapper _mapper;
 
 
-        public UserService(IMapper mapper, UserRepository userRepository)
+        public UserService(IMapper mapper, UserRepository userRepository, AuthenticationService authenticationService)
         {
             _userRepository = userRepository;
+            _authenticationService = authenticationService;
             _mapper = mapper;
         }
 
-        public async Task<UserDTO> GetUser(string id)
+        public async Task<UserDTO> GetUserDTO(string id)
         {
             User user = await _userRepository.GetByUserId(id);
 
             return _mapper.Map<UserDTO>(user);
         }
 
+        public async Task<User> GetUserById(string id)
+        {
+            User user = await _userRepository.GetByUserId(id);
+
+            if (user is null) 
+            {
+                throw new Exception("User not found");
+            }
+
+            return user;
+        }
+
+        public User GetUserByEmail(string email)
+        {
+            return _userRepository.GetUserByEmail(email) ?? throw new Exception("User not found");
+
+        }
         public async Task<User> CreateUser(UserPlayerDTO dto)
         {
             try {
@@ -52,5 +71,25 @@ namespace RHP.API.Services
             return _mapper.Map<UserDTO>(user);
         }
 
+        internal void UpdateUser(User user)
+        {
+            User existingUser = ValidateUserUpdate(user.Email);
+
+            _mapper.Map(user, existingUser);
+
+            _userRepository.Update(existingUser);
+        }
+
+        private User ValidateUserUpdate(string email)
+        {
+            User user = _userRepository.GetUserByEmail(email) ?? throw new Exception("User not found");
+
+            if (user.loggedIn && user.Id != _authenticationService.GetLoggedUserId())
+            {
+                throw new Exception("Unauthorized");
+            }
+
+            return user;
+        }   
     }
 }

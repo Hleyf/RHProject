@@ -53,6 +53,7 @@ namespace RHP.API.Repositories
             {
                 throw new Exception("Player not found");
             }
+
             return player;
         }
     }

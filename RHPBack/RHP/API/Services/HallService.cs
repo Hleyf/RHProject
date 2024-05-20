@@ -24,17 +24,17 @@ namespace RHP.API.Services
             _hallRepository.Add(hall);
         }
 
-        public HallDTO GetHall(int id)
+        public async Task<HallDTO> GetHall(int id)
         {
-            Hall hall = _hallRepository.GetWithRelationships(id);
+            Hall hall = await _hallRepository.GetWithRelationships(id);
 
             return _mapper.Map<HallDTO>(hall);
             
         }
 
-        public IEnumerable<HallDTO> GetAllHalls()
+        public async Task<IEnumerable<HallDTO>> GetAllHalls()
         {
-            IEnumerable<Hall> halls = _hallRepository.GetAllWithRelationships();
+            IEnumerable<Hall> halls = await _hallRepository.GetAllWithRelationships();
             return _mapper.Map<IEnumerable<HallDTO>>(halls);
 
 

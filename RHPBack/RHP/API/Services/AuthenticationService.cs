@@ -1,5 +1,6 @@
 using Microsoft.IdentityModel.Tokens;
 using RHP.API.Repositories;
+using RHP.API.Services;
 using RHP.Entities.Models;
 using RHP.Entities.Models.DTOs;
 using System.IdentityModel.Tokens.Jwt;
@@ -9,11 +10,12 @@ using System.Security.Cryptography;
 public class AuthenticationService
 {
     private readonly UserRepository _userRepository;
+    private readonly UserService _userService;
     private readonly PlayerRepository _playerRepository;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private static readonly byte[] key = Convert.FromBase64String(GenerateKey());
 
-    public AuthenticationService(UserRepository userRepository, IHttpContextAccessor httpContextAccessor, PlayerRepository playerRepository)
+    public AuthenticationService(UserRepository userRepository, IHttpContextAccessor httpContextAccessor, PlayerRepository playerRepository, UserService userService)
     {
         _userRepository = userRepository;
 
@@ -22,17 +24,24 @@ public class AuthenticationService
             throw new ArgumentNullException(nameof(userRepository));
         }
 
+        _userService = userService;
         _playerRepository = playerRepository;
         _httpContextAccessor = httpContextAccessor;
     }
 
     public string Login(UserLoginDTO dto)
     {
-        string userId = CheckCredentials(dto);
+        User user = CheckCredentials(dto);
+
+        //Update user Status and contacts on login
+        user.lastLogin = DateTime.Now;
+        user.loggedIn = true;
+
+        _userService.UpdateUser(user);
 
         var claims = new[]
         {
-            new Claim(ClaimTypes.Name, userId.ToString()),
+            new Claim(ClaimTypes.Name, user.Id.ToString()),
             new Claim(ClaimTypes.Email, dto.Email)
         };
 
@@ -52,6 +61,15 @@ public class AuthenticationService
 
         return tokenHandler.WriteToken(token);
 
+    }
+
+    public void Logout()
+    {
+        Player player = GetLoggedPlayer();
+        User user = player.User;
+
+        user.loggedIn = false;
+        _userService.UpdateUser(user);
     }
 
     public string GetLoggedUserId()
@@ -75,21 +93,24 @@ public class AuthenticationService
 
     public Player GetLoggedPlayer()
     {
-        var userIdClaim = GetLoggedUserId();
-        return _playerRepository.GetPlayerByUserId(int.Parse(userIdClaim));
+        string userIdClaim = GetLoggedUserId();
+        Player player = _playerRepository.GetPlayerByUserId(userIdClaim).Result;
+
+        return player;
     }
 
-    private string CheckCredentials(UserLoginDTO dto)
+    private User CheckCredentials(UserLoginDTO dto)
     {
         User user = _userRepository.GetUserByEmail(dto.Email) ?? throw new Exception("Invalid username");
+       
         if (!BCrypt.Net.BCrypt.Verify(dto.Password, user.Password))
         {
             throw new Exception("Invalid Password");
         }
-        return user.Id;
+        return user;
     }
 
-    public static string GenerateKey()
+    private static string GenerateKey()
     {
         using (var rng = RandomNumberGenerator.Create())
         {

@@ -16,16 +16,16 @@ namespace RHP.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetHalls()
+        public async Task<IActionResult> GetHalls()
         {
-            var halls = _hallService.GetAllHalls();
+            var halls = await _hallService.GetAllHalls();
             return Ok(halls);
         }
 
         [HttpGet("{Id}")]
-        public IActionResult GetHall(int id)
+        public async Task<IActionResult> GetHall(int id)
         {
-            HallDTO hall = _hallService.GetHall(id);
+            HallDTO hall = await _hallService.GetHall(id);
             return Ok(_hallService.GetHall(id));
         }
 

@@ -52,13 +52,6 @@ namespace RHP.API.Services
             _playerRepository.Update(player);
         }
 
-        //public PlayerDTO GetPlayerById(int id)
-        //{
-        //    Player player = _playerRepository.GetById(id);
-
-        //    return _mapper.Map<PlayerDTO>(player);
-        //}
-
         public async Task<PlayerDTO> GetPlayerByName(string name)
         {
             Player? player = await _playerRepository.GetPlayerByName(name);

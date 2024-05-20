@@ -15,21 +15,21 @@ namespace RHP.API.Repositories
         }
 
 
-        public IEnumerable<Hall> GetAllWithRelationships()
+        public async Task<IEnumerable<Hall>> GetAllWithRelationships()
         {
-            return _context.Set<Hall>()
+            return await _context.Set<Hall>()
                 .Include(h => h.Players)
-                .ThenInclude(p => p.User);
+                .ThenInclude(p => p.User).ToListAsync();
         }
 
-        public Hall GetWithRelationships(int id)
+        public async Task<Hall> GetWithRelationships(int id)
         {
-            var hall = _context.Set<Hall>()
+            var hall = await _context.Set<Hall>()
                 .Include(h => h.Players)
                 .ThenInclude(p => p.User)
-                .FirstOrDefault(h => h.Id == id);
+                .FirstOrDefaultAsync(h => h.Id == id);
 
-            if (hall == null)
+            if (hall is null)
             {
                 throw new Exception($"No Hall found with ID {id}");
             }

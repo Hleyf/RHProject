@@ -17,7 +17,7 @@ namespace RHP.API.Controllers
         [HttpGet]
         public async Task<IActionResult> GetPlayers()
         {
-            return Ok(_playerService.GetAllPlayers());
+            return Ok( await _playerService.GetAllPlayers());
         }
 
         [HttpGet("{Id}")]

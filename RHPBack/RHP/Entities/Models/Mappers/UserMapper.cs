@@ -23,6 +23,8 @@ namespace RHP.Entities.Models.Mappers
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => src.Status))
                 .ForMember(dest => dest.loggedIn, opt => opt.MapFrom(src => src.loggedIn))
                 .ForMember(dest => dest.lastLoggedIn, opt => opt.MapFrom(src => src.lastLogin));
+
+            CreateMap<User, User>();
         }
     }
 }
