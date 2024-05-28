@@ -11,11 +11,11 @@ public class AuthenticationService
 {
     private readonly UserRepository _userRepository;
     private readonly UserService _userService;
-    private readonly PlayerRepository _playerRepository;
+    private readonly PlayerService _playerService;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private static readonly byte[] key = Convert.FromBase64String(GenerateKey());
 
-    public AuthenticationService(UserRepository userRepository, IHttpContextAccessor httpContextAccessor, PlayerRepository playerRepository, UserService userService)
+    public AuthenticationService(UserRepository userRepository, IHttpContextAccessor httpContextAccessor, PlayerService playerService, UserService userService)
     {
         _userRepository = userRepository;
 
@@ -25,7 +25,7 @@ public class AuthenticationService
         }
 
         _userService = userService;
-        _playerRepository = playerRepository;
+        _playerService = playerService;
         _httpContextAccessor = httpContextAccessor;
     }
 
@@ -39,6 +39,7 @@ public class AuthenticationService
 
         _userService.UpdateUser(user);
 
+        //Set Claims for JWT
         var claims = new[]
         {
             new Claim(ClaimTypes.Name, user.Id.ToString()),
@@ -77,9 +78,17 @@ public class AuthenticationService
         var httpContext = _httpContextAccessor.HttpContext;
 
         // Manually parsing the JWT token while investigating the issue with the Authorization header.
+        var authHeader = httpContext.Request.Headers["Authorization"].ToString();
+
+        if (string.IsNullOrEmpty(authHeader) || !authHeader.StartsWith("Bearer "))
+        {
+            throw new Exception("Authorization header is missing or incorrectly formatted");
+        }
+
         var handler = new JwtSecurityTokenHandler();
-        var token = handler.ReadJwtToken(httpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", ""));
+        var token = handler.ReadJwtToken(authHeader.Replace("Bearer ", ""));
         var userIdClaim = token.Claims.First(claim => claim.Type == "unique_name");
+
 
         if (!string.IsNullOrEmpty(userIdClaim.Value))
         {
@@ -91,10 +100,22 @@ public class AuthenticationService
         }
     }
 
+    public User GetLoggedUser()
+    {
+        string userIdClaim = GetLoggedUserId();
+        User user = _userService.GetUserById(userIdClaim).GetAwaiter().GetResult();
+        return user;
+    }
+
     public Player GetLoggedPlayer()
     {
         string userIdClaim = GetLoggedUserId();
-        Player player = _playerRepository.GetPlayerByUserId(userIdClaim).Result;
+        Player player = _playerService.GetPlayerByUserId(userIdClaim).GetAwaiter().GetResult();
+        
+        if(player is null)
+        {
+            throw new Exception("Player not found");
+        }
 
         return player;
     }
@@ -110,7 +131,7 @@ public class AuthenticationService
         return user;
     }
 
-    private static string GenerateKey()
+    public static string GenerateKey()
     {
         using (var rng = RandomNumberGenerator.Create())
         {

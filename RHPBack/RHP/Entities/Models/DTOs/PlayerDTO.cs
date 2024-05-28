@@ -10,6 +10,6 @@ public class PlayerDTO
     public DateTime lastLoggedIn { get; set; }
     public required string Name { get; set; }
     public int[]? HallIds { get; set; }
-    public List<ContactDTO> Contacts { get; set; }
+    public List<Contact> Contacts { get; set; }
     public required string Email { get; set; }
 }

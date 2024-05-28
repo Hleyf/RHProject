@@ -22,6 +22,11 @@ namespace RHP.API.Services
         {
             Player player = await _playerRepository.GetByIdAsync(id);
 
+            if (player is null)
+            {
+                throw new Exception("Player not found");
+            }
+
             return _mapper.Map<PlayerDTO>(player);
         }
 
@@ -73,6 +78,11 @@ namespace RHP.API.Services
                 throw new Exception("Player not found");
             }
             return player;
+        }
+
+        public async Task<string> GetPlayerNameByUserId(string userId)
+        {
+            return  await _playerRepository.GetPlayerNameByUserId(userId);
         }
     }
 }

@@ -56,7 +56,7 @@ namespace RHP.Data
             
 
             modelBuilder.Entity<ContactRequest>().Property<int>("FromId");
-            modelBuilder.Entity<ContactRequest>().Property<int>("ToId");
+            modelBuilder.Entity<ContactRequest>().Property<int>("ToUserId");
 
             modelBuilder.Entity<ContactRequest>()
                 .HasOne(cr => cr.From)
@@ -70,7 +70,7 @@ namespace RHP.Data
                 .HasOne(cr => cr.To)
                 .WithMany()
                 .HasConstraintName("FK_UserTo")
-                .HasForeignKey("ToId")
+                .HasForeignKey("ToUserId")
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
         }

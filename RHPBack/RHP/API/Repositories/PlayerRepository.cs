@@ -56,5 +56,18 @@ namespace RHP.API.Repositories
 
             return player;
         }
+
+        internal async Task<string>GetPlayerNameByUserId(string userId)
+        {
+            string? name = await _context.Player
+                .Where(p => p.User.Id.Equals(userId))
+                .Select(p => p.Name)
+                .FirstOrDefaultAsync();
+
+            if (name is null) { 
+                throw new Exception("Player not found");
+            }
+            return name;
+        }
     }
 }

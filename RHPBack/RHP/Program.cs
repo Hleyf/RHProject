@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using RHP.API.Hubs;
 using RHP.API.Services;
 using RHP.Data;
 using RHP.Entities.Models;
@@ -15,6 +16,7 @@ internal class Program
         ConfigureDatabase(builder);
         ConfigureServices(builder);
         ConfigureAuthentication(builder);
+        ConfigureSignalR(builder);
         ConfigureCors(builder);
 
         var app = builder.Build();
@@ -22,8 +24,20 @@ internal class Program
         await MigrateDatabase(app);
 
         ConfigurePipeline(app);
+        MapHubs(app);
 
         app.Run();
+    }
+
+    private static void MapHubs(WebApplication app)
+    {
+        app.MapHub<ContactHub>("hub/contacts");
+    }
+
+    private static void ConfigureSignalR(WebApplicationBuilder builder)
+    {
+        builder.Services.AddSignalR();
+
     }
 
     private static void ConfigureDatabase(WebApplicationBuilder builder)
@@ -122,7 +136,8 @@ internal class Program
                     {
                         Email = "admin@admin.com",
                         Role = UserRole.Admin,
-                        Password = BCrypt.Net.BCrypt.HashPassword("admin")
+                        Password = BCrypt.Net.BCrypt.HashPassword("admin"),
+                        lastLogin = DateTime.Now,
                     };
 
                     context.User.Add(adminUser);

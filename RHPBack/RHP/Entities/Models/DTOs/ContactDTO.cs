@@ -1,6 +1,6 @@
 ﻿namespace RHP.Entities.Models.DTOs
 {
-    public class ContactDTO
+    public class Contact
     {
         public string UserId { get; set; }
         public string Name { get; set; }
