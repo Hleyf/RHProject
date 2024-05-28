@@ -4,7 +4,7 @@ namespace RHP.Data
 {
     public static class DbInitialiser
     {
-        public static void Initialize(ApplicationDbContext context)
+        public static void SeedDb(ApplicationDbContext context)
         {
             context.Database.EnsureCreated();
 
@@ -54,6 +54,29 @@ namespace RHP.Data
                 context.Hall.Add(hall);
             }
 
+            context.SaveChanges();
+        }
+
+        public static void SeedAdminUser(ApplicationDbContext context)
+        {
+            var adminUser = new User
+            {
+                Email = "admin@admin.com",
+                Role = UserRole.Admin,
+                Password = BCrypt.Net.BCrypt.HashPassword("admin"),
+                lastLogin = DateTime.Now,
+            };
+
+            context.User.Add(adminUser);
+            context.SaveChanges();
+
+            Player adminPlayer = new Player
+            {
+                Name = "Admin",
+                User = adminUser,
+            };
+
+            context.Player.Add(adminPlayer);
             context.SaveChanges();
         }
     }

@@ -4,7 +4,6 @@ using Microsoft.IdentityModel.Tokens;
 using RHP.API.Hubs;
 using RHP.API.Services;
 using RHP.Data;
-using RHP.Entities.Models;
 using System.Reflection;
 
 internal class Program
@@ -132,25 +131,8 @@ internal class Program
 
                 if (!context.User.Any())
                 {
-                    var adminUser = new User
-                    {
-                        Email = "admin@admin.com",
-                        Role = UserRole.Admin,
-                        Password = BCrypt.Net.BCrypt.HashPassword("admin"),
-                        lastLogin = DateTime.Now,
-                    };
-
-                    context.User.Add(adminUser);
-                    await context.SaveChangesAsync();
-
-                    Player adminPlayer = new Player
-                    {
-                        Name = "Admin",
-                        User = adminUser,
-                    };
-
-                    context.Player.Add(adminPlayer);
-                    await context.SaveChangesAsync();
+                    DbInitialiser.SeedAdminUser(context);
+                    DbInitialiser.SeedDb(context);
                 }
             }
             catch (Exception ex)
