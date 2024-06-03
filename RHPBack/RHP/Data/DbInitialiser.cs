@@ -13,12 +13,12 @@ namespace RHP.Data
 
             for (int i = 1; i <= 25; i++)
             {
-                users.Add(new User { Id = $"#User{i}{new Random().Next(1000, 9999)}", Email = $"User{i}@user.com", Password = "1234", active = true, Status = UserStatus.Online, lastLogin = DateTime.Now });
+                users.Add(new User { Id = $"#User{i}{new Random().Next(1000, 9999)}", Email = $"User{i}@user.com", Password = BCrypt.Net.BCrypt.HashPassword("1234"), active = true, Status = UserStatus.Online, lastLogin = DateTime.Now });
             }
 
             foreach (var user in users)
             {
-                context.User.Add(user);
+                context.Users.Add(user);
             }
 
             context.SaveChanges();
@@ -30,7 +30,7 @@ namespace RHP.Data
             {
                 var player = new Player { Name = $"Player{i + 1}", User = users[i] };
                 players.Add(player);
-                context.Player.Add(player);
+                context.Players.Add(player);
             }
 
             context.SaveChanges();
@@ -51,7 +51,7 @@ namespace RHP.Data
                 }
 
                 halls.Add(hall);
-                context.Hall.Add(hall);
+                context.Halls.Add(hall);
             }
 
             context.SaveChanges();
@@ -61,13 +61,14 @@ namespace RHP.Data
         {
             var adminUser = new User
             {
+                Id = "#RootAdmin",
                 Email = "admin@admin.com",
                 Role = UserRole.Admin,
                 Password = BCrypt.Net.BCrypt.HashPassword("admin"),
                 lastLogin = DateTime.Now,
             };
 
-            context.User.Add(adminUser);
+            context.Users.Add(adminUser);
             context.SaveChanges();
 
             Player adminPlayer = new Player
@@ -76,7 +77,7 @@ namespace RHP.Data
                 User = adminUser,
             };
 
-            context.Player.Add(adminPlayer);
+            context.Players.Add(adminPlayer);
             context.SaveChanges();
         }
     }

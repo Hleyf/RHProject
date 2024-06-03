@@ -40,6 +40,14 @@ namespace RHP.API.Repositories
                     (EF.Property<string>(c, "RequestorId") == userId && EF.Property<string>(c, "RecipientId") == loggedUserId));
         }
 
+        public async Task<List<User>> GetContactUserListAsync (string userId)
+        {
+            return await _context.Contacts
+                .Where(c => EF.Property<string>(c, "RequestorId") == userId || EF.Property<string>(c, "RecipientId") == userId)
+                .Select(c => EF.Property<string>(c, "RequestorId") == userId ? c.Recipient : c.Requestor)
+                .ToListAsync();
+        }
+
         public void RemoveContactByUsersIds(string loggedUserId, string userId) 
         {
             Contact? contact = GetContactByUsersIds(loggedUserId, userId).Result;

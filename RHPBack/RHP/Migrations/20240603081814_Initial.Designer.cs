@@ -11,7 +11,7 @@ using RHP.Data;
 namespace RHP.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240529085533_Initial")]
+    [Migration("20240603081814_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -21,6 +21,24 @@ namespace RHP.Migrations
             modelBuilder
                 .HasAnnotation("ProductVersion", "8.0.1")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
+
+            modelBuilder.Entity("ContactUser", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("ContactsRequestorId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("ContactsRecipientId")
+                        .HasColumnType("varchar(255)");
+
+                    b.HasKey("UserId", "ContactsRequestorId", "ContactsRecipientId");
+
+                    b.HasIndex("ContactsRequestorId", "ContactsRecipientId");
+
+                    b.ToTable("ContactUser");
+                });
 
             modelBuilder.Entity("HallPlayer", b =>
                 {
@@ -59,36 +77,31 @@ namespace RHP.Migrations
 
                     b.HasIndex("PlayerId");
 
-                    b.ToTable("ActionLog");
+                    b.ToTable("ActionLogs");
                 });
 
-            modelBuilder.Entity("RHP.Entities.Models.ContactRequest", b =>
+            modelBuilder.Entity("RHP.Entities.Models.Contact", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("RequestorId")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("RecipientId")
+                        .HasColumnType("varchar(255)");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("FromUserId")
-                        .IsRequired()
-                        .HasColumnType("varchar(255)");
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<string>("ToUserId")
-                        .IsRequired()
-                        .HasColumnType("varchar(255)");
+                    b.HasKey("RequestorId", "RecipientId");
 
-                    b.HasKey("Id");
+                    b.HasIndex("RecipientId");
 
-                    b.HasIndex("FromUserId");
-
-                    b.HasIndex("ToUserId");
-
-                    b.ToTable("ContactRequest");
+                    b.ToTable("Contacts");
                 });
 
             modelBuilder.Entity("RHP.Entities.Models.Dice", b =>
@@ -110,7 +123,7 @@ namespace RHP.Migrations
 
                     b.HasIndex("RollId");
 
-                    b.ToTable("Dice");
+                    b.ToTable("Dices");
                 });
 
             modelBuilder.Entity("RHP.Entities.Models.Hall", b =>
@@ -133,7 +146,7 @@ namespace RHP.Migrations
 
                     b.HasIndex("GMId");
 
-                    b.ToTable("Hall");
+                    b.ToTable("Halls");
                 });
 
             modelBuilder.Entity("RHP.Entities.Models.Player", b =>
@@ -158,7 +171,7 @@ namespace RHP.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Player");
+                    b.ToTable("Players");
                 });
 
             modelBuilder.Entity("RHP.Entities.Models.Roll", b =>
@@ -188,7 +201,7 @@ namespace RHP.Migrations
 
                     b.HasIndex("PlayerId");
 
-                    b.ToTable("Roll");
+                    b.ToTable("Rolls");
                 });
 
             modelBuilder.Entity("RHP.Entities.Models.User", b =>
@@ -213,7 +226,7 @@ namespace RHP.Migrations
                     b.Property<bool>("active")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<DateTime?>("lastLogin")
+                    b.Property<DateTime>("lastLogin")
                         .HasColumnType("datetime(6)");
 
                     b.Property<bool>("loggedIn")
@@ -221,22 +234,22 @@ namespace RHP.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("User");
+                    b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("UserUser", b =>
+            modelBuilder.Entity("ContactUser", b =>
                 {
-                    b.Property<string>("ContactsId")
-                        .HasColumnType("varchar(255)");
+                    b.HasOne("RHP.Entities.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("varchar(255)");
-
-                    b.HasKey("ContactsId", "UserId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserUser");
+                    b.HasOne("RHP.Entities.Models.Contact", null)
+                        .WithMany()
+                        .HasForeignKey("ContactsRequestorId", "ContactsRecipientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("HallPlayer", b =>
@@ -273,25 +286,23 @@ namespace RHP.Migrations
                     b.Navigation("Player");
                 });
 
-            modelBuilder.Entity("RHP.Entities.Models.ContactRequest", b =>
+            modelBuilder.Entity("RHP.Entities.Models.Contact", b =>
                 {
-                    b.HasOne("RHP.Entities.Models.User", "FromUser")
-                        .WithMany("SentContactRequests")
-                        .HasForeignKey("FromUserId")
+                    b.HasOne("RHP.Entities.Models.User", "Recipient")
+                        .WithMany()
+                        .HasForeignKey("RecipientId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_UserFrom");
+                        .IsRequired();
 
-                    b.HasOne("RHP.Entities.Models.User", "ToUser")
-                        .WithMany("ReceivedContactRequests")
-                        .HasForeignKey("ToUserId")
+                    b.HasOne("RHP.Entities.Models.User", "Requestor")
+                        .WithMany()
+                        .HasForeignKey("RequestorId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("FK_UserTo");
+                        .IsRequired();
 
-                    b.Navigation("FromUser");
+                    b.Navigation("Recipient");
 
-                    b.Navigation("ToUser");
+                    b.Navigation("Requestor");
                 });
 
             modelBuilder.Entity("RHP.Entities.Models.Dice", b =>
@@ -343,21 +354,6 @@ namespace RHP.Migrations
                     b.Navigation("Player");
                 });
 
-            modelBuilder.Entity("UserUser", b =>
-                {
-                    b.HasOne("RHP.Entities.Models.User", null)
-                        .WithMany()
-                        .HasForeignKey("ContactsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("RHP.Entities.Models.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("RHP.Entities.Models.Hall", b =>
                 {
                     b.Navigation("Rolls");
@@ -371,10 +367,6 @@ namespace RHP.Migrations
             modelBuilder.Entity("RHP.Entities.Models.User", b =>
                 {
                     b.Navigation("Player");
-
-                    b.Navigation("ReceivedContactRequests");
-
-                    b.Navigation("SentContactRequests");
                 });
 #pragma warning restore 612, 618
         }

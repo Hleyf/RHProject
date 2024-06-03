@@ -10,7 +10,7 @@ namespace RHP.Entities.Interfaces
         T[] GetByIdWithIncludes(int[] id);
         Task<T> GetByIdAsync(int id);
         Task<T[]> GetByIdWithIncludesAsync(int[] id);
-        bool Remove(int id);
+        void Remove(int id);
         void Add(T sender);
         void Update(T sender);
 

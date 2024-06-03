@@ -20,7 +20,7 @@ internal class Program
 
         var app = builder.Build();
 
-        await MigrateDatabase(app);
+        MigrateDatabase(app);
 
         ConfigurePipeline(app);
         MapHubs(app);
@@ -117,7 +117,7 @@ internal class Program
         });
     }
 
-    private static async Task MigrateDatabase(WebApplication app)
+    private static void MigrateDatabase(WebApplication app)
     {
         using (var scope = app.Services.CreateScope())
         {
@@ -129,7 +129,7 @@ internal class Program
 
                 context.Database.Migrate();
 
-                if (!context.User.Any())
+                if (!context.Users.Any())
                 {
                     DbInitialiser.SeedAdminUser(context);
                     DbInitialiser.SeedDb(context);

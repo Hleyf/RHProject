@@ -31,38 +31,6 @@ namespace RHP.API.Repositories
             return _context.Users.FirstOrDefault(p => p.Email == email);
         }
 
-        public async Task<List<ContactDTO>> GetContacts(string userId)
-        {
-            return await _context.Users
-                .Where(u => u.Id == userId)
-                .SelectMany(u => u.Contacts)
-                .OrderByDescending(u => u.Status == UserStatus.Online)
-                .ThenByDescending(u => u.lastLogin)
-                .Select(u => new ContactDTO
-                {
-                    UserId = u.Id,
-                    Email = u.Email,
-                    Status = u.Status,
-                    loggedIn = u.loggedIn,
-                    lastLogin = u.lastLogin!.Value
-                })
-                .ToListAsync();
-        }
-
-        //public async Task<Contact?> GetContact(string id)
-        //{
-        //    return await _context.Users
-        //        .Where(u => u.Id == id)
-        //        .Select(u => new ContactDTO
-        //        {
-        //            UserId = u.Id,
-        //            Email = u.Email,
-        //            Status = u.Status,
-        //            loggedIn = u.loggedIn,
-        //            lastLogin = u.lastLogin!.Value
-        //        })
-        //        .FirstOrDefaultAsync();
-        //}
         internal async Task CreateUser(User user)
         {
             _context.Users.Add(user);

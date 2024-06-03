@@ -10,14 +10,14 @@ namespace RHP.API.Hubs
     public class ContactHub : Hub<IContact>
     {
         private readonly AuthenticationService _authenticationService;
-        private readonly ContactService _contactService;
+        private readonly ContactRepository _contactRepository;
         private readonly PlayerService _playerService;
         private readonly UserRepository _userRepository;
 
-        public ContactHub(AuthenticationService authenticationService, ContactService contactService, PlayerService playerService, UserRepository userRepository) 
+        public ContactHub(AuthenticationService authenticationService, ContactRepository contactRepository, PlayerService playerService, UserRepository userRepository) 
         {
             _authenticationService = authenticationService;
-            _contactService = contactService;
+            _contactRepository = contactRepository;
             _playerService = playerService;
             _userRepository = userRepository;
         }
@@ -47,12 +47,12 @@ namespace RHP.API.Hubs
 
         internal async Task ContactStatusChanged(string userId)
         {
-            Player player = await _playerService.GetPlayerByUserId(userId);
+            User loggedUser = await _userRepository.GetByUserId(userId);
 
-            if (player.User.loggedIn && player.User.Status != UserStatus.Offline) 
-            { 
+            if (loggedUser.loggedIn && loggedUser.Status.Equals(UserStatus.Online)) 
+            {
                 // Get the user's contacts
-                List<User> contacts = player.User.Contacts;
+                List<User> contacts = await _contactRepository.GetContactUserListAsync(userId);
 
                 //Get the user's player name
                 string name = await _playerService.GetPlayerNameByUserId(userId);
@@ -64,9 +64,9 @@ namespace RHP.API.Hubs
                 };
 
                 // Notify each contact
-                foreach (var contact in contacts)
+                foreach (var user in contacts)
                 {
-                    if (contact.loggedIn)
+                    if (user.loggedIn && user.Status.Equals(UserStatus.Online))
                     {
                         //Notice we are only notifiying the contacts that are logged in, the updated contact list needs to be fetched by the client
                         await Clients.Group(userId).ContactStatusChanged(contactUpdate);
