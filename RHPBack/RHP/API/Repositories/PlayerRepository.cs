@@ -16,14 +16,14 @@ namespace RHP.API.Repositories
          
         public Player? GetByName(string name)
         {
-            return _context.Player
+            return _context.Players
                 .Include(p => p.Halls)
                 .FirstOrDefault(p => p.Name.Equals(name));
         }
 
         public async Task<IEnumerable<Player>> GetAllActive()
         {
-            return await _context.Player
+            return await _context.Players
                .Include(p => p.Halls)
                .Include(p => p.User)
                .Where(p => p.User.active.Equals(true)).ToArrayAsync();
@@ -31,7 +31,7 @@ namespace RHP.API.Repositories
 
         internal async Task<Player> GetPlayerByName(string name)
         {
-            Player? player =  await _context.Player
+            Player? player =  await _context.Players
                 .Include(p => p.Halls)
                 .FirstOrDefaultAsync(p => p.Name.Equals(name));
 
@@ -45,7 +45,7 @@ namespace RHP.API.Repositories
 
         internal async Task<Player> GetPlayerByUserId(string userId)
         {
-            Player? player = await _context.Player
+            Player? player = await _context.Players
                 .Include(u => u.User)
                 .FirstOrDefaultAsync(u => u.User.Id.Equals(userId));
 
@@ -59,7 +59,7 @@ namespace RHP.API.Repositories
 
         internal async Task<string>GetPlayerNameByUserId(string userId)
         {
-            string? name = await _context.Player
+            string? name = await _context.Players
                 .Where(p => p.User.Id.Equals(userId))
                 .Select(p => p.Name)
                 .FirstOrDefaultAsync();

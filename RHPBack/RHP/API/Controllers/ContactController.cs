@@ -31,31 +31,31 @@ namespace RHP.API.Controllers
         }
 
         [HttpGet("{Id}")]
-        public IActionResult GetContact(string id)
+        public IActionResult GetContact(int id)
         {
             var contact = _contactService.GetContact(id);
             return Ok(contact);
         }
 
-        [HttpGet("requests")]
-        public async Task<IActionResult> GetContactRequests(ContactRequestType type)
-        {
-            IEnumerable<ContactRequestDTO> requests;
-            switch (type)
-            {
-                case ContactRequestType.Send:
-                    requests = await _contactService.GetSentContactRequests();
-                    return Ok(requests);
-                    break;
-                case ContactRequestType.Receive:
-                    requests = await _contactService.GetReceivedContactRequests();
-                    return Ok(requests);
-                    break;
-                default:
-                    return BadRequest();
-            }
+        //[HttpGet("requests")]
+        //public async Task<IActionResult> GetContactRequests(ContactRequestType type)
+        //{
+        //    IEnumerable<ContactRequestDTO> requests;
+        //    switch (type)
+        //    {
+        //        case ContactRequestType.Send:
+        //            requests = await _contactService.GetSentContactRequests();
+        //            return Ok(requests);
+        //            break;
+        //        case ContactRequestType.Receive:
+        //            requests = await _contactService.GetReceivedContactRequests();
+        //            return Ok(requests);
+        //            break;
+        //        default:
+        //            return BadRequest();
+        //    }
             
-        }
+        //}
 
         [HttpPost]
         public async Task<IActionResult> RequestContact(ContactRequestDTO contactRequest)
@@ -65,10 +65,17 @@ namespace RHP.API.Controllers
         }
 
         [HttpDelete("/remove/{Id}")]
-        public async Task<IActionResult> RemoveContact(string id)
+        public async Task<IActionResult> RemoveContact(int id)
         {
-            await _contactService.RemoveContact(id);
+            await _contactService.GetContact(id);
             return NoContent() ;
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateContactRequest(ContactRequestDTO contactRequest)
+        {
+            await _contactService.UpdateContactRequest(contactRequest);
+            return Ok();
         }
 
     }

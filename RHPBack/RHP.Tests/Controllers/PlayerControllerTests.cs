@@ -26,7 +26,7 @@ namespace RHP.UnitTests
                 Password = passwordHash,
                 lastLogin = DateTime.Now
             };
-            _context.Player.Add(new Player
+            _context.Players.Add(new Player
             {
                 Name = "Test Player",
                 User = user,

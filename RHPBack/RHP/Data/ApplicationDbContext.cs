@@ -13,13 +13,13 @@ namespace RHP.Data
         {}
 
         //Models
-        public DbSet<User> User { get; set; }
-        public DbSet<Player> Player { get; set; }
-        public DbSet<Hall> Hall { get; set; }
-        public DbSet<Roll> Roll { get; set; }
-        public DbSet<Dice> Dice { get; set; }
-        public DbSet<ActionLog> ActionLog { get; set; }
-        public DbSet<ContactRequest> ContactRequest { get; set; }
+        public DbSet<User> Users { get; set; }
+        public DbSet<Player> Players { get; set; }
+        public DbSet<Hall> Halls { get; set; }
+        public DbSet<Roll> Rolls { get; set; }
+        public DbSet<Dice> Dices { get; set; }
+        public DbSet<ActionLog> ActionLogs { get; set; }
+        public DbSet<Contact> Contacts { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -32,12 +32,12 @@ namespace RHP.Data
                 .HasIndex(p => p.Name)
                 .IsUnique();
 
-            modelBuilder.Entity<Player>().Property<int>("UserId");
+            modelBuilder.Entity<Player>().Property<string>("UserId");
 
             modelBuilder.Entity<Player>()
                 .HasOne(p => p.User)
                 .WithOne(u => u.Player)
-                .HasForeignKey("UserId")
+                .HasForeignKey<Player>("UserId") //Type is necessary because it is a one to one relationship
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
              
@@ -53,26 +53,30 @@ namespace RHP.Data
                 .HasConstraintName("FK_GM")
                 .HasForeignKey("GMId")
                 .IsRequired();
+
+            modelBuilder.Entity<Contact>().Property<string>("RequestorId");
+            modelBuilder.Entity<Contact>().Property<string>("RecipientId");
+
+            modelBuilder.Entity<Contact>()
+                .HasKey("RequestorId", "RecipientId");
             
-
-            modelBuilder.Entity<ContactRequest>().Property<int>("FromId");
-            modelBuilder.Entity<ContactRequest>().Property<int>("ToUserId");
-
-            modelBuilder.Entity<ContactRequest>()
-                .HasOne(cr => cr.From)
+            modelBuilder.Entity<Contact>()
+                .HasOne(c => c.Requestor)
                 .WithMany()
-                .HasConstraintName("FK_UserFrom")
-                .HasForeignKey("FromId")
+                .HasForeignKey("RequestorId")
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<ContactRequest>()
-                .HasOne(cr => cr.To)
+            modelBuilder.Entity<Contact>()
+                .HasOne(c => c.Recipient)
                 .WithMany()
-                .HasConstraintName("FK_UserTo")
-                .HasForeignKey("ToUserId")
+                .HasForeignKey("RecipientId")
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Contact>()
+                .Property(f => f.Status)
+                .HasConversion<int>();
         }
     }
 }

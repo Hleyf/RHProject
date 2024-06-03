@@ -68,18 +68,16 @@ namespace RHP.API.Repositories
             return await _context.Set<T>().Where(entity => ids.Contains((entity as IBaseEntity)!.Id)).ToArrayAsync();
         }
 
-        public bool Remove(int id)
+        public virtual void Remove(int id)
         {
             var entity = _context.Find<T>(id);
-            if (entity == null)
+            if (entity is null)
             {
-                return false;
+                throw new Exception($"Entity: {typeof(T).Name} with id: {id} not found");
             }
 
             _context.Remove(entity);
             var changes = _context.SaveChanges();
-
-            return changes > 0;
         }
 
         public T Select(Expression<Func<T, bool>> predicate)

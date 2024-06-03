@@ -26,10 +26,10 @@ namespace RHP.UnitTests
 
         private void SetupTestData()
         {
-            _context.Player.AddRange(
-                new Player { Name = "Player1", User = new User { Email = "test1@Email.com", Password = "Password", active = true } },
-                new Player { Name = "Player2", User = new User { Email = "test2@Email.com", Password = "Password", active = true } },
-                new Player { Name = "Player3", User = new User { Email = "test3@Email.com", Password = "Password", active = true } }
+            _context.Players.AddRange(
+                new Player { Name = "Player1", User = new User { Email = "test1@Email.com", Password = "Password", active = true, lastLogin = DateTime.Now } },
+                new Player { Name = "Player2", User = new User { Email = "test2@Email.com", Password = "Password", active = true, lastLogin = DateTime.Now } },
+                new Player { Name = "Player3", User = new User { Email = "test3@Email.com", Password = "Password", active = true, lastLogin = DateTime.Now } }
             );
             _context.SaveChanges();
         }
@@ -37,12 +37,12 @@ namespace RHP.UnitTests
         [Fact]
         public void Add_PlayerIsNotNull_AddsPlayerToContext()
         {
-            var player = new Player { Name = "Player4", User = new User { Email = "test4@Email.com", Password = "Password", active = true } };
+            var player = new Player { Name = "Player4", User = new User { Email = "test4@Email.com", Password = "Password", active = true, lastLogin = DateTime.Now } };
 
             _playerRepo.Add(player);
             _context.SaveChanges();
 
-            Assert.Contains(player, _context.Player);
+            Assert.Contains(player, _context.Players);
         }
 
         [Fact]
@@ -69,18 +69,18 @@ namespace RHP.UnitTests
             _playerRepo.Remove(player.Id);
             _context.SaveChanges();
 
-            Assert.DoesNotContain(player, _context.Player);
+            Assert.DoesNotContain(player, _context.Players);
         }
 
         [Fact]
         public void Update_PlayerExists_UpdatesPlayer()
         {
-            var player = _context.Player.First(p => p.Id == 1);
+            var player = _context.Players.First(p => p.Id == 1);
             player.Name = "Player10";
             _playerRepo.Update(player);
             _context.SaveChanges();
 
-            Assert.Equal("Player10", _context.Player.First(p => p.Id == 1).Name);
+            Assert.Equal("Player10", _context.Players.First(p => p.Id == 1).Name);
         }
 
         [Fact]
@@ -127,10 +127,9 @@ namespace RHP.UnitTests
         }
 
         [Fact]
-        public void GetAllActive_ReturnsActivePlayers()
+        public async void GetAllActive_ReturnsActivePlayers()
         {
-            var players = _playerRepo.GetAllActive();
-
+            var players = await _playerRepo.GetAllActive();
             Assert.Equal(3, players.Count());
         }
     }

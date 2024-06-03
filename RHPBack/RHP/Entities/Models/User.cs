@@ -1,5 +1,6 @@
 ﻿using RHP.Entities.Interfaces;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RHP.Entities.Models
 {
@@ -31,12 +32,11 @@ namespace RHP.Entities.Models
 
         public bool loggedIn { get; set; }
 
-        public required DateTime? lastLogin { get; set; }
+        public required DateTime lastLogin { get; set; }
 
         public UserStatus Status { get; set; }
 
-        public List<User> Contacts { get; set; } = [];
-        public List<ContactRequest> ContactRequests { get; set; } = []; 
+        public ICollection<Contact> Contacts { get; set; }
 
         public override string? ToString() => Email;
 

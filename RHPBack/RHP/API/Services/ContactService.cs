@@ -9,52 +9,41 @@ namespace RHP.API.Services
     public class ContactService
     {
         private readonly UserRepository _userRepository;
+        private readonly ContactRepository _contactRepository;
         private readonly AuthenticationService _authenticationService;
-        private readonly ContactRequestRepository _contactRequestRepository;
         private readonly ContactHub _contactHub;
         private readonly IMapper _mapper;
-        public ContactService(UserRepository userRepository, AuthenticationService authenticationService, ContactRequestRepository contactRequestRepository, ContactHub contactHub , IMapper mapper)
+        public ContactService(UserRepository userRepository, AuthenticationService authenticationService, ContactHub contactHub , IMapper mapper)
         {
             _userRepository = userRepository;
             _authenticationService = authenticationService;
-            _contactRequestRepository = contactRequestRepository;
             _contactHub = contactHub;
             _mapper = mapper;
         }
 
-        public async Task<List<Contact>> GetContacts()
+        public Task<List<ContactDTO>> GetContacts()
         {
             string UserId = _authenticationService.GetLoggedUserId();
-            return await _userRepository.GetContacts(UserId);
+            return _contactRepository.GetUserContactsDTO(UserId);
         }
 
-        internal async Task<Contact> GetContact(string id)
+        public async Task<ContactDTO> GetContact(int id)
         {
-            var contact = await _userRepository.GetContact(id);
-
+            Contact contact = await _contactRepository.GetByIdAsync(id);
+            
             if(contact is null)
             {
-                throw new Exception("Contact not found");
+                throw new Exception($"Contact {id} not found");
             }
 
-            return contact;
-
-
+            return _mapper.Map<ContactDTO>(contact);
         }
 
-        internal async Task RemoveContact(string id)
+        internal void RemoveContact(int id)
         {
             string UserId = _authenticationService.GetLoggedUserId();
-            
-            //The contact needs to be removed on both ends. 
-            User loggedUser = await _userRepository.GetByUserId(UserId);
-            User contact = await _userRepository.GetByUserId(id);
 
-            loggedUser.Contacts.Remove(contact);
-            contact.Contacts.Remove(loggedUser);
-
-            await _userRepository.SaveChangesAsync();
-
+            _contactRepository.Remove(id);            
 
         }
 
@@ -65,47 +54,55 @@ namespace RHP.API.Services
 
             ValidateContactRequest(fromUser, toUser);
 
-            ContactRequest contactRequest = CreateContactRequest(fromUser, toUser);
+            Contact contactRequest = CreateContactRequest(fromUser, toUser);
 
-            _contactRequestRepository.Add(contactRequest);
+            _contactRepository.Add(contactRequest);
 
             await NotifyContactHub(fromUser.Id, toUser.Id);
         }
 
-        internal async Task<List<ContactRequestDTO>> GetReceivedContactRequests()
+        internal async Task UpdateContactRequest(ContactRequestDTO dto)
         {
             string UserId = _authenticationService.GetLoggedUserId();
-            List<ContactRequest> requests = await _contactRequestRepository.GetAllAsyncByToUserId(UserId);
-            return _mapper.Map<List<ContactRequestDTO>>(requests);
-        }
+            Contact contact = _contactRepository.GetById(dto.Id);
 
-        internal async Task<List<ContactRequestDTO>> GetSentContactRequests()
-        {
-            string UserId = _authenticationService.GetLoggedUserId();
-            List<ContactRequest> requests = await _contactRequestRepository.GetAllAsyncByFromUserId(UserId);
-            return _mapper.Map<List<ContactRequestDTO>>(requests);
+            if (contact is null)
+            {
+                throw new Exception($"Contact {dto.Id} not found");
+            }
+            
+            if (dto.Status == ContactStatus.Accepted && contact.Recipient.Id != UserId)
+            {
+                throw new Exception("You can't accept a contact request that is not for you");
+            }
+
+            contact.Status = dto.Status;
+
+            _contactRepository.Update(contact);
+
+            await NotifyContactHub(contact.Requestor.Id, contact.Recipient.Id);
         }
 
         private void ValidateContactRequest(User fromUser, User toUser)
         {
-            if (fromUser.Contacts.Contains(toUser))
-            {
-                throw new Exception("Contact already exists");
-            }
-
             if (fromUser.Id == toUser.Id)
             {
                 throw new Exception("You can't add yourself as a contact");
             }
+
+            if (_contactRepository.ContactExist(fromUser.Id, toUser.Id))
+            {
+                throw new Exception("Contact already exists");
+            }
         }
 
-        private ContactRequest CreateContactRequest(User fromUser, User toUser)
+        private Contact CreateContactRequest(User fromUser, User toUser)
         {
-            return new ContactRequest
+            return new Contact
             {
-                From = fromUser,
-                To = toUser,
-                Status = ContactRequestStatus.Pending,
+                Requestor = fromUser,
+                Recipient = toUser,
+                Status = ContactStatus.Pending,
                 CreatedAt = DateTime.Now
             };
         }

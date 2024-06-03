@@ -23,10 +23,11 @@ namespace RHP.UnitTests
         {
             // Add the User to the database
             var passwordHash = BCrypt.Net.BCrypt.HashPassword("Password");
-            _context.User.Add(new User
+            _context.Users.Add(new User
             {
                 Email = "test@example.com",
-                Password = passwordHash
+                Password = passwordHash,
+                lastLogin = DateTime.Now
 
             });
             _context.SaveChanges();
