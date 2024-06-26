@@ -2,14 +2,15 @@ import { Component } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { AuthService } from './components/auth/auth.service';
 import { NavbarComponent } from './shared/components/navbar/navbar.component';
-import { INavToggle } from './models/sideNav.model';
+import { ISideElementToggle } from './models/sideNav.model';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
+import { ContactListComponent } from './shared/components/contacts/contact-list.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, NavbarComponent, CommonModule, HttpClientModule  ],
+  imports: [RouterOutlet, NavbarComponent, CommonModule, HttpClientModule, ContactListComponent  ],
   providers: [
     AuthService,
   ],
@@ -37,7 +38,7 @@ export class AppComponent {
     return url === '/login' || url === '/user-create';
   }
 
-  onToggleNav(data: INavToggle): void {
+  onToggleNav(data: ISideElementToggle): void {
    this.isNavCollapsed = data.collapsed;
    this.screenWidth = data.screenWidth;
   }

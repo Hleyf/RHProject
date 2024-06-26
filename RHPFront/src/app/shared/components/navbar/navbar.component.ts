@@ -3,7 +3,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { RouterLink, RouterModule } from '@angular/router';
 import { FaIconLibrary, FontAwesomeModule } from '@fortawesome/angular-fontawesome'
 import { faBeer, faHome, faUsers } from '@fortawesome/free-solid-svg-icons';
-import { INavToggle, INavData } from '../../../models/sideNav.model';
+import { ISideElementToggle, INavData } from '../../../models/sideNav.model';
 
 
 
@@ -16,7 +16,7 @@ import { INavToggle, INavData } from '../../../models/sideNav.model';
 })
 export class NavbarComponent {
 
-  @Output() onToggleNav: EventEmitter<INavToggle> = new EventEmitter<INavToggle>();
+  @Output() onToggleNav: EventEmitter<ISideElementToggle> = new EventEmitter<ISideElementToggle>();
 
   title = 'Angular';
   screenWidth = 0;

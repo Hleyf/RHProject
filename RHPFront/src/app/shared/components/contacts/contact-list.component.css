@@ -1,16 +1,17 @@
-.navbar {
+.contacts-bar {
   background: #8b68eb;
   transition: width 0.5s ease;
-  position: fixed;
   z-index: 1;
+  position: absolute;
   top: 0;
-  width: 5rem;
+  right: 0;
+  width: 5rem; 
   height: 100%;
   box-shadow: 0.063rem 0 1.25rem 0 #301c66;
 }
 
-.navbar-collapsed {
-  width: 16.5rem;
+.contacts-collapsed {
+  width: 20rem;
 }
 
 .logo-container {
@@ -34,14 +35,14 @@
 }
 
 .logo-text {
-  margin-left: 1.5rem;
+  margin-right: 1.5rem;
   font-size: 24px;
   font-weight: 700;
   color: #fff;
 }
 
 .btn-close {
-  margin-left: auto;
+  margin-right: auto;
   cursor: pointer;
   width: 2rem;
   height: 2rem;

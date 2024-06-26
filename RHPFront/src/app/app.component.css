@@ -1,21 +1,33 @@
-.content{
-    width: calc(100% - 5rem); 
-    height: 100vh;
-    margin-left: 5rem;
-    z-index: 0;
-    position: relative;
-    top: 0;
-    transition: all 0.5s ease;
-    background: #fff;
-    padding: 3rem;
-
+.app-container {
+    display: flex;
+    flex-direction: row;
+    width: 2040px;
+    height: 1200px;
+    margin: auto;
+    overflow: hidden;
 }
+
 .content-collapsed{
-    width: calc(100% - 16.5rem);
-    margin-left: 16.5rem;
+    width: calc(100% - 20rem);
 }
 
 .content-collapsed-mobile {
     width: calc(100% - 5rem);
-    margin-left: 5rem;
 }
+.content {
+    flex-grow: 1;
+    width: calc(100% - 16.5rem);
+    background: #fff;
+    padding: 0;
+}
+
+.contacts {
+    width: 20rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+    overflow: auto;
+    position: relative;
+}
+ 

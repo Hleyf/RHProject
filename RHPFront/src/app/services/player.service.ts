@@ -3,7 +3,7 @@ import { IPlayer } from '../models/player.model';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { API_URL } from '../shared/constants';
 import { catchError, firstValueFrom } from 'rxjs';
-import { IContact } from '../components/contacts/contact-list/contact-list.component';
+import { IContact } from '../shared/components/contacts/contact-list.component';
 
 @Injectable({
   providedIn: 'root'

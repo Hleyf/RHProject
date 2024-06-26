@@ -1,6 +1,6 @@
 import { IconDefinition } from "@fortawesome/free-solid-svg-icons";
 
-export interface INavToggle {
+export interface ISideElementToggle {
     screenWidth: number;
     collapsed: boolean;
   }
