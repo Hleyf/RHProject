@@ -3,7 +3,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { passwordValidator } from '../../../shared/password.validator';
 import { Router } from '@angular/router';
 import { PlayerService } from '../../../services/player.service';
-import { IPlayer } from '../../../models/player.model';
+import { IPlayerCreate } from '../../../models/player.model';
 
 @Component({
   selector: 'app-create-user',
@@ -29,7 +29,7 @@ export class CreateUserComponent implements OnInit {
   }
 
   onSubmit(): void {
-    const player: IPlayer = this.validatePlayerForm();     
+    const player: IPlayerCreate = this.validatePlayerForm();     
 
       this.service.createUser(player).then((status) => {
         if(status === 201) {
@@ -43,7 +43,7 @@ export class CreateUserComponent implements OnInit {
   }
   
 
-  validatePlayerForm(): IPlayer {
+  validatePlayerForm(): IPlayerCreate {
     if(this.form.valid) {
       return {
         name: this.form.controls.name.value!,
