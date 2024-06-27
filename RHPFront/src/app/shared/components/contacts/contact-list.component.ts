@@ -3,6 +3,7 @@ import { SearchInputComponent } from '../search-input/search-input.component';
 import { PlayerService } from '../../../services/player.service';
 import { ISideElementToggle } from '../../../models/sideNav.model';
 import { CommonModule } from '@angular/common';
+import { Contact, UserPlayer } from '../../../models/player.model';
 
 export interface IContact {
   id: number;
@@ -20,10 +21,13 @@ export interface IContact {
 })
 export class ContactListComponent {
   @Output() onToggleNav: EventEmitter<ISideElementToggle> = new EventEmitter<ISideElementToggle>();
+  
+  readonly player: Signal<UserPlayer | null> = this.service.player;
+  readonly contacts: Signal<Contact[]> = this.service.contactList;
+  
   screenWidth = 0;
   collapsed: boolean = true;
 
-  readonly entities: Signal<IContact[]> = this.service.contactList;
   constructor(private service: PlayerService) {
     this.service.getPlayerContacts();
   }
