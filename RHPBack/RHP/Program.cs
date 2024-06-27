@@ -1,10 +1,9 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using RHP.API.Hubs;
 using RHP.API.Services;
 using RHP.Data;
-using RHP.Entities.Models;
-using System.Data;
 using System.Reflection;
 
 internal class Program
@@ -13,44 +12,50 @@ internal class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        //Database connection
+        ConfigureDatabase(builder);
+        ConfigureServices(builder);
+        ConfigureAuthentication(builder);
+        ConfigureSignalR(builder);
+        ConfigureCors(builder);
+
+        var app = builder.Build();
+
+        MigrateDatabase(app);
+
+        ConfigurePipeline(app);
+        MapHubs(app);
+
+        app.Run();
+    }
+
+    private static void MapHubs(WebApplication app)
+    {
+        app.MapHub<ContactHub>("hub/contacts");
+    }
+
+    private static void ConfigureSignalR(WebApplicationBuilder builder)
+    {
+        builder.Services.AddSignalR();
+
+    }
+
+    private static void ConfigureDatabase(WebApplicationBuilder builder)
+    {
         var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
             options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
+    }
 
+    private static void ConfigureServices(WebApplicationBuilder builder)
+    {
         var services = builder.Services;
-
-        //Add all services to the DI container
         var assembly = Assembly.GetExecutingAssembly();
 
-
         services.AddAutoMapper(typeof(Program).Assembly);
-        services.AddScoped<IAuthenticationService, AuthenticationService>();
-        services.AddScoped<IUserService, UserService>();
-        services.AddScoped<IPlayerService, PlayerService>();
+        services.AddScoped<AuthenticationService>();
+        services.AddScoped<UserService>();
+        services.AddScoped<PlayerService>();
         services.AddScoped<HallService>();
-
-        //foreach (var type in assembly.GetTypes()
-        //    .Where(t => t.Namespace == "RHP.API.Services")
-        //    .Where(t => t.IsClass))
-        //{
-        //    var interfaces = type.GetInterfaces();
-        //    if(!interfaces.Length.Equals(0))
-        //    {
-        //        foreach (var @interface in interfaces)
-        //        {
-        //            services.AddScoped(@interface, type);
-        //        }
-
-        //    }else
-        //    {
-        //        services.AddScoped(type);
-
-        //    }
-
-        //}
-
-        // Add all repositories to the DI container
 
         foreach (var type in assembly.GetTypes()
             .Where(t => t.Namespace == "RHP.API.Repositories")
@@ -65,10 +70,16 @@ internal class Program
         {
             services.AddAutoMapper(type.Assembly);
         }
-        // Add AuthenticationService to the DI container
-        builder.Services.AddScoped<AuthenticationService>();
 
-        //JWT Authentication
+        services.AddScoped<AuthenticationService>();
+        services.AddControllers();
+        services.AddEndpointsApiExplorer();
+        services.AddSwaggerGen();
+        services.AddHttpContextAccessor();
+    }
+
+    private static void ConfigureAuthentication(WebApplicationBuilder builder)
+    {
         string keyString = AuthenticationService.GenerateKey();
         var key = Convert.FromBase64String(keyString);
 
@@ -90,30 +101,24 @@ internal class Program
             };
         });
         builder.Services.AddAuthorization();
+    }
 
-        builder.Services.AddControllers();
-        builder.Services.AddEndpointsApiExplorer();
-        builder.Services.AddSwaggerGen();
-        builder.Services.AddHttpContextAccessor();
-
-        //CORS Handling
+    private static void ConfigureCors(WebApplicationBuilder builder)
+    {
         builder.Services.AddCors(options =>
         {
             options.AddDefaultPolicy(
                 builder =>
                 {
-                   builder.WithOrigins("http://localhost:4200")
-                    .AllowAnyHeader()
-                    .AllowAnyMethod();
+                    builder.WithOrigins("http://localhost:4200")
+                     .AllowAnyHeader()
+                     .AllowAnyMethod();
                 });
         });
+    }
 
-        var app = builder.Build();
-
-
-        //Database migration
-        //Migrate and seed the database during startup
-
+    private static void MigrateDatabase(WebApplication app)
+    {
         using (var scope = app.Services.CreateScope())
         {
             var serviceProvider = scope.ServiceProvider;
@@ -124,26 +129,10 @@ internal class Program
 
                 context.Database.Migrate();
 
-                if (!context.User.Any())
+                if (!context.Users.Any())
                 {
-                    var adminUser = new User
-                    {
-                        Email = "admin@admin.com",
-                        Role = UserRole.Admin,
-                        Password = BCrypt.Net.BCrypt.HashPassword("admin")
-                    };
-
-                    context.User.Add(adminUser);
-                    await context.SaveChangesAsync();
-
-                    Player adminPlayer = new Player
-                    {
-                        Name = "Admin",
-                        User = adminUser
-                    };
-
-                    context.Player.Add(adminPlayer);
-                    await context.SaveChangesAsync();
+                    DbInitialiser.SeedAdminUser(context);
+                    DbInitialiser.SeedDb(context);
                 }
             }
             catch (Exception ex)
@@ -152,8 +141,10 @@ internal class Program
                 logger.LogError(ex, "An error occurred while seeding the database");
             }
         }
+    }
 
-        // Configure the HTTP request pipeline.
+    private static void ConfigurePipeline(WebApplication app)
+    {
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
@@ -161,17 +152,11 @@ internal class Program
         }
 
         app.UseCors();
-
-
         app.UseHttpsRedirection();
         app.UseStaticFiles();
         app.UseRouting();
-
         app.UseAuthentication();
         app.UseAuthorization();
-
         app.MapControllers();
-
-        app.Run();
     }
 }

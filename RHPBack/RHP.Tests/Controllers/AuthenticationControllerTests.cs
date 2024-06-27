@@ -1,53 +1,67 @@
-using Xunit;
-using Moq;
 using Microsoft.AspNetCore.Mvc;
 using RHP.Entities.Models.DTOs;
+using RHP.Tests.Setup;
+using Microsoft.Extensions.DependencyInjection;
+using RHP.Entities.Models;
+using RHP.Data;
 
 namespace RHP.UnitTests
 {
-    public class AuthenticationControllerTests
+    public class AuthenticationControllerTests: IClassFixture<TestSetup>
     {
-        private Mock<IAuthenticationService> authServiceMock;
         private AuthenticationController controller;
+        private readonly ApplicationDbContext _context;
 
-        public AuthenticationControllerTests()
+        public AuthenticationControllerTests(TestSetup setup)
         {
-            authServiceMock = new Mock<IAuthenticationService>();
-            controller = new AuthenticationController(authServiceMock.Object);
+            controller = setup.ServiceProvider.GetRequiredService<AuthenticationController>();
+            _context = setup.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
         }
+
+        private void AddTestUserToDatabase()
+        {
+            // Add the User to the database
+            var passwordHash = BCrypt.Net.BCrypt.HashPassword("Password");
+            _context.Users.Add(new User
+            {
+                Email = "test@example.com",
+                Password = passwordHash,
+                lastLogin = DateTime.Now
+
+            });
+            _context.SaveChanges();
+        }
+
 
         [Fact]
         public void Login_Should_Return_Valid_Token()
         {
-            var dto = new UserLoginDTO
+            AddTestUserToDatabase();
+            var dto = new UserLoginDTO 
             {
                 Email = "test@example.com",
-                Password = "password"
+                Password = "Password"
             };
-
-            var expectedToken = "validToken";
-
-            authServiceMock.Setup(a => a.Login(dto)).Returns(expectedToken);
 
             var result = controller.Login(dto);
 
-            var okResult = result as OkObjectResult;
-            var value = okResult.Value as dynamic;
-            Assert.NotNull(okResult);
-            Assert.Equal(200, okResult.StatusCode);
-            Assert.Equal(expectedToken, value);
+            var okResult = Assert.IsType<OkObjectResult>(result);
+            Assert.NotNull(okResult.Value);
+            Assert.IsType<string>(okResult.Value);
         }
 
         [Fact]
         public void Login_Should_Return_BadRequest_When_Invalid_Username()
         {
+            AddTestUserToDatabase();
+
             var dto = new UserLoginDTO
             {
                 Email = "invalid@example.com",
-                Password = "password"
+                Password = "Password"
             };
 
-            authServiceMock.Setup(a => a.Login(dto)).Throws(new Exception("Invalid username"));
 
             var result = controller.Login(dto);
 
@@ -60,20 +74,20 @@ namespace RHP.UnitTests
         [Fact]
         public void Login_Should_Return_BadRequest_When_Invalid_Password()
         {
+            AddTestUserToDatabase();
+
             var dto = new UserLoginDTO
             {
                 Email = "test@example.com",
                 Password = "invalidPassword"
             };
 
-            authServiceMock.Setup(a => a.Login(dto)).Throws(new Exception("Invalid password"));
-
             var result = controller.Login(dto);
 
             var badRequestResult = result as BadRequestObjectResult;
             Assert.NotNull(badRequestResult);
             Assert.Equal(400, badRequestResult.StatusCode);
-            Assert.Equal("Invalid password", badRequestResult.Value);
+            Assert.Equal("Invalid Password", badRequestResult.Value);
         }
     }
 }

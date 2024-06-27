@@ -1,0 +1,18 @@
+<nav class="navbar">
+        <div class="logo-container">
+            <a class="logo" href="#">Logo</a>
+        </div>
+         <div class="content">
+            <ul class="navbar-nav">
+                @for (item of navItems; track $index) {
+                    <li class="nav-item">
+                        <a class="navbar-link"
+                            [routerLink]="[item.url]"
+                            routerLinkActive="active"
+                            [routerLinkActiveOptions]="{exact: true}"
+                        >{{item.label}}</a>
+                    </li>
+                }
+            </ul>
+         </div>
+</nav>

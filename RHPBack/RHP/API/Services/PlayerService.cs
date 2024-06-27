@@ -1,26 +1,16 @@
 ﻿using AutoMapper;
 using RHP.API.Repositories;
 using RHP.Entities.Models;
-
 namespace RHP.API.Services
 {
-    public interface IPlayerService
-    {
-        void CreatePlayer(UserPlayerDTO dto);
-        PlayerDTO GetPlayer(int id);
-        IEnumerable<PlayerDTO> GetAllPlayers();
-        void UpdatePlayer(PlayerDTO playerDTO);
-        PlayerDTO GetPlayerById(int id);
-        PlayerDTO GetPlayerByName(string name);
-    }
-    public class PlayerService : IPlayerService
+    public class PlayerService
     {
         private readonly IMapper _mapper;
         private readonly PlayerRepository _playerRepository;
-        private readonly IUserService _userService;
+        private readonly UserService _userService;
         private readonly HallRepository _hallRepository;
 
-        public PlayerService(IMapper mapper, PlayerRepository playerRepository, IUserService userService, HallRepository hallRepository)
+        public PlayerService(IMapper mapper, PlayerRepository playerRepository, UserService userService, HallRepository hallRepository)
         {
             _mapper = mapper;
             _playerRepository = playerRepository;
@@ -28,24 +18,28 @@ namespace RHP.API.Services
             _hallRepository = hallRepository;
         }
 
-        public PlayerDTO GetPlayer(int id)
+        public async Task<PlayerDTO> GetPlayer(int id)
         {
-            Player player = _playerRepository.GetById(id);
+            Player player = await _playerRepository.GetByIdAsync(id);
+
+            if (player is null)
+            {
+                throw new Exception("Player not found");
+            }
 
             return _mapper.Map<PlayerDTO>(player);
         }
 
-        public IEnumerable<PlayerDTO> GetAllPlayers()
+        public async Task<IEnumerable<PlayerDTO>> GetAllPlayers()
         {
-            IEnumerable<Player> players = _playerRepository.GetAll();
+            IEnumerable<Player> players = await _playerRepository.GetAllAsync();
 
             return _mapper.Map<IEnumerable<PlayerDTO>>(players);
         }
 
-        public void CreatePlayer(UserPlayerDTO dto)
+        public async Task CreatePlayer(UserPlayerDTO dto)
         {
-
-            User savedUser = _userService.CreateUser(dto);
+            User savedUser = await _userService.CreateUser(dto);
 
             Player player = new Player { Name = dto.Name, User = savedUser };
             player.User.Password = BCrypt.Net.BCrypt.HashPassword(dto.Password);
@@ -63,18 +57,11 @@ namespace RHP.API.Services
             _playerRepository.Update(player);
         }
 
-        public PlayerDTO GetPlayerById(int id)
+        public async Task<PlayerDTO> GetPlayerByName(string name)
         {
-            Player player = _playerRepository.GetById(id);
+            Player? player = await _playerRepository.GetPlayerByName(name);
 
-            return _mapper.Map<PlayerDTO>(player);
-        }
-
-        public PlayerDTO GetPlayerByName(string name)
-        {
-            Player? player = _playerRepository.GetPlayerByName(name);
-
-            if (player == null)
+            if (player is null)
             {
                 throw new Exception("Player not found");
             }
@@ -82,14 +69,20 @@ namespace RHP.API.Services
             return _mapper.Map<PlayerDTO>(player);
         }
 
-        public Player GetPlayerByUserId(int userId)
+        public async Task<Player> GetPlayerByUserId(string userId)
         {
-            Player? player = _playerRepository.GetPlayerByUserId(userId);
-            if (player == null)
+            Player? player = await _playerRepository.GetPlayerByUserId(userId);
+            
+            if (player is null)
             {
                 throw new Exception("Player not found");
             }
             return player;
+        }
+
+        public async Task<string> GetPlayerNameByUserId(string userId)
+        {
+            return  await _playerRepository.GetPlayerNameByUserId(userId);
         }
     }
 }

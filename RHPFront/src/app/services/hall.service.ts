@@ -11,7 +11,8 @@ export class HallService {
 
   constructor(private http: HttpClient) { }
 
-  halls = signal<IHall[] | []>([]);
+  halls = signal<IHall[]>([]);
+
   selectedHall = signal<Hall | null >(null);
   //Loaders for the hall list and hall view
   isHallsLoading = signal<boolean>(false);

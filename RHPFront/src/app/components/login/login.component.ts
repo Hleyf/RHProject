@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Form, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { AuthService } from '../auth/auth.service';
 import { Router, RouterLink } from '@angular/router';
+import { PlayerService } from '../../services/player.service';
 
 @Component({
   selector: 'app-login',
@@ -19,7 +20,7 @@ export class LoginComponent implements OnInit {
 
   errorMessage = null;
 
-  constructor(private formBuilder: FormBuilder, private service: AuthService, private router: Router) { }
+  constructor(private formBuilder: FormBuilder, private service: AuthService, private playerService: PlayerService ,private router: Router) { }
 
   ngOnInit(): void {
     this.form = this.formBuilder.group({
@@ -32,6 +33,7 @@ export class LoginComponent implements OnInit {
   this.service.login(this.form.value).subscribe({
     next: (data) => {
       if(data) {
+        this.playerService.getLoggedPlayer();
         this.router.navigate(['/home']);
       }
     },

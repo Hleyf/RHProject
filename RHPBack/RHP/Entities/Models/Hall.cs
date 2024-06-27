@@ -11,11 +11,11 @@ namespace RHP.Entities.Models
         public string? Description { get; set; }
         public required Player GameMaster { get; set; }
         public ICollection<Player> Players { get; set; }
-        public ICollection<Roll> Rolls { get; set; }
+        public List<Roll> Rolls { get; set; }
 
         public Hall()
         {
-            Players = new List<Player>();
+            Players = [];
             Rolls = new List<Roll>();
         }
 

@@ -1,6 +1,19 @@
-@if (authService.isLoggedIn() && !isLooginOrUserCreate()) {
-    <app-navbar (onToggleNav)="onToggleNav($event)"></app-navbar>
-}
-<div class="content" [ngClass]="getContentClass()" >
-    <router-outlet></router-outlet>
+<div class="app-container">
+  @if(!isLooginOrUserCreate()){
+    <div class="top-navbar">
+      <app-top-navbar />
+    </div>
+  }
+  <div class="content" [ngClass]="getContentClass()">
+    <main>
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+  @if(!isLooginOrUserCreate()){
+    <div class="contacts">
+      <aside>
+        <app-contact-list />
+      </aside>
+    </div>
+  }
 </div>

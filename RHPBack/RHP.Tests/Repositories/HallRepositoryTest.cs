@@ -30,15 +30,15 @@ namespace RHP.UnitTests
         {
             return new Player[]
             {
-        new Player { Name = "Player1", User = new User { Email = "player1@mail.com", Password = "password", active = true } },
-        new Player { Name = "Player2", User = new User { Email = "player2@mail.com", Password = "password", active = true } }
+        new Player { Name = "Player1", User = new User { Email = "player1@Email.com", Password = "Password", active = true, lastLogin = DateTime.Now } },
+        new Player { Name = "Player2", User = new User { Email = "player2@Email.com", Password = "Password", active = true, lastLogin = DateTime.Now } }
             };
 
         }
 
         private Player GetGameMaster()
         {
-            return new Player { Name = "GameMaster", User = new User { Email = "gm@mail.com", Password = "password", active = true } };
+            return new Player { Name = "GameMaster", User = new User { Email = "gm@Email.com", Password = "Password", active = true, lastLogin = DateTime.Now} };
         }
 
         private void SetupTestData()
@@ -49,7 +49,7 @@ namespace RHP.UnitTests
             new Hall { Title = "Hall2", GameMaster = GetGameMaster(), Players = GetPlayers() },
             new Hall { Title = "Hall3", GameMaster = GetGameMaster(), Players = GetPlayers() }
         };
-            _context.Hall.AddRange(halls);
+            _context.Halls.AddRange(halls);
             _context.SaveChanges();
 
             FirstHallId = halls[0].Id;
@@ -66,7 +66,7 @@ namespace RHP.UnitTests
             _hallRepo.Add(hall);
             _context.SaveChanges();
 
-            Assert.Contains(hall, _context.Hall);
+            Assert.Contains(hall, _context.Halls);
         }
 
         [Fact]
@@ -93,18 +93,18 @@ namespace RHP.UnitTests
             _hallRepo.Remove(hall.Id);
             _context.SaveChanges();
 
-            Assert.DoesNotContain(hall, _context.Hall);
+            Assert.DoesNotContain(hall, _context.Halls);
         }
 
         [Fact]
         public void Update_HallExists_UpdatesHall()
         {
-            var hall = _context.Hall.First(h => h.Id == FirstHallId);
+            var hall = _context.Halls.First(h => h.Id == FirstHallId);
             hall.Title = "Hall10";
             _hallRepo.Update(hall);
             _context.SaveChanges();
 
-            Assert.Equal("Hall10", _context.Hall.First(h => h.Id == FirstHallId).Title);
+            Assert.Equal("Hall10", _context.Halls.First(h => h.Id == FirstHallId).Title);
         }
 
         [Fact]

@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RHP.API.Services;
-using RHP.Entities.Models;
 using RHP.Entities.Models.DTOs;
-using System.Security.Claims;
 
 namespace RHP.API.Controllers
 {
@@ -11,25 +9,23 @@ namespace RHP.API.Controllers
     public class HallController : ControllerBase
     {
         private readonly HallService _hallService;
-        private readonly AuthenticationService _authenticationService;
 
-        public HallController(HallService hallService, AuthenticationService authenticationService )
+        public HallController(HallService hallService )
         {
             _hallService = hallService;
-            _authenticationService = authenticationService;
         }
 
         [HttpGet]
-        public IActionResult GetHalls()
+        public async Task<IActionResult> GetHalls()
         {
-            var halls = _hallService.GetAllHalls();
+            var halls = await _hallService.GetAllHalls();
             return Ok(halls);
         }
 
-        [HttpGet("{id}")]
-        public IActionResult GetHall(int id)
+        [HttpGet("{Id}")]
+        public async Task<IActionResult> GetHall(int id)
         {
-            HallDTO hall = _hallService.GetHall(id);
+            HallDTO hall = await _hallService.GetHall(id);
             return Ok(_hallService.GetHall(id));
         }
 

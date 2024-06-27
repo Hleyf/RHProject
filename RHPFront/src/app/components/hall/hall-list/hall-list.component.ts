@@ -15,7 +15,7 @@ import { HallPreviewComponent, IHallPreview } from '../modals/hall-preview/hall-
 export class HallListComponent {
 
   loading : Signal<boolean> = computed(() => {return this.service.isHallsLoading()});
-  readonly entities: Signal<Hall[]> = computed(() => {return this.service.halls()});
+  readonly entities: Signal<IHall[]> = this.service.halls;
 
   constructor(
     private service: HallService, 

@@ -1,5 +1,6 @@
 ﻿using RHP.Entities.Interfaces;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RHP.Entities.Models
 {
@@ -8,7 +9,6 @@ namespace RHP.Entities.Models
         [Key]
         public int Id { get; set; }
         public required string Name { get; set; }
-        public int UserId { get; set; }
         public required User User { get; set; }
         public ICollection<Hall> Halls { get; set; }
         

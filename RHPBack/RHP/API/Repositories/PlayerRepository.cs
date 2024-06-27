@@ -16,37 +16,58 @@ namespace RHP.API.Repositories
          
         public Player? GetByName(string name)
         {
-            return _context.Player
+            return _context.Players
                 .Include(p => p.Halls)
                 .FirstOrDefault(p => p.Name.Equals(name));
         }
 
-        public IEnumerable<Player> GetAllActive()
+        public async Task<IEnumerable<Player>> GetAllActive()
         {
-            return _context.Player
+            return await _context.Players
                .Include(p => p.Halls)
                .Include(p => p.User)
-               .Where(p => p.User.active.Equals(true));
+               .Where(p => p.User.active.Equals(true)).ToArrayAsync();
         }
 
-        internal Player? GetPlayerByName(string name)
+        internal async Task<Player> GetPlayerByName(string name)
         {
-            return _context.Player
+            Player? player =  await _context.Players
                 .Include(p => p.Halls)
-                .FirstOrDefault(p => p.Name.Equals(name));
-        }
+                .FirstOrDefaultAsync(p => p.Name.Equals(name));
 
-        internal Player GetPlayerByUserId(int userId)
-        {
-            Player? player = _context.Player
-                .Include(u => u.User)
-                .FirstOrDefault(u => u.User.Id.Equals(userId));
-
-            if (player == null)
+            if (player is null)
             {
                 throw new Exception("Player not found");
             }
+
             return player;
+        }
+
+        internal async Task<Player> GetPlayerByUserId(string userId)
+        {
+            Player? player = await _context.Players
+                .Include(u => u.User)
+                .FirstOrDefaultAsync(u => u.User.Id.Equals(userId));
+
+            if (player is null)
+            {
+                throw new Exception("Player not found");
+            }
+
+            return player;
+        }
+
+        internal async Task<string>GetPlayerNameByUserId(string userId)
+        {
+            string? name = await _context.Players
+                .Where(p => p.User.Id.Equals(userId))
+                .Select(p => p.Name)
+                .FirstOrDefaultAsync();
+
+            if (name is null) { 
+                throw new Exception("Player not found");
+            }
+            return name;
         }
     }
 }

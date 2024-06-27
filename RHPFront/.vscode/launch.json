@@ -8,8 +8,7 @@
       "request": "launch",
       "preLaunchTask": "npm: start",
       "url": "http://localhost:4200/",
-      "runtimeExecutable": "C:/Program Files/BraveSoftware/Brave-Browser/Application/brave.exe",
-
+      "runtimeExecutable": "/usr/bin/brave-browser"
     },
     {
       "name": "ng test",
@@ -17,7 +16,7 @@
       "request": "launch",
       "preLaunchTask": "npm: test",
       "url": "http://localhost:9876/debug.html",
-      "runtimeExecutable": "C:/Program Files/BraveSoftware/Brave-Browser/Application/brave.exe",
+      "runtimeExecutable": "/usr/bin/brave-browser"
     }
   ]
 }

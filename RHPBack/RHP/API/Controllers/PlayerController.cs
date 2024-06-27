@@ -7,20 +7,20 @@ namespace RHP.API.Controllers
     [ApiController]
     public class PlayerController : ControllerBase
     {
-        private readonly IPlayerService _playerService;
+        private readonly PlayerService _playerService;
 
-        public PlayerController(IPlayerService playerService)
+        public PlayerController(PlayerService playerService)
         {
             _playerService = playerService;
         }
 
         [HttpGet]
-        public IActionResult GetPlayers()
+        public async Task<IActionResult> GetPlayers()
         {
-            return Ok(_playerService.GetAllPlayers());
+            return Ok( await _playerService.GetAllPlayers());
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("{Id}")]
         public IActionResult GetPlayer(int id)
         {
             return Ok(_playerService.GetPlayer(id));
@@ -29,16 +29,21 @@ namespace RHP.API.Controllers
 
 
         [HttpPost]
-        public IActionResult CreatePlayerUser([FromBody] UserPlayerDTO dto)
+        public async Task<IActionResult> CreatePlayerUser([FromBody] UserPlayerDTO dto)
         {
+            if (string.IsNullOrEmpty(dto.Name) || string.IsNullOrEmpty(dto.Email) || string.IsNullOrEmpty(dto.Password))
+            {
+                return BadRequest();
+            }
+
             try
             {
-                dto.Password = BCrypt.Net.BCrypt.HashPassword(dto.Password);
-                _playerService.CreatePlayer(dto);
+                
+                await _playerService.CreatePlayer(dto);
                 return Ok();
             }catch (Exception ex)
             {
-                return BadRequest();
+                return BadRequest(ex);
             }
         }
     }

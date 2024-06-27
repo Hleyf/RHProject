@@ -12,7 +12,7 @@ import { IHall } from '../../../models/hall.model';
 })
 export class HallComponent {
 
-  hall: Signal<IHall | null> = computed(() => {return this.service.selectedHall()});
+  hall: Signal<IHall | null> = this.service.selectedHall;
 
 
   constructor(private route : ActivatedRoute, private service: HallService) { 
