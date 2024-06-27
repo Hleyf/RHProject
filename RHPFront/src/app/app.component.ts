@@ -1,16 +1,16 @@
 import { Component } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { AuthService } from './components/auth/auth.service';
-import { NavbarComponent } from './shared/components/navbar/navbar.component';
 import { ISideElementToggle } from './models/sideNav.model';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { ContactListComponent } from './shared/components/contacts/contact-list.component';
+import { TopNavbarComponent } from './shared/components/top-navbar/top-navbar.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, NavbarComponent, CommonModule, HttpClientModule, ContactListComponent  ],
+  imports: [RouterOutlet, CommonModule, HttpClientModule, ContactListComponent, TopNavbarComponent  ],
   providers: [
     AuthService,
   ],

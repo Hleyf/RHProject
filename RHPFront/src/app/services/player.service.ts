@@ -2,7 +2,7 @@ import { Injectable, signal } from '@angular/core';
 import { Contact, IPlayerCreate, UserPlayer } from '../models/player.model';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { API_URL } from '../shared/constants';
-import { catchError, firstValueFrom, map, of, switchMap } from 'rxjs';
+import { catchError, firstValueFrom, of, switchMap } from 'rxjs';
 import { IContact } from '../shared/components/contacts/contact-list.component';
 
 @Injectable({
@@ -75,8 +75,8 @@ export class PlayerService {
     this.http
       .get<IContact[]>(API_URL + '/player/contacts')
       .pipe(
+        //needed instead of map to be able to cancel the previous call in case of an update event
         switchMap((data: IContact[]) => {
-          //needed instead of map to be able to cancel the previous call in case of an update event
           return of(data.map((contact) => new Contact(contact)));
         })
       )

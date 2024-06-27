@@ -1,12 +1,19 @@
 <div class="app-container">
+  @if(!isLooginOrUserCreate()){
+    <div class="top-navbar">
+      <app-top-navbar />
+    </div>
+  }
   <div class="content" [ngClass]="getContentClass()">
     <main>
       <router-outlet></router-outlet>
     </main>
   </div>
-  <div class="contacts" *ngIf="!isLooginOrUserCreate()">
-    <aside>
-      <app-contact-list />
-    </aside>
-  </div>
+  @if(!isLooginOrUserCreate()){
+    <div class="contacts">
+      <aside>
+        <app-contact-list />
+      </aside>
+    </div>
+  }
 </div>

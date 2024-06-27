@@ -18,7 +18,7 @@
     flex-grow: 1;
     width: calc(100% - 16.5rem);
     background: #fff;
-    padding: 0;
+    padding-top: 50px;
 }
 
 .contacts {
@@ -29,5 +29,16 @@
     padding: 1rem;
     overflow: auto;
     position: relative;
+}
+
+.top-navbar{
+    position: fixed;
+    width: calc(100% - 16.5rem);
+    background-color: #301c66;
+    height: 50px;
+}
+
+.top-navbar-collapsed {
+    width: calc(100% - 20rem);
 }
  
