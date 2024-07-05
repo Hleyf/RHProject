@@ -27,7 +27,7 @@ namespace RHP.API.Repositories
                     Name = EF.Property<string>(c, "RequestorId") == userId ? c.Recipient.Player.Name : c.Requestor.Player.Name,
                     Email = EF.Property<string>(c, "RequestorId") == userId ? c.Recipient.Email : c.Requestor.Email,
                     loggedIn = EF.Property<string>(c, "RequestorId") == userId ? c.Recipient.loggedIn : c.Requestor.loggedIn,
-                    Status = EF.Property<string>(c, "RequestorId") == userId ? c.Recipient.Status : c.Requestor.Status,
+                    userStatus = EF.Property<string>(c, "RequestorId") == userId ? c.Recipient.Status : c.Requestor.Status,
                     lastLogin = EF.Property<string>(c, "RequestorId") == userId ? c.Recipient.lastLogin : c.Requestor.lastLogin
                 })
                 .ToListAsync();

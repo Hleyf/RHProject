@@ -1,29 +1,23 @@
 <div class="contacts-bar" [ngClass]="collapsed ? 'contacts-collapsed' : ''" >
-    <!-- <div class="contacts-header " [ngClass]="collapsed ? 'contacts-collapsed' : ''"> -->
-        <!-- <div class="logo-container" (click)="toggleCollapsed()">
-            <button class="logo" ></button>
-            @if (collapsed) {
-                <a class=" btn-close" (click)="closeNavbar()">
-                    <i class="fal fa-times close-icon"></i>
-                </a>    
-            }
-        </div> -->
-    <!-- </div> -->
-    <!-- <ul class="navbar-nav">
-    @for (data of navData; track $index) {
+    <ul class="navbar-nav">
+    @for (contact of contacts(); track $index) {
         <li class="navbar-nav-item">
-            <a class="navbar-link" 
-            [routerLink]="[data.routeLink]"
-            routerLinkActive="active"
-            [routerLinkActiveOptions]="{exact: true}"
-            >
-                <fa-icon class="navbar-nav-icon" [icon]="data.icon"></fa-icon>
-                @if (collapsed) {
-                    <span class="navbar-link-text">{{data.label}}</span>
-                }
-            </a>
+            <!-- Card -->
+             <div class="bg-transparent w-full h-20 flex items-center">
+                <div class="flex flex-col flex-1">
+                    <span class="text-white ml-2 mt-3 font-semibold text-lg">{{contact.name}}</span>
+                    <span class="text-gray-400 ml-2 font-extralight">{{contact.userId}}</span>
+                </div>
+                <div class="flex flex-col relative top-4 right-2">
+                    <span class="text-gray-400 font-extralight text-sm" [ngClass]="getStatusColour(contact.userStatus)">{{userStatus[contact.userStatus]}}</span>
+                </div>
+                <div class="flex flex-col rounded-full w-16 h-16 bg-pink-600 relative ml-auto">
+
+                </div>
+             </div>
+
         </li>
 
     }
-    </ul> -->
+    </ul>
 </div>

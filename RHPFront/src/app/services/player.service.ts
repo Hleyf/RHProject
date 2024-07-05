@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { Contact, IPlayerCreate, UserPlayer } from '../models/player.model';
+import { Contact, ContactStatus, IPlayerCreate, UserPlayer, UserStatus } from '../models/player.model';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { API_URL } from '../shared/constants';
 import { catchError, firstValueFrom, of, switchMap } from 'rxjs';
@@ -72,22 +72,71 @@ export class PlayerService {
   }
 
   getPlayerContacts() {
-    this.http
-      .get<IContact[]>(API_URL + '/player/contacts')
-      .pipe(
-        //needed instead of map to be able to cancel the previous call in case of an update event
-        switchMap((data: IContact[]) => {
-          return of(data.map((contact) => new Contact(contact)));
-        })
-      )
-      .subscribe({
-        next: (data: Contact[]) => {
-          this.contactList.set(data);
+    // this.http
+    //   .get<IContact[]>(API_URL + '/player/contacts')
+    //   .pipe(
+    //     //needed instead of map to be able to cancel the previous call in case of an update event
+    //     switchMap((data: IContact[]) => {
+    //       return of(data.map((contact) => new Contact(contact)));
+    //     })
+    //   )
+    //   .subscribe({
+    //     next: (data: Contact[]) => {
+    //       this.contactList.set(data);
+    //     },
+    //     error: (err) => {
+    //       console.error(err);
+    //     },
+    //   });
+
+    this.contactList.set(
+      [
+        {
+          userId: 'user123',
+          name: 'Alice Johnson',
+          email: 'alice.johnson@example.com',
+          loggedIn: true,
+          status: ContactStatus.Accepted,
+          userStatus: UserStatus.Online,
+          lastLogin: new Date('2023-10-26T10:00:00.000Z'),
         },
-        error: (err) => {
-          console.error(err);
+        {
+          userId: 'user456',
+          name: 'Bob Smith',
+          email: 'bob.smith@example.com',
+          loggedIn: false,
+          status: ContactStatus.Pending,
+          userStatus: UserStatus.Away,
+          lastLogin: new Date('2023-10-25T14:30:00.000Z'),
         },
-      });
+        {
+          userId: 'user789',
+          name: 'Charlie Brown',
+          email: 'charlie.brown@example.com',
+          loggedIn: true,
+          status: ContactStatus.Rejected,
+          userStatus: UserStatus.Offline,
+          lastLogin: new Date('2023-10-24T18:15:00.000Z'),
+        },
+        {
+          userId: 'user101',
+          name: 'Diana Jones',
+          email: 'diana.jones@example.com',
+          loggedIn: false,
+          status: ContactStatus.Blocked,
+          userStatus: UserStatus.Online,
+          lastLogin: new Date('2023-10-23T22:00:00.000Z'),
+        },
+        {
+          userId: 'user112',
+          name: 'Eric Davis',
+          email: 'eric.davis@example.com',
+          loggedIn: true,
+          status: ContactStatus.Accepted,
+          userStatus: UserStatus.Away,
+          lastLogin: new Date('2023-10-22T02:45:00.000Z'),
+        },
+      ]);
   }
 
   searchContacts(searchTerm: string) {

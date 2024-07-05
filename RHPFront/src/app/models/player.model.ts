@@ -25,7 +25,8 @@ export class Contact {
   name: string;
   email: string;
   loggedIn: boolean;
-  status: string;
+  status: ContactStatus;
+  userStatus: UserStatus;
   lastLogin: Date;
 
   constructor(contact: any){
@@ -35,6 +36,7 @@ export class Contact {
     this.loggedIn = contact.loggedIn;
     this.status = contact.status;
     this.lastLogin = contact.lastLogin;
+    this.userStatus = contact.userStatus;
 
   }
 }
@@ -54,3 +56,17 @@ export class UserPlayer {
     this.email = player.email;
   }
 }
+
+export enum UserStatus{
+  Online,
+  Away,
+  Offline
+}
+
+export enum ContactStatus {
+  Pending,
+  Accepted,
+  Rejected,
+  Blocked
+}
+  

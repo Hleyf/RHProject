@@ -13,12 +13,13 @@ namespace RHP.API.Services
         private readonly AuthenticationService _authenticationService;
         private readonly ContactHub _contactHub;
         private readonly IMapper _mapper;
-        public ContactService(UserRepository userRepository, AuthenticationService authenticationService, ContactHub contactHub , IMapper mapper)
+        public ContactService(UserRepository userRepository, AuthenticationService authenticationService, ContactHub contactHub , IMapper mapper, ContactRepository contactRepository)
         {
             _userRepository = userRepository;
             _authenticationService = authenticationService;
             _contactHub = contactHub;
             _mapper = mapper;
+            _contactRepository = contactRepository;
         }
 
         public Task<List<ContactDTO>> GetContacts()
