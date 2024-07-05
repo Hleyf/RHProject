@@ -3,7 +3,7 @@
     @for (contact of contacts(); track $index) {
         <li class="navbar-nav-item">
             <!-- Card -->
-             <div class="bg-transparent w-full h-20 flex items-center">
+             <div class="bg-blue-950 w-full h-20 flex items-center rounded hover:bg-blue-800 hover:cursor-pointer transition-colors duration-500 ease-in-out">
                 <div class="flex flex-col flex-1">
                     <span class="text-white ml-2 mt-3 font-semibold text-lg">{{contact.name}}</span>
                     <span class="text-gray-400 ml-2 font-extralight">{{contact.userId}}</span>
@@ -11,7 +11,7 @@
                 <div class="flex flex-col relative top-4 right-2">
                     <span class="text-gray-400 font-extralight text-sm" [ngClass]="getStatusColour(contact.userStatus)">{{userStatus[contact.userStatus]}}</span>
                 </div>
-                <div class="flex flex-col rounded-full w-16 h-16 bg-pink-600 relative ml-auto">
+                <div class="flex flex-col rounded-full w-16 h-16 bg-pink-600 relative ml-auto mr-1">
 
                 </div>
              </div>
