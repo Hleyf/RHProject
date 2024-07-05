@@ -1,13 +1,16 @@
 .contacts-bar {
-  background: #8b68eb;
   transition: width 0.5s ease;
-  z-index: 1;
-  position: absolute;
-  top: 0;
-  right: 0;
   width: 5rem; 
-  height: 100%;
   box-shadow: 0.063rem 0 1.25rem 0 #301c66;
+  @apply absolute h-full top-0 right-0 bg-blue-950 z-10
+}
+.contacts-header {
+  height: 80px;
+  max-width: 20rem;
+  width: 5.5rem;
+  min-width: 5.5rem;
+  position: fixed;
+  transition: width 1 ease-in-out;
 }
 
 .contacts-collapsed {
@@ -22,7 +25,9 @@
   border-radius: 50%;
   overflow: hidden;
   background-color: bisque;
-
+  position: fixed;
+  right: 0rem;
+  overflow: hidden;
 }
 
 /* .logo {

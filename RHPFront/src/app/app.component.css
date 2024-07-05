@@ -15,6 +15,7 @@
 }
 
 .contacts{
-    @apply flex flex-col w-96 h-full p-4 overflow-auto relative
+    height: calc(100% - 80px);
+    @apply flex flex-col w-96 p-4 top-20 overflow-auto relative
 }
  

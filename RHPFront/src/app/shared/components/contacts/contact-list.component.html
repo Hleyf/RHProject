@@ -1,12 +1,14 @@
 <div class="contacts-bar" [ngClass]="collapsed ? 'contacts-collapsed' : ''" >
-    <div class="logo-container">
-        <button class="logo" (click)="toggleCollapsed()"></button>
-        @if (collapsed) {
-            <a class=" btn-close" (click)="closeNavbar()">
-                <i class="fal fa-times close-icon"></i>
-            </a>    
-        }
-    </div>
+    <!-- <div class="contacts-header " [ngClass]="collapsed ? 'contacts-collapsed' : ''"> -->
+        <!-- <div class="logo-container" (click)="toggleCollapsed()">
+            <button class="logo" ></button>
+            @if (collapsed) {
+                <a class=" btn-close" (click)="closeNavbar()">
+                    <i class="fal fa-times close-icon"></i>
+                </a>    
+            }
+        </div> -->
+    <!-- </div> -->
     <!-- <ul class="navbar-nav">
     @for (data of navData; track $index) {
         <li class="navbar-nav-item">
