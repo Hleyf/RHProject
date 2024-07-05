@@ -6,7 +6,7 @@
         <ul class="flex static h-16 align-items-end mt-2">
             @for (item of navItems; track $index) {
                 <li class="flex flex-col list-none">
-                    <a class="text-white font-medium px-4 py-2 m-2 link"
+                    <a class="navbar-link link"
                         [routerLink]="[item.url]"
                         routerLinkActive="active"
                         [routerLinkActiveOptions]="{exact: true}"
