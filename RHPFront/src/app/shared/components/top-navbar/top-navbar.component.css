@@ -1,8 +1,5 @@
 
 .navbar {
-    display: flex;
-    align-items: start;
-    width: 100%;
     place-content: start;
 }
 
@@ -47,17 +44,22 @@
 
 
 .navbar-link {
-    color: #fff;
-    text-decoration: none;
-    font-size: 1rem;
-    padding: 1rem 1rem;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
+    @apply text-white font-medium px-4 py-2 m-2;
+
 }
 
-.navbar-link:hover {
-}
-
-.active {
+.link {
+    border-bottom-width: 0;
+    background-image: linear-gradient(transparent, transparent), linear-gradient(#fff, #fff);
+    background-size: 0 3px;
+    background-position: 50% 100%;
+    background-repeat: no-repeat;
+    transition: background-size .5s ease-in-out;
     
+}
+.link:hover,
+.active {
+    background-size: 80% 3px;
+
+    background-position: 50% 100%;
 }

@@ -1,18 +1,18 @@
-<nav class="navbar">
-        <div class="logo-container">
-            <a class="logo" href="#">Logo</a>
-        </div>
-         <div class="content">
-            <ul class="navbar-nav">
-                @for (item of navItems; track $index) {
-                    <li class="nav-item">
-                        <a class="navbar-link"
-                            [routerLink]="[item.url]"
-                            routerLinkActive="active"
-                            [routerLinkActiveOptions]="{exact: true}"
-                        >{{item.label}}</a>
-                    </li>
-                }
-            </ul>
-         </div>
+<nav class="flex place-content-start">
+    <div class="flex flex-col w-[10%] h-full">
+        <a class="absolute bottom-6 left-4 text-3xl text-white font-bold " href="#">Logo</a>
+    </div>
+    <div class="flex flex-col flex-1"> 
+        <ul class="flex static h-16 align-items-end mt-2">
+            @for (item of navItems; track $index) {
+                <li class="flex flex-col list-none">
+                    <a class="text-white font-medium px-4 py-2 m-2 link"
+                        [routerLink]="[item.url]"
+                        routerLinkActive="active"
+                        [routerLinkActiveOptions]="{exact: true}"
+                    ><span>{{item.label}}</span></a>
+                </li>
+            }
+        </ul>
+    </div>
 </nav>

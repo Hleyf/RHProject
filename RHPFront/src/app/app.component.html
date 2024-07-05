@@ -1,6 +1,6 @@
 <div class="app-container">
   @if(!isLooginOrUserCreate()){
-    <div class="top-navbar">
+    <div class="fixed w-full max-w-[1280px] bg-blue-950 h-20">
       <app-top-navbar />
     </div>
   }
@@ -10,10 +10,8 @@
     </main>
   </div>
   @if(!isLooginOrUserCreate()){
-    <div class="contacts">
-      <aside>
+      <aside class="contacts">
         <app-contact-list />
       </aside>
-    </div>
   }
 </div>
