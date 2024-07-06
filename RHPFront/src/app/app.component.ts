@@ -3,14 +3,14 @@ import { Router, RouterOutlet } from '@angular/router';
 import { AuthService } from './components/auth/auth.service';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { ContactListComponent } from './shared/components/contacts/contact-list.component';
+import { ContacsSidebarComponent } from './shared/components/contacts-sidebar/contacts-sidebar.component';
 import { TopNavbarComponent } from './shared/components/top-navbar/top-navbar.component';
 import { ContactListService } from './services/contact-list.service';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, CommonModule, HttpClientModule, ContactListComponent, TopNavbarComponent  ],
+  imports: [RouterOutlet, CommonModule, HttpClientModule, ContacsSidebarComponent, TopNavbarComponent  ],
   providers: [
     AuthService,
   ],

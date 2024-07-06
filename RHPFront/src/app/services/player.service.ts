@@ -3,7 +3,7 @@ import { Contact, ContactStatus, IPlayerCreate, UserPlayer, UserStatus } from '.
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { API_URL } from '../shared/constants';
 import { catchError, firstValueFrom, of, switchMap } from 'rxjs';
-import { IContact } from '../shared/components/contacts/contact-list.component';
+import { IContact } from '../shared/components/contacts-sidebar/contacts-sidebar.component';
 
 @Injectable({
   providedIn: 'root',
@@ -92,15 +92,6 @@ export class PlayerService {
     this.contactList.set(
       [
         {
-          userId: 'user123',
-          name: 'Alice Johnson',
-          email: 'alice.johnson@example.com',
-          loggedIn: true,
-          status: ContactStatus.Accepted,
-          userStatus: UserStatus.Online,
-          lastLogin: new Date('2023-10-26T10:00:00.000Z'),
-        },
-        {
           userId: 'user456',
           name: 'Bob Smith',
           email: 'bob.smith@example.com',
@@ -108,6 +99,15 @@ export class PlayerService {
           status: ContactStatus.Pending,
           userStatus: UserStatus.Away,
           lastLogin: new Date('2023-10-25T14:30:00.000Z'),
+        },
+        {
+          userId: 'user123',
+          name: 'Alice Johnson',
+          email: 'alice.johnson@example.com',
+          loggedIn: true,
+          status: ContactStatus.Accepted,
+          userStatus: UserStatus.Online,
+          lastLogin: new Date('2023-10-26T10:00:00.000Z'),
         },
         {
           userId: 'user789',

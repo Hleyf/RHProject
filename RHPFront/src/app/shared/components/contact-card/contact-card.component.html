@@ -1,0 +1,33 @@
+@if(contact.status === contactStatus.Accepted) { <!-- Current Contacts -->
+    <div class="bg-blue-950 w-full h-20 flex items-center rounded hover:bg-blue-800 hover:cursor-pointer transition-colors duration-500 ease-in-out">
+        <div class="flex flex-col flex-1">
+            <span class="text-white ml-2 mt-3 font-semibold text-lg">{{contact.name}}</span>
+            <span class="text-gray-400 ml-2 font-extralight">{{contact.userId}}</span>
+        </div>
+        <div class="flex flex-col relative top-4 right-2">
+            <span class="text-gray-400 font-extralight text-sm" [ngClass]="getStatusColour(contact.userStatus)">{{userStatus[contact.userStatus]}}</span>
+        </div>
+        <div class="flex flex-col rounded-full w-16 h-16 bg-pink-600 relative ml-auto mr-1">
+    
+        </div>
+     </div>
+}
+
+@else if (contact.status === contactStatus.Pending) { <!-- Pending for approval -->
+    <div class="bg-blue-950 w-full h-20 flex items-center rounded hover:bg-blue-800 transition-colors duration-500 ease-in-out">
+        <div class="flex flex-col rounded-full w-16 h-16 bg-pink-600">
+        </div>
+        <div class="flex flex-col">
+            <span class="text-white ml-2 mt-3 font-semibold text-lg">{{contact.name}}</span>
+            <span class="text-gray-400 ml-2 font-extralight">{{contact.userId}}</span>
+        </div>
+        <div class="flex flex-row ml-auto mr-1 relative items-end">
+            <span class="flex flex-row">
+                <i class="bi bi-check-circle" style="font-size: 35px; color: lightgreen; cursor: pointer;"></i>
+                <i class="bi bi-x-circle" style="font-size: 35px; color: red; margin-left: 10px; cursor: pointer;"></i>
+            </span>
+        </div>
+    
+        </div>
+     
+}
