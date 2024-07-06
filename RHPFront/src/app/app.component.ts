@@ -41,7 +41,7 @@ export class AppComponent {
 
   isLooginOrUserCreate(){
     const url = this.router.url;
-    return url === '/login' || url === '/user-create';
+    return url === '/login' || url === '/new-user';
   }
 
   getContentClass(): string {
