@@ -1,21 +1,23 @@
 .app-container {
-    @apply flex flex-row w-[1280px] h-[1200px] m-auto overflow-hidden
+  @apply flex flex-row w-[1280px]  h-screen; /* h-screen is needed for allowing the independent Y scrolling in the children elements */
 }
 
-.content-collapsed{
-    width: calc(100% - 20rem);
+.content-collapsed {
+  width: calc(100% - 20rem);
 }
 
 .content-collapsed-mobile {
-    width: calc(100% - 5rem);
-}
-.content {
-    @apply flex flex-grow bg-white pt-24;
-    width: calc(100% - 16.5rem);
+  width: calc(100% - 5rem);
 }
 
-.contacts{
-    height: calc(100% - 80px);
-    @apply flex flex-col w-96 p-4 top-20 overflow-auto relative
+.content {
+  @apply bg-white pt-24 overflow-y-auto;
+  flex: 2;
+  width: calc(100% - 16.5rem);
 }
- 
+
+.contacts {
+  height: calc(100% - 80px);
+  @apply w-96 p-4 top-20 relative;
+  flex: 1;
+}

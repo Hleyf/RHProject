@@ -1,10 +1,10 @@
-<div class="contacts-bar" [ngClass]="collapsed ? 'contacts-collapsed' : ''" >
-    <ul class="navbar-nav">
+<div class="contacts-bar" [ngClass]="collapsed ? 'contacts-collapsed' : ''">
+  <ul class="navbar-nav">
     @for (contact of contacts(); track $index) {
-        <li class="navbar-nav-item">
-            <app-contact-card [contact]= "contact"/>
-        </li>
+    <li class="navbar-nav-item">
+      <app-contact-card [contact]="contact" />
+    </li>
 
     }
-    </ul>
+  </ul>
 </div>

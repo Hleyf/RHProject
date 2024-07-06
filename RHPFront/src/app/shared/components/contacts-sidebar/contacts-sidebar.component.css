@@ -2,7 +2,7 @@
   transition: width 0.5s ease;
   width: 5rem; 
   box-shadow: 0.063rem 0 1.25rem 0 #301c66;
-  @apply absolute h-full top-0 right-0 bg-blue-950 z-10
+  @apply absolute h-full top-0 right-0 bg-blue-950 z-10 overflow-y-auto
 }
 .contacts-header {
   height: 80px;

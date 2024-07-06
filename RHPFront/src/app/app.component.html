@@ -1,17 +1,15 @@
+@if(!isLooginOrUserCreate()){
+<div class="fixed w-full max-w-[1280px] bg-blue-950 h-20 z-50">
+  <app-top-navbar />
+</div>
+}
 <div class="app-container">
-  @if(!isLooginOrUserCreate()){
-    <div class="fixed w-full max-w-[1280px] bg-blue-950 h-20">
-      <app-top-navbar />
-    </div>
-  }
   <div class="content" [ngClass]="getContentClass()">
-    <main>
-      <router-outlet></router-outlet>
-    </main>
+    <router-outlet></router-outlet>
   </div>
   @if(!isLooginOrUserCreate()){
-      <aside class="contacts">
-        <app-contacts-sidebar />
-      </aside>
+  <div class="contacts">
+    <app-contacts-sidebar />
+  </div>
   }
 </div>
