@@ -1,9 +1,9 @@
 <nav class="flex flex-row items-center place-content-start">
-    <div class="flex flex-col w-[10%] h-full">
+    <div class="flex flex-col w-[20rem] h-full">
         <a class="absolute bottom-6 left-4 text-3xl text-white font-bold " href="#">Logo</a>
     </div>
     <div class="flex flex-col flex-1"> 
-        <ul class="flex static h-16 align-items-end mt-2">
+        <ul class="flex flex-row static h-16 align-items-center mt-2 justify-content-center"> 
             @for (item of navItems; track $index) {
                 <li class="flex flex-col list-none">
                     <a class="navbar-link link"
@@ -15,6 +15,8 @@
             }
         </ul>
     </div>
-    <div class="flex flex-col rounded-full w-16 h-16 relative ml-auto mr-5 mt-2 overflow-hidden bg-pink-600" (click)="toggleCollapsed()">
+    <div class="bg-transparent w-[20rem] h-full">
+        <div class="flex flex-col rounded-full w-16 h-16 relative ml-auto mr-5 mt-2 overflow-hidden bg-pink-600" (click)="toggleCollapsed()">
+    </div>
     </div>
 </nav>

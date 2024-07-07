@@ -3,9 +3,9 @@ import { Router, RouterOutlet } from '@angular/router';
 import { AuthService } from './components/auth/auth.service';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { ContacsSidebarComponent } from './shared/components/contacts-sidebar/contacts-sidebar.component';
 import { TopNavbarComponent } from './shared/components/top-navbar/top-navbar.component';
-import { ContactListService } from './services/contact-list.service';
+import { ContactsBarService } from './services/contact-bar.service';
+import { ContacsSidebarComponent } from './shared/components/contacts/contacts-sidebar/contacts-sidebar.component';
 
 @Component({
   selector: 'app-root',
@@ -23,7 +23,7 @@ export class AppComponent {
   screenWidth: number = 0;
   isNavCollapsed: boolean = true;
   
-  constructor(protected authService: AuthService, private router: Router, private contactListService: ContactListService) {
+  constructor(protected authService: AuthService, private router: Router, private contactListService: ContactsBarService) {
 
     if(this.authService.isLoggedIn()){
       this.router.navigate(['/home']);
@@ -44,13 +44,15 @@ export class AppComponent {
     return url === '/login' || url === '/new-user';
   }
 
-  getContentClass(): string {
-  let style = '';
-  if(this.isNavCollapsed && this.screenWidth > 768){
-    style = 'content-collapsed-mobile';
-  }else if(this.isNavCollapsed && this.screenWidth <= 768){
-    style = 'content-collapsed';
-  }
-  return style;
-}
+  
+//TODO: I don't think this will be needed anymore. 
+//   getContentClass(): string {
+//   let style = '';
+//   if(this.isNavCollapsed && this.screenWidth > 768){
+//     style = 'content-collapsed-mobile';
+//   }else if(this.isNavCollapsed && this.screenWidth <= 768){
+//     style = 'content-collapsed';
+//   }
+//   return style;
+// }
 }

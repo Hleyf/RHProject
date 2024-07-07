@@ -1,21 +1,28 @@
 import { Component, Input } from '@angular/core';
-import { Contact, UserStatus, ContactStatus } from '../../../models/player.model';
+import {
+  Contact,
+  UserStatus,
+  ContactStatus,
+} from '../../../../models/player.model';
 import { CommonModule } from '@angular/common';
-
+import { ContactsBarService } from '../../../../services/contact-bar.service';
 
 @Component({
   selector: 'app-contact-card',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './contact-card.component.html',
-  styleUrl: './contact-card.component.css'
+  styleUrl: './contact-card.component.css',
 })
 export class ContactCardComponent {
-  @Input() contact! : Contact; 
+  @Input() contact!: Contact;
   userStatus = UserStatus;
   contactStatus = ContactStatus;
+  isCollapsed = true;
 
-
+  constructor(private service: ContactsBarService) {
+    this.service.isCollapsed.subscribe((value) => (this.isCollapsed = value));
+  }
 
   getStatusColour(status: UserStatus): string {
     switch (status) {
@@ -28,5 +35,5 @@ export class ContactCardComponent {
       default:
         return 'text-gray-400';
     }
-    }
+  }
 }

@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterLink, RouterModule } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { ContactListService } from '../../../services/contact-list.service';
+import { ContactsBarService } from '../../../services/contact-bar.service';
 
 interface NavItem {
   label: string;
@@ -19,11 +19,11 @@ interface NavItem {
 })
 export class TopNavbarComponent {
 
-  constructor(private contactListService: ContactListService){}
+  constructor(private contactListService: ContactsBarService){}
 
   navItems: NavItem[] = [
     { label: 'Home', url: '/home'},
-    { label: 'Contacts', url: '/contact' }
+    { label: 'Contacts', url: '/contacts' }
   ]
 
   toggleCollapsed(): void {

@@ -1,6 +1,6 @@
 .contacts-bar {
   transition: width 0.5s ease;
-  width: 5rem; 
+  width:6rem; 
   box-shadow: 0.063rem 0 1.25rem 0 #301c66;
   @apply absolute h-full top-0 right-0 bg-blue-950 z-10 overflow-y-auto
 }
@@ -29,18 +29,6 @@
   right: 0rem;
   overflow: hidden;
 }
-
-/* .logo {
-  background: #fff;
-  text-align: center;
-  width: 3.5rem;
-  height: 3.5rem;
-  padding: 0.313rem;
-  font-size: 24px;
-  font-weight: 900;
-  cursor: pointer;
-  border: none;
-} */
 
 .btn-close {
   margin-right: auto;
