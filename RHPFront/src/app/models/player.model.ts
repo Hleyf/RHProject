@@ -41,6 +41,14 @@ export class Contact {
   }
 }
 
+export interface IContactLittle {
+  userId: string;
+  name: string;
+  isContact: boolean;
+
+
+}
+
 export class UserPlayer {
   id: number;
   userId: number;
