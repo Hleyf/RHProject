@@ -1,23 +1,18 @@
 .app-container {
-  @apply flex flex-row w-[1280px]  h-screen; /* h-screen is needed for allowing the independent Y scrolling in the children elements */
-}
+  @apply flex flex-row w-full h-screen; /* h-screen is needed for allowing the independent Y scrolling in the children elements */
 
-.content-collapsed {
-  width: calc(100% - 20rem);
-}
-
-.content-collapsed-mobile {
-  width: calc(100% - 5rem);
 }
 
 .content {
-  @apply bg-white pt-24 overflow-y-auto;
-  flex: 2;
-  width: calc(100% - 16.5rem);
+  @apply pt-24 overflow-y-auto;
+  flex: 1;
+  width: 100%;
+  padding-left: 20rem;
+  padding-right: 20rem;
 }
 
 .contacts {
   height: calc(100% - 80px);
-  @apply w-96 p-4 top-20 relative;
-  flex: 1;
+  @apply w-96 p-4 top-20 fixed right-0;
+  flex: 2;
 }

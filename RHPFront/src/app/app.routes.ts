@@ -5,7 +5,7 @@ import { LoginComponent } from './components/login/login.component';
 import { CreateUserComponent } from './components/user/create-user/create-user.component';
 import { HallListComponent } from './components/hall/hall-list/hall-list.component';
 import { HallComponent } from './components/hall/hall/hall.component';
-import { ContacsSidebarComponent } from './shared/components/contacts-sidebar/contacts-sidebar.component';
+import { ContacsSidebarComponent } from './shared/components/contacts/contacts-sidebar/contacts-sidebar.component';
 import { AppComponent } from './app.component';
 
 export const routes: Routes = [

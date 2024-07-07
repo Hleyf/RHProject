@@ -3,7 +3,7 @@ import { Contact, ContactStatus, IPlayerCreate, UserPlayer, UserStatus } from '.
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { API_URL } from '../shared/constants';
 import { catchError, firstValueFrom, of, switchMap } from 'rxjs';
-import { IContact } from '../shared/components/contacts-sidebar/contacts-sidebar.component';
+import { IContact } from '../shared/components/contacts/contacts-sidebar/contacts-sidebar.component';
 
 @Injectable({
   providedIn: 'root',

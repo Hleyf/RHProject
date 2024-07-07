@@ -1,10 +1,11 @@
 import { Component, Signal} from '@angular/core';
-import { SearchInputComponent } from '../search-input/search-input.component';
-import { PlayerService } from '../../../services/player.service';
 import { CommonModule } from '@angular/common';
-import { Contact, UserPlayer } from '../../../models/player.model';
-import { ContactListService } from '../../../services/contact-list.service';
+import { UserPlayer, Contact } from '../../../../models/player.model';
+import { ContactListService } from '../../../../services/contact-list.service';
+import { PlayerService } from '../../../../services/player.service';
+import { SearchInputComponent } from '../../search-input/search-input.component';
 import { ContactCardComponent } from '../contact-card/contact-card.component';
+
 
 export interface IContact {
   id: number;
