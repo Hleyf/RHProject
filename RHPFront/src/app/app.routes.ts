@@ -7,6 +7,7 @@ import { HallListComponent } from './components/hall/hall-list/hall-list.compone
 import { HallComponent } from './components/hall/hall/hall.component';
 import { ContacsSidebarComponent } from './shared/components/contacts/contacts-sidebar/contacts-sidebar.component';
 import { AppComponent } from './app.component';
+import { ContactsListComponent } from './components/contacts/contacts-list/contacts-list.component';
 
 export const routes: Routes = [
     { path: '', component: AppComponent, canActivate: [authGuard] },
@@ -17,6 +18,6 @@ export const routes: Routes = [
     { path: 'new-user', component: CreateUserComponent},
     { path: 'halls', component: HallListComponent, canActivate: [authGuard]},
     { path: 'hall/:id', component: HallComponent, canActivate: [authGuard]},
-    { path: 'contacts', component: ContacsSidebarComponent, canActivate: [authGuard]},
+    { path: 'contacts', component: ContactsListComponent, canActivate: [authGuard]},
     { path: '**', redirectTo: '/home', pathMatch: 'full' },
 ];

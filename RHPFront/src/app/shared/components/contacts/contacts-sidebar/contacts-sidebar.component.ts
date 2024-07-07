@@ -1,10 +1,11 @@
 import { Component, Signal} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UserPlayer, Contact } from '../../../../models/player.model';
-import { ContactListService } from '../../../../services/contact-list.service';
+import { ContactsBarService } from '../../../../services/contact-bar.service';
 import { PlayerService } from '../../../../services/player.service';
 import { SearchInputComponent } from '../../search-input/search-input.component';
 import { ContactCardComponent } from '../contact-card/contact-card.component';
+import { debounceTime, pipe } from 'rxjs';
 
 
 export interface IContact {
@@ -29,9 +30,10 @@ export class ContacsSidebarComponent {
   screenWidth = 0;
   collapsed!: boolean;
 
-  constructor(private service: PlayerService, private contactListService: ContactListService) {
+  constructor(private service: PlayerService, private contactListService: ContactsBarService) {
     this.service.getPlayerContacts();
-    this.contactListService.isCollapsed.subscribe(collapsed => {
+    this.contactListService.isCollapsed
+    .subscribe(collapsed => {
       this.collapsed = collapsed;
     });
   }

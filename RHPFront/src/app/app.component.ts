@@ -4,7 +4,7 @@ import { AuthService } from './components/auth/auth.service';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { TopNavbarComponent } from './shared/components/top-navbar/top-navbar.component';
-import { ContactListService } from './services/contact-list.service';
+import { ContactsBarService } from './services/contact-bar.service';
 import { ContacsSidebarComponent } from './shared/components/contacts/contacts-sidebar/contacts-sidebar.component';
 
 @Component({
@@ -23,7 +23,7 @@ export class AppComponent {
   screenWidth: number = 0;
   isNavCollapsed: boolean = true;
   
-  constructor(protected authService: AuthService, private router: Router, private contactListService: ContactListService) {
+  constructor(protected authService: AuthService, private router: Router, private contactListService: ContactsBarService) {
 
     if(this.authService.isLoggedIn()){
       this.router.navigate(['/home']);

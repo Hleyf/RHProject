@@ -5,7 +5,7 @@ import {
   ContactStatus,
 } from '../../../../models/player.model';
 import { CommonModule } from '@angular/common';
-import { ContactListService } from '../../../../services/contact-list.service';
+import { ContactsBarService } from '../../../../services/contact-bar.service';
 
 @Component({
   selector: 'app-contact-card',
@@ -20,7 +20,7 @@ export class ContactCardComponent {
   contactStatus = ContactStatus;
   isCollapsed = true;
 
-  constructor(private service: ContactListService) {
+  constructor(private service: ContactsBarService) {
     this.service.isCollapsed.subscribe((value) => (this.isCollapsed = value));
   }
 

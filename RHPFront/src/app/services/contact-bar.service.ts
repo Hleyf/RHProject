@@ -4,7 +4,7 @@ import { BehaviorSubject } from 'rxjs';
 @Injectable({
     providedIn: 'root'
   })
-  export class ContactListService {
+  export class ContactsBarService {
         isCollapsed : BehaviorSubject<boolean> = new BehaviorSubject<boolean>(true);
 
 
