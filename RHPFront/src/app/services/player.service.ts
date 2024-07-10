@@ -101,6 +101,15 @@ export class PlayerService {
           lastLogin: new Date('2023-10-25T14:30:00.000Z'),
         },
         {
+          userId: 'user101',
+          name: 'Diana Jones',
+          email: 'diana.jones@example.com',
+          loggedIn: false,
+          status: ContactStatus.Pending,
+          userStatus: UserStatus.Online,
+          lastLogin: new Date('2023-10-23T22:00:00.000Z'),
+        },
+        {
           userId: 'user123',
           name: 'Alice Johnson',
           email: 'alice.johnson@example.com',
@@ -110,24 +119,6 @@ export class PlayerService {
           lastLogin: new Date('2023-10-26T10:00:00.000Z'),
         },
         {
-          userId: 'user789',
-          name: 'Charlie Brown',
-          email: 'charlie.brown@example.com',
-          loggedIn: true,
-          status: ContactStatus.Rejected,
-          userStatus: UserStatus.Offline,
-          lastLogin: new Date('2023-10-24T18:15:00.000Z'),
-        },
-        {
-          userId: 'user101',
-          name: 'Diana Jones',
-          email: 'diana.jones@example.com',
-          loggedIn: false,
-          status: ContactStatus.Blocked,
-          userStatus: UserStatus.Online,
-          lastLogin: new Date('2023-10-23T22:00:00.000Z'),
-        },
-        {
           userId: 'user112',
           name: 'Eric Davis',
           email: 'eric.davis@example.com',
@@ -135,6 +126,15 @@ export class PlayerService {
           status: ContactStatus.Accepted,
           userStatus: UserStatus.Away,
           lastLogin: new Date('2023-10-22T02:45:00.000Z'),
+        },
+        {
+        userId: 'user789',
+        name: 'Charlie Brown',
+        email: 'charlie.brown@example.com',
+          loggedIn: true,
+          status: ContactStatus.Accepted,
+          userStatus: UserStatus.Offline,
+          lastLogin: new Date('2023-10-24T18:15:00.000Z'),
         },
       ]);
   }
