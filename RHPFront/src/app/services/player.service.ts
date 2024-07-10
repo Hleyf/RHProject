@@ -89,6 +89,8 @@ export class PlayerService {
     //     },
     //   });
 
+    // ? Having Blocked and Rejected contacts in the mock list will result in empty list tags that will have an impact in the disposition of the tags. 
+    //TODO: Review repository query to ensure only Pending and Accepted contacts are passed to the client. 
     this.contactList.set(
       [
         {
